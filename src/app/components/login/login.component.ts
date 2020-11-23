@@ -6,6 +6,7 @@ import { LoginModel } from '../../models/login.model';
 import { AuthService } from '../../services/auth.service';
 
 import Swal from 'sweetalert2';
+import { PeticionesService } from '../../services/peticiones.service';
 
 @Component({
   selector: 'app-login',
@@ -17,53 +18,29 @@ export class LoginComponent implements OnInit {
   authUser: LoginModel = new LoginModel();
   recordarme = false;
 
-  constructor( private auth: AuthService,
-               private router: Router ) { }
+  // tslint:disable-next-line: variable-name
+  constructor(private _auth: AuthService, private estadoPeticion: PeticionesService, private router: Router) { }
 
-  ngOnInit() {
-
-    if ( localStorage.getItem('email') ) {
+  ngOnInit(): void {
+    if (localStorage.getItem('email')) {
       this.authUser.email = localStorage.getItem('email');
       this.recordarme = true;
     }
-
   }
 
 
-  login( form: NgForm ) {
+  login(form: NgForm): void {
+    if (form.invalid) { return; }
 
-    if (  form.invalid ) { return; }
+    this.estadoPeticion.loading();
 
-    Swal.fire({
-      allowOutsideClick: false,
-      icon: 'info',
-      text: 'Espere por favor...'
-    });
-    
-    Swal.showLoading();
-
-    this.auth.login( this.authUser )
-      .subscribe( resp => {
-
-        console.log(resp);
+    this._auth.login(this.authUser)
+      .subscribe( () => {
         Swal.close();
-
-        if ( this.recordarme ) {
-          localStorage.setItem('email', this.authUser.email);
-        }
-
+        if (this.recordarme) { localStorage.setItem('email', this.authUser.email); }
         this.router.navigateByUrl('/home');
-
-      }, (err) => {
-
-        console.log(err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al autenticar',
-          text: err.error.err.message
-        });
+      }, (err: any) => {
+        this.estadoPeticion.error(err, 'Error al autenticar');
       });
-
   }
-
 }

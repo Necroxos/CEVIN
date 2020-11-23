@@ -1,4 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estos estilos se aplicarán a TODO el sistema */
+
+.datepicker {
+    display: inline !important;
+    width: 50% !important;
+}
+
+.hideElem {
+    visibility: hidden;
+}
 
 body {
     padding-bottom: 50px;
@@ -40,6 +49,16 @@ body {
 
 .fadeIn {
     animation-name: fadeIn;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 html,

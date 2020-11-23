@@ -10,20 +10,20 @@ export class NavbarComponent implements OnInit {
 
   constructor(private auth: AuthService, private router: Router) { }
 
-  ngOnInit() { }
+  ngOnInit(): void { }
 
-  salir() {
+  salir(): void {
     this.auth.logout();
     this.router.navigateByUrl('/login');
   }
 
-  ingresar() {
+  ingresar(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('expira');
     this.router.navigateByUrl('/login');
   }
 
-  verificarValidez() {
+  verificarValidez(): boolean {
     return this.auth.estaAutenticado();
   }
 

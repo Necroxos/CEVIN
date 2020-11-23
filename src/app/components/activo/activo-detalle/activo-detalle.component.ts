@@ -1,6 +1,8 @@
 import { Component, ViewChild, ViewEncapsulation, OnInit } from '@angular/core';
 import { QrScannerComponent } from 'angular2-qrscanner';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-activo-detalle',
   templateUrl: './activo-detalle.component.html',
@@ -13,8 +15,9 @@ export class ActivoDetalleComponent implements OnInit {
 
   videoDevices: MediaDeviceInfo[] = [];
   choosenDev;
-  scanned = false;
-  valueQR;
+  esconder = false;
+  ancho = 640;
+  alto = 480;
 
   @ViewChild(QrScannerComponent) qrScannerComponent: QrScannerComponent;
 
@@ -40,22 +43,42 @@ export class ActivoDetalleComponent implements OnInit {
             break;
           }
         }
-        if (this.choosenDev) {
-          this.qrScannerComponent.chooseCamera.next(this.choosenDev);
-        } else {
-          this.qrScannerComponent.chooseCamera.next(videoDevices[0]);
-        }
+        if (!this.choosenDev) this.choosenDev = videoDevices[0];
+        this.qrScannerComponent.chooseCamera.next(this.choosenDev);
       }
     });
 
-    this.qrScannerComponent.capturedQr.subscribe(result => {
-      this.valueQR = result;
-      this.scanned = true;
-      setTimeout(() => this.scanned = false, 10000);
+    this.qrScannerComponent.capturedQr.subscribe(codigoQR => {
+      this.mostrarCodigo(codigoQR);
     });
   }
 
-  changeDevice(device: string) {
+  mostrarCodigo(codigoQR) {
+    this.esconder = true;
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Espere por favor...'
+    });
+
+    Swal.showLoading();
+
+    setTimeout(() => { // Aquí debe ir la petición de la información del activo
+      Swal.close();
+
+      Swal.fire({
+        title: codigoQR,
+        showClass: { popup: 'animate__animated animate__fadeInDown' },
+        hideClass: { popup: 'animate__animated animate__fadeOutUp' },
+        willClose: () => {
+          this.qrScannerComponent.chooseCamera.next(this.choosenDev);
+          setTimeout(() => this.esconder = false, 200);
+        }
+      });
+    }, 1000);
+  }
+
+  cambiarCam(device: string) {
     for (const dev of this.videoDevices) {
       if (dev.label.includes(device)) {
         this.choosenDev = dev;
