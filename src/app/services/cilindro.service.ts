@@ -26,4 +26,13 @@ export class CilindroService {
     const headers = new HttpHeaders({ Authorization: this.auth.leerToken() });
     return this.http.post(`${this.url}/cilindro`, cilindro, { headers });
   }
+
+  /**
+   * Se realiza una petición a la API para obtener un [cilindro] por medio de su [codigo_activo]
+   * @param cilindro Recibe un modelo de cilindro
+   */
+  obtenerUno(cilindro: CilindroModel): any {
+    const headers = new HttpHeaders({ Authorization: this.auth.leerToken() });
+    return this.http.get(`${this.url}/cilindro/${cilindro.codigo_activo}`, { headers });
+  }
 }

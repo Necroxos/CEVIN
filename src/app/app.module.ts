@@ -27,6 +27,7 @@ import { ActivoComponent } from './components/activo/activo.component';
 import { ActivoNuevoComponent } from './components/activo/activo-nuevo/activo-nuevo.component';
 import { ActivoEditarComponent } from './components/activo/activo-editar/activo-editar.component';
 import { ActivoDetalleComponent } from './components/activo/activo-detalle/activo-detalle.component';
+import { ActivoQrComponent } from './components/activo/activo-qr/activo-qr.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ActivoDetalleComponent } from './components/activo/activo-detalle/activ
     ActivoNuevoComponent,
     ActivoEditarComponent,
     ActivoDetalleComponent,
-    LoginComponent
+    LoginComponent,
+    ActivoQrComponent
   ],
   imports: [
     BrowserModule,

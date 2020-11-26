@@ -8,4 +8,7 @@ export class CilindroModel {
     fecha_mantencion: string;
     codigo_activo: string;
     desc_mantenimiento: string;
+    mantencion_id: number;
+    tipo_gas: string;
+    cilindro_id: number;
 }

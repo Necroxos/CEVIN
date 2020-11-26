@@ -1,5 +1,9 @@
 /* Estos estilos se aplicarán a TODO el sistema */
 
+.div-full {
+    width: 100%;
+}
+
 .datepicker {
     display: inline !important;
     width: 50% !important;

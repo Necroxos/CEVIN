@@ -1,11 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">
+    <!-- Ícono de la Izquierda del NavBar usado como un redireccionamiento al home -->
+    <a class="navbar-brand" routerLink="/">
         <img src="./assets/img/angular.png" height="30" alt="">
     </a>
+    <!-- Botón que muestra el menú del NavBar cuando la resolución de la pantalla es baja (Especial para dispositivos móviles) -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-
+    <!-- Contenedor de los links de direccionamiento -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" routerLinkActive="active">
@@ -17,12 +19,25 @@
             <li class="nav-item" routerLinkActive="active">
                 <a class="nav-link" [routerLink]="['about']">Quiénes Somos</a>
             </li>
+            <li class="nav-item dropdown" *ngIf="verificarValidez()">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Administración
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" [routerLink]="['/']">Usuarios</a>
+                    <a class="dropdown-item" [routerLink]="['/']">Activos</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" [routerLink]="['rol']">Roles</a>
+                    <a class="dropdown-item" [routerLink]="['tipo']">Tipo Gas</a>
+                </div>
+            </li>
         </ul>
-
+        <!-- Barra para búsquedas -->
         <!-- <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Buscar Activo" (keyup)="buscarHeroe(buscarTexto.value)" #buscarTexto>
             <button (click)="buscarHeroe(buscarTexto.value)" class="btn btn-outline-primary my-2 my-sm-0" type="button">Buscar</button>
         </form> -->
+        <!-- Botones para Login y Logout -->
         <button *ngIf="!verificarValidez()" (click)="ingresar()" class="btn btn-outline-success my-2 my-sm-0" type="button">Ingresar</button>
         <button *ngIf="verificarValidez()" (click)="salir()" class="btn btn-outline-danger my-2 my-sm-0" type="button">Salir</button>
     </div>

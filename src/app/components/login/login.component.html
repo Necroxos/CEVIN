@@ -1,22 +1,28 @@
+<!-- /container -->
 <div class="container">
+    <!-- /card-container -->
     <div class="card card-container">
         <!-- Imagen -->
         <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
         <p id="profile-name" class="profile-name-card"></p>
         <!-- Formulario -->
         <form class="form-signin validate-form" (ngSubmit)="login( f )" #f="ngForm">
+            <!-- Error para email inválido y el input del email -->
             <span *ngIf="f.submitted && f.controls['email'].errors" class="text-danger animated fadeIn">El correo es obligatorio</span>
-            <input class="form-control" type="text" name="email" [(ngModel)]="authUser.email" required email placeholder="Email" autofocus>
+            <input class="form-control" type="text" name="email" [(ngModel)]="authUser.email" required email placeholder="Email">
+            <!-- Error para password inválido y el input del password -->
             <span *ngIf="f.submitted && f.controls['password'].errors" class="text-danger animated fadeIn">Al menos 6 letras</span>
             <input class="form-control" type="password" name="password" [(ngModel)]="authUser.password" required minlength="6" placeholder="Password">
+            <!-- Botón para recordar el correo del usuario -->
             <div id="remember" class="checkbox">
                 <label>
                     <input type="checkbox" value="remember-me" [(ngModel)]="recordarme" id="ckb1" type="checkbox" name="remember-me"> Recordarme
                 </label>
             </div>
+            <!-- Botón para enviar el formulario -->
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Ingresar</button>
         </form>
-        <!-- /form -->
+        <!-- Redireccionamiento a recuperación de contraseña -->
         <a href="#" class="forgot-password">
             Recuperar contraseña
         </a>

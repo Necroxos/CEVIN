@@ -20,12 +20,13 @@ export class AuthService {
   // Guardamos el token del usuario
   userToken: string;
 
-  constructor(private http: HttpClient) {
-    this.leerToken();
-  }
+  constructor(private http: HttpClient) { }
 
   // Remueve el token al finalizar la sesión
-  logout(): void { localStorage.removeItem('token'); }
+  logout(): void {
+    localStorage.removeItem('token');
+    return;
+  }
 
   /**
    * Verifica que el usuario esté en el sistema
@@ -37,10 +38,10 @@ export class AuthService {
     return this.http.post(`${this.url}/login`,
       usuario
     ).pipe(
-      map(resp => {
+      map((resp: any) => {
         this.guardarToken(resp['token']);
         return resp;
-      }, err => {
+      }, (err: any) => {
         return err;
       })
     );
@@ -72,7 +73,7 @@ export class AuthService {
   }
 
   /**
-   * Cada vez que se instancia el servicio se lee el token de las cookies
+   * Se lee cada vez que se desea verificar el token de las cookies
    * Y se guarda en la variable local
    */
   leerToken(): string {
@@ -87,6 +88,7 @@ export class AuthService {
    * (Obs: El Back End también verifica que el token no esté manipulado para sus rutas)
    */
   estaAutenticado(): boolean {
+    this.leerToken();
     if (this.userToken.length < 2) { return false; }
 
     const token = jwt_decode(localStorage.getItem('token'));

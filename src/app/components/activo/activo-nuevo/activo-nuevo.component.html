@@ -1,7 +1,4 @@
-<!-- <div class="m-2 text-center">
-    <h1> Registrar Cilindro </h1>
-</div> -->
-<div class="card mt-2">
+<div class="card mt-2" #reescalado>
     <h1 class="card-header text-center"> Registrar Cilindro </h1>
     <div class="card-body">
         <form class="validate-form" (ngSubmit)="registrar( f )" #f="ngForm">
@@ -24,7 +21,7 @@
 
             <label><b>Ingrese la última fecha de mantención</b></label>
             <div class="form-group">
-                <input class="form-control datepicker" [(ngModel)]="cilindro.mantencion" name="mantencion" matInput [max]="maxDate" [matDatepicker]="mantencion" placeholder="Mantención" disabled>
+                <input class="form-control datepicker" [(ngModel)]="cilindro.mantencion" name="mantencion" matInput [max]="maxDate" [matDatepicker]="mantencion" placeholder="Mantención" style="min-width: 200px;" disabled>
                 <mat-datepicker-toggle matSuffix [for]="mantencion"></mat-datepicker-toggle>
                 <mat-datepicker #mantencion disabled="false"></mat-datepicker>
                 <span class="text-danger animated fadeIn" [ngClass]="{ 'hideElem': esconder }">Campo obligatorio</span>

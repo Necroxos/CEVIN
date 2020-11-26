@@ -1,5 +1,7 @@
 // Angular
 import { Injectable } from '@angular/core';
+// Enrutador
+import { Router } from '@angular/router';
 // Módulos
 import Swal from 'sweetalert2';
 
@@ -8,7 +10,7 @@ import Swal from 'sweetalert2';
 })
 export class PeticionesService {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   /**
    * Muestra mensaje de carga
@@ -38,14 +40,49 @@ export class PeticionesService {
                 break;
       case 500: mensaje = 'Error interno del servidor';
                 break;
-      default: mensaje = err.error.err.message;
+      default: mensaje = err.error.response;
     }
+
+    console.log(err.error.err);
 
     Swal.close();
     Swal.fire({
       icon: 'error',
       title: titulo,
       text: mensaje
+    });
+  }
+
+  /**
+   * Función que se encarga de mostrar un mensaje de éxito
+   * @param texto Recibe el mensaje que se desea mostrar
+   * @param ruta Recibe un Array de Strings con las rutas
+   * @param ms Recibe el tiempo que estará activo el mensaje (en milisegundos)
+   */
+  success(texto: string, ruta: string[], ms: number): void {
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'success',
+      text: texto,
+      showConfirmButton: false
+    });
+    setTimeout(() => {
+      Swal.close();
+      if (ruta.length > 0){
+        this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
+          this.router.navigate(ruta);
+        });
+      }
+    }, ms);
+  }
+
+  /**
+   * Función que permite recargar el componente
+   * @param ruta Recibe un Array de Strings con las rutas
+   */
+  recargar(ruta: string[]): void {
+    this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
+      this.router.navigate(ruta);
     });
   }
 }

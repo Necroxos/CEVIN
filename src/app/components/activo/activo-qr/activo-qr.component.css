@@ -1,0 +1,17 @@
+/* Contenedor de cámara */
+
+.dev-container {
+    max-width: 600px;
+    min-width: 18rem;
+    margin: auto;
+    width: 50%;
+}
+
+.card {
+    margin: 0 auto;
+    /* Added */
+    float: none;
+    /* Added */
+    margin-bottom: 10px;
+    /* Added */
+}

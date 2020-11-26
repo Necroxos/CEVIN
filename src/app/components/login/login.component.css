@@ -1,17 +1,12 @@
 /*
- * Specific styles of signin component
- */
-
-
-/*
- * General styles
+ * Estilos específicos SÓLO para este componente
  */
 
 body,
 html {
     height: 100%;
     background-repeat: no-repeat;
-    background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));
+    background-image: linear-gradient(rgb(104, 145, 162), rgb(12, 49, 97));
 }
 
 .card-container.card {
@@ -135,7 +130,7 @@ html {
 .btn.btn-signin:hover,
 .btn.btn-signin:active,
 .btn.btn-signin:focus {
-    background-color: rgb(12, 97, 33);
+    background-color: rgb(12, 49, 97);
 }
 
 .forgot-password {
@@ -145,5 +140,5 @@ html {
 .forgot-password:hover,
 .forgot-password:active,
 .forgot-password:focus {
-    color: rgb(12, 97, 33);
+    color: rgb(12, 49, 97);
 }
