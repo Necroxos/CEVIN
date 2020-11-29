@@ -107,4 +107,13 @@ export class ActivoQrComponent implements OnInit {
     this.estadoPeticion.recargar(['activo', 'escaner']);
   }
 
+  /**
+   * Al presionar editar, guardamos el código único del cilindro en local storage
+   * Y redirigimos al componente de edición
+   */
+  guardar(): void {
+    this.cilindroServ.guardarCilindro(this.cilindro);
+    this.estadoPeticion.recargar(['activo', 'editar']);
+  }
+
 }

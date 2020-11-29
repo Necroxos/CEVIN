@@ -1,49 +1,7 @@
-<div class="card mt-2" #reescalado>
+<div class="card mt-2">
     <h1 class="card-header text-center"> Registrar Cilindro </h1>
     <div class="card-body">
-        <form class="validate-form" (ngSubmit)="registrar( f )" #f="ngForm">
-
-            <div class="form-group">
-                <label><b>Capacidad del cilindro:</b></label>
-                <input class="form-control" type="number" [(ngModel)]="cilindro.metros_cubicos" name="metros_cubicos" placeholder="Capacidad (metros cúbicos)" required>
-                <span *ngIf="f.submitted && f.controls['metros_cubicos'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
-            </div>
-
-            <div class="form-group">
-                <label for="tipo_id"><b>Seleccione el tipo de gas</b></label>
-                <select class="form-control" [(ngModel)]="cilindro.tipo_id" name="tipo_id" placeholder="Tipo de gas" required>
-                  <option value="undefined" disabled>Seleccione tipo de gas</option>
-                  <option value="1">Gas 1</option>
-                  <option value="2">Gas 2</option>
-                </select>
-                <span *ngIf="f.submitted && f.controls['tipo_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
-            </div>
-
-            <label><b>Ingrese la última fecha de mantención</b></label>
-            <div class="form-group">
-                <input class="form-control datepicker" [(ngModel)]="cilindro.mantencion" name="mantencion" matInput [max]="maxDate" [matDatepicker]="mantencion" placeholder="Mantención" style="min-width: 200px;" disabled>
-                <mat-datepicker-toggle matSuffix [for]="mantencion"></mat-datepicker-toggle>
-                <mat-datepicker #mantencion disabled="false"></mat-datepicker>
-                <span class="text-danger animated fadeIn" [ngClass]="{ 'hideElem': esconder }">Campo obligatorio</span>
-            </div>
-            <div class="form-group">
-                <label><b>Lugar o Empresa de la mantención:</b></label>
-                <input class="form-control" type="text" [(ngModel)]="cilindro.desc_mantenimiento" name="desc_mantenimiento" placeholder="Lugar de mantenimiento">
-                <small class="form-text text-muted ml-2">(Campo Opcional)</small>
-            </div>
-
-            <div class="form-group">
-                <label><b>Escriba el número de serie del cilindro</b></label>
-                <input class="form-control" type="text" [(ngModel)]="cilindro.codigo_activo" name="codigo_activo" placeholder="Nº de Serie" required (keyup)="changeQRVal(numSerie.value)" #numSerie>
-                <span *ngIf="f.submitted && f.controls['codigo_activo'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
-            </div>
-
-            <div class="m-4 text-center">
-                <qrcode [qrdata]="QrValue" [width]="Width" [errorCorrectionLevel]="'M'"></qrcode>
-            </div>
-
-            <button type="submit" class="btn btn-outline-primary btn-block">Registrar</button>
-        </form>
+        <app-formulario-cilindro [QrValue]="QrValue" (registrarCilindro)="registrar($event)" [accionBtn]="accionBtn"></app-formulario-cilindro>
     </div>
 </div>
 <br>

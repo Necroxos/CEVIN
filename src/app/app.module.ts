@@ -19,15 +19,16 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 // Componentes
 import { AppComponent } from './app.component';
+import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { LoginComponent } from './components/login/login.component';
-import { HomeComponent } from './components/home/home.component';
-import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { ActivoComponent } from './components/activo/activo.component';
+import { NavbarComponent } from './components/shared/navbar/navbar.component';
+import { ActivoQrComponent } from './components/activo/activo-qr/activo-qr.component';
 import { ActivoNuevoComponent } from './components/activo/activo-nuevo/activo-nuevo.component';
 import { ActivoEditarComponent } from './components/activo/activo-editar/activo-editar.component';
 import { ActivoDetalleComponent } from './components/activo/activo-detalle/activo-detalle.component';
-import { ActivoQrComponent } from './components/activo/activo-qr/activo-qr.component';
+import { FormularioCilindroComponent } from './components/activo/formulario-cilindro/formulario-cilindro.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { ActivoQrComponent } from './components/activo/activo-qr/activo-qr.compo
     ActivoEditarComponent,
     ActivoDetalleComponent,
     LoginComponent,
-    ActivoQrComponent
+    ActivoQrComponent,
+    FormularioCilindroComponent
   ],
   imports: [
     BrowserModule,
