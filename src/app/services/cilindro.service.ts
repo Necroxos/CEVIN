@@ -46,6 +46,15 @@ export class CilindroService {
   }
 
   /**
+   * Manda la data a la API para actualizar el cilindro en la base de datos
+   * @param cilindro Recibe un modelo de cilindro
+   */
+  cambiarEstado(cilindro: CilindroModel): any {
+    const headers = new HttpHeaders({ Authorization: this.auth.leerToken() });
+    return this.http.put(`${this.url}/cambio-estado/cilindro`, cilindro, { headers });
+  }
+
+  /**
    * Esta función guarda el código único del Cilindro y lo almacena en local
    * @param cilindro Recibe el cilindro del que se desea guardar información
    */
@@ -58,8 +67,8 @@ export class CilindroService {
    * Y la quitamos de la memoria local
    */
   leerCilindro(): string {
-    const code = localStorage.getItem('cilindro');
+    const codigo = localStorage.getItem('cilindro');
     localStorage.removeItem('cilindro');
-    return code;
+    return codigo;
   }
 }

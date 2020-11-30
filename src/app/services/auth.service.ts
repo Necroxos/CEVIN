@@ -1,7 +1,7 @@
 // Angular
 import { Injectable } from '@angular/core';
 // Peticiones a la API
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 // Decoder para el token
 import jwt_decode from 'jwt-decode';
 // Modelos para la información
@@ -17,14 +17,20 @@ export class AuthService {
 
   // URL donde corre la API
   private url = 'http://localhost:3000';
+
   // Guardamos el token del usuario
   userToken: string;
+  esAdmin = false;
+  esAuth = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.actualializar();
+  }
 
   // Remueve el token al finalizar la sesión
   logout(): void {
     localStorage.removeItem('token');
+    this.actualializar();
     return;
   }
 
@@ -40,6 +46,7 @@ export class AuthService {
     ).pipe(
       map((resp: any) => {
         this.guardarToken(resp['token']);
+        this.actualializar();
         return resp;
       }, (err: any) => {
         return err;
@@ -47,19 +54,10 @@ export class AuthService {
     );
   }
 
-  /**
-   * Crea un nuevo usuario en el sistema
-   * @param usuario Recibe toda la información pertinente de un usuario
-   *                (nombres, apellidos, dni, dv, email, password, rol)
-   */
-  nuevoUsuario(usuario: UsuarioModel): any {
-
-    const authData = {
-      ...usuario,
-      returnSecureToken: true
-    };
-
-    return this.http.post(`${this.url}/usuario`, authData);
+  // Actualiza la información ante cambios
+  actualializar(): void {
+    this.esAdmin = this.esAdministrador();
+    this.esAuth = this.estaAutenticado();
   }
 
   /**
@@ -91,10 +89,23 @@ export class AuthService {
     this.leerToken();
     if (this.userToken.length < 2) { return false; }
 
-    const token = jwt_decode(localStorage.getItem('token'));
+    const token = jwt_decode(this.userToken);
     const tokenDate = new Date(token['exp'] * 1000);
 
     return (tokenDate > new Date() ? true : false);
+  }
+
+  /**
+   * Verifica que el usuario autenticado tenga permisos de administrador
+   * (Obs: El Back End también verifica que el token no esté manipulado para sus rutas)
+   */
+  esAdministrador(): any {
+    this.leerToken();
+    if (this.userToken.length < 2) { return false; }
+    const token = jwt_decode(this.userToken);
+
+    if (token['usuario']['id'] === 1) { return true; }
+    return false;
   }
 
 }

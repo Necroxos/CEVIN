@@ -38,7 +38,7 @@ export class NavbarComponent implements OnInit {
    * De se ser así, nos retorna un True
    */
   verificarValidez(): boolean {
-    return this.auth.estaAutenticado();
+    return this.auth.esAuth;
   }
 
 }

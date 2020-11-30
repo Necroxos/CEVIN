@@ -33,10 +33,10 @@ export class ActivoNuevoComponent {
 
     this.cilindroServ.registrar(cilindro).subscribe(() => {
       Swal.close();
-      this.estadoPeticion.success('Nuevo activo ingresado con éxito!', ['activo', 'nuevo'], 1500);
+      this.estadoPeticion.success('Nuevo activo ingresado con éxito!', ['activo', 'nuevo'], 1000);
     }, (err: any) => {
-      cilindro.codigo_activo = this.QrValue.replace('activo-cevin-', '');
-      this.estadoPeticion.error(err, 'Error al ingresar Cilindro');
+      cilindro.codigo_activo = cilindro.codigo_activo.replace('activo-cevin-', '');
+      this.estadoPeticion.error(err);
     });
   }
 

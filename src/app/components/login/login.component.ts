@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
         this.estadoPeticion.success('Ingreso éxitoso!', ['home'], 800);
 
       }, (err: any) => {
-        this.estadoPeticion.error(err, 'Error al autenticar');
+        this.estadoPeticion.error(err);
       });
   }
 }

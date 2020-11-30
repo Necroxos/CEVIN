@@ -1,7 +1,11 @@
 // Angular
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
+// Servicios
+import { CilindroService } from '../../../services/cilindro.service';
+import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
+import Swal from 'sweetalert2';
 import * as moment from 'moment';
 // Modelos
 import { CilindroModel } from '../../../models/cilindro.model';
@@ -18,13 +22,15 @@ export class FormularioCilindroComponent {
   Width = 200;
   esconder = true;
   maxDate = new Date();
+  prefijoCodigo = 'activo-cevin-';
   @Input() QrValue: string;
   @Input() accionBtn: string;
+  @Input() deleteBtn: boolean;
   @Input() CilindroEdit: CilindroModel;
   cilindro: CilindroModel = new CilindroModel();
   @Output() registrarCilindro: EventEmitter<CilindroModel>;
 
-  constructor() {
+  constructor(private cilindroServ: CilindroService, private estadoPeticion: PeticionesService) {
     this.registrarCilindro = new EventEmitter();
   }
 
@@ -33,7 +39,7 @@ export class FormularioCilindroComponent {
    * @param texto Recibe el string del input correspondiente al número de serie del cilindro
    */
   changeQRVal(texto: string): void {
-    if (texto !== '') { this.QrValue = 'activo-cevin-' + texto; }
+    if (texto !== '') { this.QrValue = this.prefijoCodigo + texto; }
     else { this.QrValue = 'Código QR de ejemplo'; }
   }
 
@@ -49,6 +55,7 @@ export class FormularioCilindroComponent {
       return;
     }
 
+    this.changeQRVal(this.cilindro.codigo_activo);
     this.transformarData();
     this.registrarCilindro.emit(this.cilindro);
   }
@@ -59,8 +66,7 @@ export class FormularioCilindroComponent {
    * Y borra información innecesaria
    */
   transformarData(): void {
-    moment.locale('es');
-    this.cilindro.fecha_mantencion = this.cilindro.mantencion.format('l');
+    this.cilindro.fecha_mantencion = moment(this.cilindro.mantencion).format('DD/MM/YYYY').toString();
     this.cilindro.codigo_activo = this.QrValue;
     delete this.cilindro.mantencion;
   }
@@ -72,10 +78,23 @@ export class FormularioCilindroComponent {
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterContentInit(): void {
     if (this.CilindroEdit) {
-      this.QrValue = this.CilindroEdit.codigo_activo;
       this.cilindro = this.CilindroEdit;
       this.cilindro.mantencion = moment(this.CilindroEdit.fecha_mantencion, 'DD/MM/YYYY');
     }
+  }
+
+  /**
+   * Función que cambia el estado de un cilindro a desactivado en la base de datos
+   */
+  eliminar(): void {
+    this.estadoPeticion.loading();
+    this.cilindro.activo = false;
+    this.cilindroServ.cambiarEstado(this.cilindro).subscribe((res: any) => {
+      Swal.close();
+      this.estadoPeticion.success(res.message, ['activo', 'editar'], 700);
+    }, (err: any) => {
+      this.estadoPeticion.error(err);
+    });
   }
 
 }

@@ -11,4 +11,5 @@ export class CilindroModel {
     mantencion_id: number;
     tipo_gas: string;
     cilindro_id: number;
+    activo: boolean;
 }

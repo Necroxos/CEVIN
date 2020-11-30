@@ -1,12 +1,13 @@
 // Angualr
 import { Component, ViewChild, OnInit } from '@angular/core';
 // Servicios
-import { PeticionesService } from '../../../services/peticiones.service';
 import { CilindroService } from '../../../services/cilindro.service';
+import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
-import { QrScannerComponent } from 'angular2-qrscanner';
 import Swal from 'sweetalert2';
+import { QrScannerComponent } from 'angular2-qrscanner';
 // Modelos
+import { AuthService } from '../../../services/auth.service';
 import { CilindroModel } from '../../../models/cilindro.model';
 
 @Component({
@@ -28,7 +29,7 @@ export class ActivoQrComponent implements OnInit {
   // Genera el elemento que leerá los códigos
   @ViewChild(QrScannerComponent) qrScannerComponent: QrScannerComponent;
 
-  constructor(private estadoPeticion: PeticionesService, private cilindroServ: CilindroService) { }
+  constructor(private estadoPeticion: PeticionesService, private cilindroServ: CilindroService, private auth: AuthService) { }
 
   // Al cargar el componente inicializamos un Cilindro
   ngOnInit(): void {
@@ -63,7 +64,7 @@ export class ActivoQrComponent implements OnInit {
       }
     });
 
-    this.qrScannerComponent.capturedQr.subscribe( (codigoQR: string) => {
+    this.qrScannerComponent.capturedQr.subscribe((codigoQR: string) => {
       this.mostrarCodigo(codigoQR);
     });
   }
@@ -77,13 +78,13 @@ export class ActivoQrComponent implements OnInit {
     this.estadoPeticion.loading();
 
     this.cilindro.codigo_activo = codigoQR;
-    this.cilindroServ.obtenerUno(this.cilindro).subscribe( (res: any) => {
+    this.cilindroServ.obtenerUno(this.cilindro).subscribe((res: any) => {
       Swal.close();
-      this.estadoPeticion.success(res.message, [], 1500);
-      this.cilindro = {...res.response};
+      this.estadoPeticion.success(res.message, [], 700);
+      this.cilindro = { ...res.response };
       this.mostrar = true;
     }, (err: any) => {
-      this.estadoPeticion.error(err, `Error con código: ${codigoQR}`);
+      this.estadoPeticion.error(err);
       this.recargar();
     });
   }
@@ -114,6 +115,29 @@ export class ActivoQrComponent implements OnInit {
   guardar(): void {
     this.cilindroServ.guardarCilindro(this.cilindro);
     this.estadoPeticion.recargar(['activo', 'editar']);
+  }
+
+  /**
+   * Función que revisa que el usuario autenticado tenga permisos de administrador administrador
+   * Regresa un true o false para habilitar funciones en la vista
+   */
+  esAdmin(): boolean {
+    return this.auth.esAdmin;
+  }
+
+  /**
+   * Función que cambia el estado de un cilindro a desactivado en la base de datos
+   */
+  eliminar(): void {
+    this.estadoPeticion.loading();
+    this.cilindro.activo = false;
+    this.cilindroServ.cambiarEstado(this.cilindro).subscribe((res: any) => {
+      Swal.close();
+      this.estadoPeticion.success(res.message, ['activo', 'escaner'], 700);
+    }, (err: any) => {
+      this.estadoPeticion.error(err);
+      this.recargar();
+    });
   }
 
 }

@@ -29,18 +29,17 @@ export class PeticionesService {
   /**
    * Muestra un mensaje de error
    * @param err Recibe el error de las peticiones
-   * @param titulo Recibe un titulo para el mensaje
    */
-  error(err: any, titulo: string): void {
-    let mensaje: string;
+  error(err: any): void {
+    let titulo: string;
     switch (err.satatus) {
-      case 0: mensaje = 'No hay respuesta del servidor';
+      case 0: titulo = 'No hay respuesta del servidor';
               break;
-      case 404: mensaje = 'No existe la ruta';
+      case 404: titulo = 'No existe la ruta';
                 break;
-      case 500: mensaje = 'Error interno del servidor';
+      case 500: titulo = 'Error interno del servidor';
                 break;
-      default: mensaje = err.error.response;
+      default: titulo = err.error.response;
     }
 
     console.log(err.error.err);
@@ -49,7 +48,7 @@ export class PeticionesService {
     Swal.fire({
       icon: 'error',
       title: titulo,
-      text: mensaje
+      text: err.error.err.message
     });
   }
 
