@@ -1,5 +1,5 @@
 // Angular
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 // Servicios
 import { CilindroService } from '../../../services/cilindro.service';
@@ -16,7 +16,7 @@ import { CilindroModel } from '../../../models/cilindro.model';
   styles: [
   ]
 })
-export class FormularioCilindroComponent {
+export class FormularioCilindroComponent implements OnInit {
 
   // Variables para guardar información de forma local
   Width = 200;
@@ -34,6 +34,8 @@ export class FormularioCilindroComponent {
     this.registrarCilindro = new EventEmitter();
   }
 
+  ngOnInit(): void { }
+
   /**
    * Función que transforma un string a un código QR
    * @param texto Recibe el string del input correspondiente al número de serie del cilindro
@@ -50,10 +52,6 @@ export class FormularioCilindroComponent {
    */
   registrar(form: NgForm): void {
     if (form.invalid) { return; }
-    else if (!this.cilindro.mantencion) {
-      this.esconder = false;
-      return;
-    }
 
     this.changeQRVal(this.cilindro.codigo_activo);
     this.transformarData();
@@ -66,7 +64,9 @@ export class FormularioCilindroComponent {
    * Y borra información innecesaria
    */
   transformarData(): void {
-    this.cilindro.fecha_mantencion = moment(this.cilindro.mantencion).format('DD/MM/YYYY').toString();
+    if (this.cilindro.mantencion) {
+      this.cilindro.fecha_mantencion = moment(this.cilindro.mantencion).format('DD/MM/YYYY').toString();
+    }
     this.cilindro.codigo_activo = this.QrValue;
     delete this.cilindro.mantencion;
   }
@@ -80,6 +80,8 @@ export class FormularioCilindroComponent {
     if (this.CilindroEdit) {
       this.cilindro = this.CilindroEdit;
       this.cilindro.mantencion = moment(this.CilindroEdit.fecha_mantencion, 'DD/MM/YYYY');
+    } else {
+      this.cilindro = new CilindroModel();
     }
   }
 

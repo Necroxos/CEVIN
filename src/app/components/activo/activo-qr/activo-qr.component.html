@@ -31,7 +31,7 @@
             <p class="card-text"><b>Nº Serie:</b> {{ cilindro.codigo_activo | slice:13 }}</p>
             <p class="card-text"><b>Tipo de Gas:</b> {{ cilindro.tipo_gas }}</p>
             <p class="card-text"><b>Última mantención:</b> {{ cilindro.fecha_mantencion }}</p>
-            <p class="card-text"><b>Lugar mantenimiento:</b> {{ cilindro.desc_mantenimiento }}</p>
+            <p class="card-text"><b>Propietario:</b> {{ cilindro.propietario }}</p>
         </div>
         <div class="card-body">
             <button class="btn btn-outline-primary btn-block" (click)="recargar()">Buscar otro</button>
