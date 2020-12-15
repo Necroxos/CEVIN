@@ -8,6 +8,7 @@ import { ActivoComponent } from './components/activo/activo.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
 // Rutas hijas
 import { ACTIVO_ROUTES } from './components/activo/activo.routes';
+import { USUARIO_ROUTES } from './components/usuario/usuario.routes';
 // Validaciones para las vistas
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
@@ -21,7 +22,12 @@ const APP_ROUTES: Routes = [
     canActivate: [AuthGuard],
     children: ACTIVO_ROUTES
   },
-  { path: 'usuario', component: UsuarioComponent },
+  {
+    path: 'usuario',
+    component: UsuarioComponent,
+    canActivate: [AuthGuard],
+    children: USUARIO_ROUTES
+  },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: '**', pathMatch: 'full', redirectTo: 'home' },
   { path: '', pathMatch: 'full', redirectTo: 'login' }

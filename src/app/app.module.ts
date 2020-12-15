@@ -32,6 +32,10 @@ import { ActivoEditarComponent } from './components/activo/activo-editar/activo-
 import { ActivoDetalleComponent } from './components/activo/activo-detalle/activo-detalle.component';
 import { FormularioCilindroComponent } from './components/activo/formulario-cilindro/formulario-cilindro.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
+import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle/usuario-detalle.component';
+import { UsuarioNuevoComponent } from './components/usuario/usuario-nuevo/usuario-nuevo.component';
+import { UsuarioEditarComponent } from './components/usuario/usuario-editar/usuario-editar.component';
+import { FormularioUsuarioComponent } from './components/usuario/formulario-usuario/formulario-usuario.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +52,11 @@ import { UsuarioComponent } from './components/usuario/usuario.component';
     ActivoQrComponent,
     FormularioCilindroComponent,
     UsuarioComponent,
-    BooleanPipe
+    BooleanPipe,
+    UsuarioDetalleComponent,
+    UsuarioNuevoComponent,
+    UsuarioEditarComponent,
+    FormularioUsuarioComponent
   ],
   imports: [
     BrowserModule,

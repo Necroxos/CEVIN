@@ -3,7 +3,7 @@
     <small class="form-text text-muted ml-2">(Usar número de serie)</small>
 </div> -->
 
-<div class="card mt-2 animated fadeIn" *ngIf="mostrar">
+<div class="card animated fadeIn" *ngIf="mostrar">
     <h1 class="card-header text-center"> Editar Cilindro </h1>
     <div class="card-body">
         <app-formulario-cilindro (registrarCilindro)="actualizar($event)" [CilindroEdit]="cilindro" [accionBtn]="accionBtn"></app-formulario-cilindro>
