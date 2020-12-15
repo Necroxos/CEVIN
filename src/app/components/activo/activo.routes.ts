@@ -11,6 +11,6 @@ export const ACTIVO_ROUTES: Routes = [
     { path: 'editar', component: ActivoEditarComponent },
     { path: 'detalle', component: ActivoDetalleComponent },
     { path: 'escaner', component: ActivoQrComponent },
-    { path: '**', pathMatch: 'full', redirectTo: 'nuevo' }
+    { path: '**', pathMatch: 'full', redirectTo: 'detalle' }
 ];
 

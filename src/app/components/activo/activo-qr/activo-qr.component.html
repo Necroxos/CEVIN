@@ -32,11 +32,21 @@
             <p class="card-text"><b>Tipo de Gas:</b> {{ cilindro.tipo_gas }}</p>
             <p class="card-text"><b>Última mantención:</b> {{ cilindro.fecha_mantencion }}</p>
             <p class="card-text"><b>Propietario:</b> {{ cilindro.propietario }}</p>
+            <p class="card-text"><b>Estado:</b>&nbsp;
+                <b [ngStyle]="{
+                    color: cilindro.activo
+                    ? 'hsl(141, 53%, 53%)'
+                    : 'hsl(348, 100%, 61%)'
+                }"> {{ cilindro.activo | boolean }}
+                </b>
+            </p>
         </div>
+        <!-- Botones para redireccionar -->
         <div class="card-body">
             <button class="btn btn-outline-primary btn-block" (click)="recargar()">Buscar otro</button>
             <button class="btn btn-outline-warning btn-block" (click)="guardar()">Editar</button>
-            <button class="btn btn-outline-danger btn-block" (click)="eliminar()" *ngIf="esAdmin()">Eliminar</button>
+            <button class="btn btn-outline-danger btn-block" (click)="cambiarEstado()" *ngIf="esAdmin() && cilindro.activo">Eliminar</button>
+            <button class="btn btn-outline-success btn-block" (click)="cambiarEstado()" *ngIf="esAdmin() && !cilindro.activo">Activar</button>
         </div>
     </div>
 </div>

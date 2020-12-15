@@ -42,7 +42,7 @@ export class CilindroService {
   }
 
   /**
-   * Se realiza una petición a la API para obtener un [cilindro] por medio de su [codigo_activo]
+   * Se realiza una petición a la API para obtener todos los activos de tipo [cilindro]
    * @param cilindro Recibe un modelo de cilindro
    */
   obtenerTodos(): any {

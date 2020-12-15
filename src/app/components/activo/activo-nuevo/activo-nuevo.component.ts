@@ -16,7 +16,6 @@ import { CilindroModel } from 'src/app/models/cilindro.model';
 export class ActivoNuevoComponent {
 
   // Variables para guardar información de forma local
-  QrValue = 'Código QR de ejemplo';
   accionBtn = 'Registrar';
 
   constructor(private cilindroServ: CilindroService, private estadoPeticion: PeticionesService) { }

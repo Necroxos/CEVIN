@@ -14,6 +14,8 @@ import { APP_ROUTING } from './app.routes';
 // Servicios
 import { AuthService } from './services/auth.service';
 import { PeticionesService } from './services/peticiones.service';
+// Pipes
+import { BooleanPipe } from './pipes/boolean.pipe';
 // Configuraciones
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -29,6 +31,7 @@ import { ActivoNuevoComponent } from './components/activo/activo-nuevo/activo-nu
 import { ActivoEditarComponent } from './components/activo/activo-editar/activo-editar.component';
 import { ActivoDetalleComponent } from './components/activo/activo-detalle/activo-detalle.component';
 import { FormularioCilindroComponent } from './components/activo/formulario-cilindro/formulario-cilindro.component';
+import { UsuarioComponent } from './components/usuario/usuario.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,9 @@ import { FormularioCilindroComponent } from './components/activo/formulario-cili
     ActivoDetalleComponent,
     LoginComponent,
     ActivoQrComponent,
-    FormularioCilindroComponent
+    FormularioCilindroComponent,
+    UsuarioComponent,
+    BooleanPipe
   ],
   imports: [
     BrowserModule,

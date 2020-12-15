@@ -2,9 +2,10 @@
 import { RouterModule, Routes } from '@angular/router';
 // Componentes a cargar (Vistas)
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
 import { AboutComponent } from './components/about/about.component';
 import { ActivoComponent } from './components/activo/activo.component';
-import { LoginComponent } from './components/login/login.component';
+import { UsuarioComponent } from './components/usuario/usuario.component';
 // Rutas hijas
 import { ACTIVO_ROUTES } from './components/activo/activo.routes';
 // Validaciones para las vistas
@@ -20,6 +21,7 @@ const APP_ROUTES: Routes = [
     canActivate: [AuthGuard],
     children: ACTIVO_ROUTES
   },
+  { path: 'usuario', component: UsuarioComponent },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: '**', pathMatch: 'full', redirectTo: 'home' },
   { path: '', pathMatch: 'full', redirectTo: 'login' }

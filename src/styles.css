@@ -1,5 +1,14 @@
 /* Estos estilos se aplicarán a TODO el sistema */
 
+.center-icons {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.min-width {
+    min-width: 500px;
+}
+
 .div-full {
     width: 100%;
 }
@@ -11,6 +20,7 @@
 .datepicker {
     display: inline !important;
     width: 50% !important;
+    text-align: center !important;
 }
 
 .hideElem {

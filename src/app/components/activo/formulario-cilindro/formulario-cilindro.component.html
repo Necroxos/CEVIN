@@ -10,17 +10,19 @@
         <label for="tipo_id"><b>Seleccione el tipo de gas</b></label>
         <select class="form-control" [(ngModel)]="cilindro.tipo_id" name="tipo_id" placeholder="Tipo de gas" required>
           <option value="undefined" disabled>Seleccione tipo de gas</option>
-          <option value="1">Gas 1</option>
-          <option value="2">Gas 2</option>
+          <option *ngFor="let gas of gases" value="{{gas.id}}"> {{ gas.descripcion }} </option>
         </select>
         <span *ngIf="f.submitted && f.controls['tipo_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
     </div>
     <!-- Input mantención -->
     <label><b>Ingrese la última fecha de mantención</b></label>
     <div class="form-group">
-        <input class="form-control datepicker ml-3" [(ngModel)]="cilindro.mantencion" name="mantencion" matInput [max]="maxDate" [matDatepicker]="mantencion" placeholder="Mantención" disabled>
-        <mat-datepicker-toggle matSuffix [for]="mantencion"></mat-datepicker-toggle>
+        <input class="form-control datepicker" [(ngModel)]="cilindro.mantencion" name="mantencion" [max]="maxDate" [matDatepicker]="mantencion" placeholder="Mantención" disabled>
+        <mat-datepicker-toggle matSuffix [for]="mantencion" matTooltip="Escoger fecha"></mat-datepicker-toggle>
         <mat-datepicker #mantencion disabled="false"></mat-datepicker>
+        <mat-datepicker-toggle matSuffix (click)="limpiarFecha()">
+            <mat-icon matDatepickerToggleIcon matTooltip="Limpiar fecha">clear</mat-icon>
+        </mat-datepicker-toggle>
     </div>
     <div class="form-group">
         <label><b>Lugar o Empresa de la mantención:</b></label>
@@ -32,8 +34,7 @@
         <label for="propietario_id"><b>Seleccione al dueño del cilindro</b></label>
         <select class="form-control" [(ngModel)]="cilindro.propietario_id" name="propietario_id" placeholder="Propietario" required>
           <option value="undefined" disabled>Seleccione propietario</option>
-          <option value="1">Propietario 1</option>
-          <option value="2">Propietario 2</option>
+          <option *ngFor="let propietario of propietarios" value="{{propietario.id}}"> {{ propietario.descripcion }} </option>
         </select>
         <span *ngIf="f.submitted && f.controls['propietario_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
     </div>
@@ -49,5 +50,4 @@
     </div>
     <!-- Botones -->
     <button type="submit" class="btn btn-outline-primary btn-block"> {{ accionBtn }} </button>
-    <button type="button" class="btn btn-outline-danger btn-block" (click)="eliminar()" *ngIf="deleteBtn">Eliminar</button>
 </form>

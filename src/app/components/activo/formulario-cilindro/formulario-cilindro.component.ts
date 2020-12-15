@@ -2,13 +2,17 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 // Servicios
+import { TipoGasService } from '../../../services/tipo.service';
 import { CilindroService } from '../../../services/cilindro.service';
 import { PeticionesService } from '../../../services/peticiones.service';
+import { PropietarioService } from '../../../services/propietario.service';
 // Módulos
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
 // Modelos
+import { TipoGasModel } from '../../../models/tipo.model';
 import { CilindroModel } from '../../../models/cilindro.model';
+import { PropietarioModel } from 'src/app/models/propietario.model';
 
 @Component({
   selector: 'app-formulario-cilindro',
@@ -23,18 +27,28 @@ export class FormularioCilindroComponent implements OnInit {
   esconder = true;
   maxDate = new Date();
   prefijoCodigo = 'activo-cevin-';
-  @Input() QrValue: string;
+  QrValue = 'Código QR de ejemplo';
   @Input() accionBtn: string;
   @Input() deleteBtn: boolean;
   @Input() CilindroEdit: CilindroModel;
   cilindro: CilindroModel = new CilindroModel();
   @Output() registrarCilindro: EventEmitter<CilindroModel>;
+  gases: [TipoGasModel];
+  propietarios: [PropietarioModel];
 
-  constructor(private cilindroServ: CilindroService, private estadoPeticion: PeticionesService) {
+  constructor(private cilindroServ: CilindroService, private estadoPeticion: PeticionesService,
+              private tipoGases: TipoGasService, private propietario: PropietarioService) {
     this.registrarCilindro = new EventEmitter();
   }
 
-  ngOnInit(): void { }
+  /**
+   * Al iniciar el componente pre cargamos la información necesaria
+   * Para mostrarlo en los selectables del formulario
+   */
+  ngOnInit(): void {
+    this.obtenerTipoGases();
+    this.obtenerPropietarios();
+  }
 
   /**
    * Función que transforma un string a un código QR
@@ -66,6 +80,8 @@ export class FormularioCilindroComponent implements OnInit {
   transformarData(): void {
     if (this.cilindro.mantencion) {
       this.cilindro.fecha_mantencion = moment(this.cilindro.mantencion).format('DD/MM/YYYY').toString();
+    } else {
+      this.cilindro.fecha_mantencion = null;
     }
     this.cilindro.codigo_activo = this.QrValue;
     delete this.cilindro.mantencion;
@@ -86,14 +102,30 @@ export class FormularioCilindroComponent implements OnInit {
   }
 
   /**
-   * Función que cambia el estado de un cilindro a desactivado en la base de datos
+   * Función que se encarga de limpiar la fecha de mantención
    */
-  eliminar(): void {
-    this.estadoPeticion.loading();
-    this.cilindro.activo = false;
-    this.cilindroServ.cambiarEstado(this.cilindro).subscribe((res: any) => {
-      Swal.close();
-      this.estadoPeticion.success(res.message, ['activo', 'editar'], 700);
+  limpiarFecha(): void {
+    this.cilindro.fecha_mantencion = null;
+    this.cilindro.mantencion = null;
+  }
+
+  /**
+   * Cargamos la información de los tipos de gases
+   */
+  obtenerTipoGases(): void {
+    this.tipoGases.obtenerTodos().subscribe((res: any) => {
+      this.gases = res.response;
+    }, (err: any) => {
+      this.estadoPeticion.error(err);
+    });
+  }
+
+  /**
+   * Cargamos la información de los posibles propietarios
+   */
+  obtenerPropietarios(): void {
+    this.propietario.obtenerTodos().subscribe((res: any) => {
+      this.propietarios = res.response;
     }, (err: any) => {
       this.estadoPeticion.error(err);
     });

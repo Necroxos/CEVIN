@@ -3,7 +3,6 @@
 .example-container {
     position: relative;
     min-height: 200px;
-    min-width: 260px;
 }
 
 .table-container {

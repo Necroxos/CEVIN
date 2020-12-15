@@ -17,19 +17,22 @@
                 <a class="nav-link" [routerLink]="['activo']" *ngIf="verificarValidez()">Activos</a>
             </li>
             <li class="nav-item" routerLinkActive="active">
-                <a class="nav-link" [routerLink]="['about']">Quiénes Somos</a>
+                <a class="nav-link" [routerLink]="['venta']" *ngIf="verificarValidez()">Ventas</a>
             </li>
-            <li class="nav-item dropdown" *ngIf="verificarValidez()">
+            <li class="nav-item dropdown" routerLinkActive="active" *ngIf="verificarValidez()">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Administración
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" [routerLink]="['/']">Usuarios</a>
-                    <a class="dropdown-item" [routerLink]="['/']">Activos</a>
+                    <a class="dropdown-item" [routerLink]="['usuario']">Usuarios</a>
+                    <a class="dropdown-item" [routerLink]="['cliente']">Clientes</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" [routerLink]="['rol']">Roles</a>
                     <a class="dropdown-item" [routerLink]="['tipo']">Tipo Gas</a>
                 </div>
+            </li>
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [routerLink]="['about']">Quiénes Somos</a>
             </li>
         </ul>
         <!-- Barra para búsquedas -->

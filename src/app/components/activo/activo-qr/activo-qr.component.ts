@@ -128,12 +128,12 @@ export class ActivoQrComponent implements OnInit {
   /**
    * Función que cambia el estado de un cilindro a desactivado en la base de datos
    */
-  eliminar(): void {
+  cambiarEstado(): void {
     this.estadoPeticion.loading();
-    this.cilindro.activo = false;
+    this.cilindro.activo = !this.cilindro.activo;
     this.cilindroServ.cambiarEstado(this.cilindro).subscribe((res: any) => {
       Swal.close();
-      this.estadoPeticion.success(res.message, ['activo', 'escaner'], 700);
+      this.estadoPeticion.success(res.message, [], 700);
     }, (err: any) => {
       this.estadoPeticion.error(err);
       this.recargar();
