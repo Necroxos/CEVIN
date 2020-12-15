@@ -21,7 +21,7 @@ import { CilindroModel } from 'src/app/models/cilindro.model';
 })
 export class ActivoDetalleComponent implements OnInit {
 
-  displayedColumns: string[] = ['cilindro_id', 'codigo_activo', 'fecha_mantencion', 'tipo_gas', 'propietario', 'opciones'];
+  displayedColumns: string[] = ['cilindro_id', 'codigo_activo', 'fecha_mantencion', 'tipo_gas', 'propietario', 'activo', 'opciones'];
 
   dataSource: MatTableDataSource<CilindroModel>;
   isAdmin = false;

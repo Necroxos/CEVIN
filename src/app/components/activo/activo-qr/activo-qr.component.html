@@ -32,13 +32,10 @@
             <p class="card-text"><b>Tipo de Gas:</b> {{ cilindro.tipo_gas }}</p>
             <p class="card-text"><b>Última mantención:</b> {{ cilindro.fecha_mantencion }}</p>
             <p class="card-text"><b>Propietario:</b> {{ cilindro.propietario }}</p>
-            <p class="card-text"><b>Estado:</b>&nbsp;
-                <b [ngStyle]="{
-                    color: cilindro.activo
-                    ? 'hsl(141, 53%, 53%)'
-                    : 'hsl(348, 100%, 61%)'
-                }"> {{ cilindro.activo | boolean }}
-                </b>
+            <p class="card-text center-icons"><b>Estado:</b>&nbsp;
+                <mat-icon [ngClass]="{ 'activo': cilindro.activo, 'inactivo': !cilindro.activo, 'center-icons': true }">
+                    {{ cilindro.activo | boolean }}
+                </mat-icon>
             </p>
         </div>
         <!-- Botones para redireccionar -->

@@ -1,13 +1,33 @@
 /* Estos estilos se aplicarán a TODO el sistema */
 
+
+/* Materials */
+
 .center-icons {
-    text-align: center !important;
     vertical-align: middle !important;
 }
 
-.min-width {
-    min-width: 500px;
+.mat-icon {
+    font-size: 20px;
 }
+
+.min-width {
+    min-width: 320px;
+}
+
+
+/* Boolean Pipe */
+
+.inactivo {
+    color: rgb(243, 19, 19);
+}
+
+.activo {
+    color: rgb(35, 197, 54);
+}
+
+
+/* Generales */
 
 .div-full {
     width: 100%;
