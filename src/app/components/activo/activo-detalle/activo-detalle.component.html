@@ -41,7 +41,7 @@
 
             <!-- Columna de estado -->
             <ng-container matColumnDef="activo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Activo </th>
                 <td mat-cell *matCellDef="let row" [ngClass]="{ 'activo': row.activo, 'inactivo': !row.activo }">
                     <mat-icon>{{row.activo | boolean}}</mat-icon>
                 </td>

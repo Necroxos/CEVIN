@@ -25,10 +25,10 @@ export class ActivoDetalleComponent implements OnInit {
 
   dataSource: MatTableDataSource<CilindroModel>;
   isAdmin = false;
+  tableSmall = false;
+  panelOpenState = false;
   isLoadingResults = true;
   isRateLimitReached = false;
-  panelOpenState = false;
-  tableSmall = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

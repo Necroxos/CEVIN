@@ -1,4 +1,4 @@
-<mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4" (selectedTabChange)="cambioVineta($event)">
+<mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4" (selectedTabChange)="cambioVineta($event)" [(selectedIndex)]="currTab">
     <mat-tab label="Detalles"></mat-tab>
     <mat-tab label="Agregar nuevo"></mat-tab>
 </mat-tab-group>
