@@ -1,1 +1,62 @@
-<p>formulario-usuario works!</p>
+<form class="validate-form m-1" (ngSubmit)="registrar( f )" #f="ngForm">
+    <!-- Input rut -->
+    <div class="form-group">
+        <label><b>Rut:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="usuario.rut" name="rut" placeholder="Rut del usuario" required>
+        <span *ngIf="f.submitted && f.controls['rut'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input nombres -->
+    <div class="form-group">
+        <label><b>Nombres:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="usuario.nombres" name="nombres" placeholder="Nombres del usuario" required>
+        <span *ngIf="f.submitted && f.controls['nombres'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input apellidos -->
+    <div class="form-group">
+        <label><b>Apellidos:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="usuario.apellidos" name="apellidos" placeholder="Apellidos del usuario" required>
+        <span *ngIf="f.submitted && f.controls['apellidos'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input rol -->
+    <div class="form-group" *ngIf="esAdmin()">
+        <label for="rol_id"><b>Seleccione los permisos para el usuario</b></label>
+        <select class="form-control" [(ngModel)]="usuario.rol_id" name="rol_id" placeholder="Rol del usuario" required>
+          <option value="undefined" disabled>Seleccione rol</option>
+          <option *ngFor="let rol of roles" value="{{rol.id}}"> {{ rol.descripcion }} </option>
+        </select>
+        <span *ngIf="f.submitted && f.controls['rol_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input correo -->
+    <div class="form-group">
+        <label><b>Correo:</b></label>
+        <input class="form-control email" type="text" [(ngModel)]="usuario.email" name="email" placeholder="Correo del usuario" required>
+        <span *ngIf="f.submitted && f.controls['email'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input contraseñas -->
+    <div class="form-group row">
+        <div class="col-md-5">
+            <label><b>Contraseña:</b></label>
+            <input class="form-control" [type]="hide ? 'password' : 'text'" [(ngModel)]="usuario.password" name="password" placeholder="Contraseña" minlength="6" required>
+            <small id="passwordHelpInline" class="text-muted">
+                Mínimo de 6 caracteres.
+            </small><br>
+            <span *ngIf="f.submitted && f.controls['password'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+        </div>
+        <div class="col-md-5">
+            <label><b>Confirmar:</b></label>
+            <input class="form-control" [type]="hide ? 'password' : 'text'" [(ngModel)]="usuario.confirm_password" name="confirm_password" placeholder="Contraseña" minlength="6" required>
+            <small id="passwordHelpInline" class="text-muted">
+                Confirme la contraseña.
+            </small><br>
+            <span *ngIf="f.submitted && f.controls['confirm_password'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+            <span *ngIf="errorPassword" class="text-danger animated fadeIn">Las contraseñas no coinciden.</span>
+        </div>
+        <div class="col-md-2 mt-4">
+            <button mat-icon-button matSuffix (click)="hide = !hide" appearance="fill">
+                <mat-icon class="center-icons">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </div>
+    </div>
+    <!-- Botones -->
+    <button type="submit" class="btn btn-outline-primary btn-block"> {{ accionBtn }} </button>
+</form>

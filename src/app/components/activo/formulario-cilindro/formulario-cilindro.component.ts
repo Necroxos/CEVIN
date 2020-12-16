@@ -3,16 +3,13 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 // Servicios
 import { TipoGasService } from '../../../services/tipo.service';
-import { CilindroService } from '../../../services/cilindro.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 import { PropietarioService } from '../../../services/propietario.service';
 // Módulos
-import Swal from 'sweetalert2';
 import * as moment from 'moment';
 // Modelos
-import { TipoGasModel } from '../../../models/tipo.model';
+import { EstandarModel } from '../../../models/estandar.model';
 import { CilindroModel } from '../../../models/cilindro.model';
-import { PropietarioModel } from 'src/app/models/propietario.model';
 
 @Component({
   selector: 'app-formulario-cilindro',
@@ -22,22 +19,23 @@ import { PropietarioModel } from 'src/app/models/propietario.model';
 })
 export class FormularioCilindroComponent implements OnInit {
 
-  // Variables para guardar información de forma local
+  // Variables del componenete
   Width = 200;
-  esconder = true;
-  maxDate = new Date();
   prefijoCodigo = 'activo-cevin-';
   QrValue = 'Código QR de ejemplo';
+  esconder = true;
+  maxDate = new Date();
+  gases: [EstandarModel];
+  propietarios: [EstandarModel];
+  cilindro: CilindroModel = new CilindroModel();
+  // Variables recibidas de componentes hijos
   @Input() accionBtn: string;
   @Input() deleteBtn: boolean;
   @Input() CilindroEdit: CilindroModel;
-  cilindro: CilindroModel = new CilindroModel();
+   // Variables enviadas a componentes hijos
   @Output() registrarCilindro: EventEmitter<CilindroModel>;
-  gases: [TipoGasModel];
-  propietarios: [PropietarioModel];
 
-  constructor(private cilindroServ: CilindroService, private estadoPeticion: PeticionesService,
-              private tipoGases: TipoGasService, private propietario: PropietarioService) {
+  constructor(private estadoPeticion: PeticionesService, private gasServ: TipoGasService, private propietarioServ: PropietarioService) {
     this.registrarCilindro = new EventEmitter();
   }
 
@@ -113,7 +111,7 @@ export class FormularioCilindroComponent implements OnInit {
    * Cargamos la información de los tipos de gases
    */
   obtenerTipoGases(): void {
-    this.tipoGases.obtenerTodos().subscribe((res: any) => {
+    this.gasServ.obtenerTodos().subscribe((res: any) => {
       this.gases = res.response;
     }, (err: any) => {
       this.estadoPeticion.error(err);
@@ -124,7 +122,7 @@ export class FormularioCilindroComponent implements OnInit {
    * Cargamos la información de los posibles propietarios
    */
   obtenerPropietarios(): void {
-    this.propietario.obtenerTodos().subscribe((res: any) => {
+    this.propietarioServ.obtenerTodos().subscribe((res: any) => {
       this.propietarios = res.response;
     }, (err: any) => {
       this.estadoPeticion.error(err);

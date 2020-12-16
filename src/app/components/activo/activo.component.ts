@@ -25,9 +25,11 @@ export class ActivoComponent implements OnInit {
    * Al iniciar el componente nos encargamos de seleccionar correctamente el Tab
    */
   ngOnInit(): void {
-    if (this.router.url.indexOf('/detalle') > -1) { this.currTab = 0; }
-    else if (this.router.url.indexOf('/nuevo') > -1) { this.currTab = 1; }
-    else if (this.router.url.indexOf('/escaner') > -1) { this.currTab = 2; }
+    this.listadoRutas.find((item) => {
+      if (this.router.url.indexOf(item.ruta[1]) > -1) {
+        this.currTab = item.id;
+      }
+    });
   }
 
   /**

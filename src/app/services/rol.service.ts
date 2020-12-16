@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class TipoGasService {
+export class RolService {
 
   // URL donde corre la API
   private url = 'http://localhost:3000';
@@ -16,11 +16,11 @@ export class TipoGasService {
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   /**
-   * Se realiza una petición a la API para obtener todos los [tipoGas] de la base de datos
+   * Se realiza una petición a la API para obtener todos los [roles] de la base de datos
    */
   obtenerTodos(): any {
     const headers = new HttpHeaders({ Authorization: this.auth.leerToken() });
-    return this.http.get(`${this.url}/gases`, { headers });
+    return this.http.get(`${this.url}/roles`, { headers });
   }
 
 }

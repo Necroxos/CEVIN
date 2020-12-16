@@ -2,8 +2,6 @@
 import { Injectable } from '@angular/core';
 // Peticiones
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-// Modelos
-import { PropietarioModel } from '../models/propietario.model';
 // Servicios
 import { AuthService } from './auth.service';
 
@@ -18,8 +16,7 @@ export class PropietarioService {
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   /**
-   * Se realiza una petición a la API para obtener un [tipoGas] por medio de su [codigo_activo]
-   * @param tipoGas Recibe un modelo de tipoGas
+   * Se realiza una petición a la API para obtener todos los [propietarios] de la base de datos
    */
   obtenerTodos(): any {
     const headers = new HttpHeaders({ Authorization: this.auth.leerToken() });

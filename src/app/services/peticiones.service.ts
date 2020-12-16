@@ -32,7 +32,7 @@ export class PeticionesService {
    */
   error(err: any): void {
     let titulo: string;
-    switch (err.satatus) {
+    switch (err.status) {
       case 0: titulo = 'No hay respuesta del servidor';
               break;
       case 404: titulo = 'No existe la ruta';
