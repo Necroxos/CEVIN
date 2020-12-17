@@ -1,7 +1,7 @@
 // Angular
 import { Injectable } from '@angular/core';
 // Peticiones
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 // Modelos
 import { CilindroModel } from '../models/cilindro.model';
 // Servicios
@@ -18,9 +18,11 @@ export interface GithubApi {
 export class CilindroService {
 
   // URL donde corre la API
-  private url = 'http://localhost:3000';
+  private url: string;
 
-  constructor(private http: HttpClient, private auth: AuthService) { }
+  constructor(private http: HttpClient, private auth: AuthService) {
+    this.url = auth.url;
+  }
 
   /**
    * Manda la data a la API para registrar el cilindro en la base de datos
@@ -28,7 +30,7 @@ export class CilindroService {
    *                  (metros_cubicos, tipo_id, mantencion, fecha_mantencion, codigo_activo, desc_mantenimiento)
    */
   registrar(cilindro: CilindroModel): any {
-    const headers = new HttpHeaders({ Authorization: this.auth.leerToken() });
+    const headers = this.auth.headers();
     return this.http.post(`${this.url}/cilindro`, cilindro, { headers });
   }
 
@@ -37,7 +39,7 @@ export class CilindroService {
    * @param cilindro Recibe un modelo de cilindro
    */
   obtenerUno(cilindro: CilindroModel): any {
-    const headers = new HttpHeaders({ Authorization: this.auth.leerToken() });
+    const headers = this.auth.headers();
     return this.http.get(`${this.url}/cilindro/${cilindro.codigo_activo}`, { headers });
   }
 
@@ -46,7 +48,7 @@ export class CilindroService {
    * @param cilindro Recibe un modelo de cilindro
    */
   obtenerTodos(): any {
-    const headers = new HttpHeaders({ Authorization: this.auth.leerToken() });
+    const headers = this.auth.headers();
     return this.http.get<GithubApi>(`${this.url}/cilindros`, { headers });
   }
 
@@ -55,7 +57,7 @@ export class CilindroService {
    * @param cilindro Recibe un modelo de cilindro
    */
   actualizar(cilindro: CilindroModel): any {
-    const headers = new HttpHeaders({ Authorization: this.auth.leerToken() });
+    const headers = this.auth.headers();
     return this.http.put(`${this.url}/cilindro`, cilindro, { headers });
   }
 
@@ -64,7 +66,7 @@ export class CilindroService {
    * @param cilindro Recibe un modelo de cilindro
    */
   cambiarEstado(cilindro: CilindroModel): any {
-    const headers = new HttpHeaders({ Authorization: this.auth.leerToken() });
+    const headers = this.auth.headers();
     return this.http.put(`${this.url}/cambio-estado/cilindro`, cilindro, { headers });
   }
 

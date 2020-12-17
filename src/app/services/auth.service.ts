@@ -16,7 +16,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
 
   // URL donde corre la API
-  private url = 'http://localhost:3000';
+  readonly url = 'http://192.168.0.9:3000';
 
   // Guardamos el token del usuario
   userToken: string;
@@ -32,6 +32,11 @@ export class AuthService {
     localStorage.removeItem('token');
     this.actualializar();
     return;
+  }
+
+  // Cargamos el header para las peticiones
+  headers(): HttpHeaders {
+    return new HttpHeaders({ Authorization: this.leerToken() });
   }
 
   /**

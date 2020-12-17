@@ -11,15 +11,17 @@ import { AuthService } from './auth.service';
 export class PropietarioService {
 
   // URL donde corre la API
-  private url = 'http://localhost:3000';
+  private url: string;
 
-  constructor(private http: HttpClient, private auth: AuthService) { }
+  constructor(private http: HttpClient, private auth: AuthService) {
+    this.url = auth.url;
+  }
 
   /**
    * Se realiza una petición a la API para obtener todos los [propietarios] de la base de datos
    */
   obtenerTodos(): any {
-    const headers = new HttpHeaders({ Authorization: this.auth.leerToken() });
+    const headers = this.auth.headers();
     return this.http.get(`${this.url}/propietarios`, { headers });
   }
 
