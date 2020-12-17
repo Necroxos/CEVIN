@@ -6,7 +6,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import jwt_decode from 'jwt-decode';
 // Modelos para la información
 import { LoginModel } from '../models/login.model';
-import { UsuarioModel } from '../models/usuario.model';
 // Operadores para mapear la infrormación de las respuestas
 import { map } from 'rxjs/operators';
 

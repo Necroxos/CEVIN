@@ -31,25 +31,64 @@ export class PeticionesService {
    * @param err Recibe el error de las peticiones
    */
   error(err: any): void {
-    let titulo: string;
-    switch (err.status) {
-      case 0: titulo = 'No hay respuesta del servidor';
-              break;
-      case 404: titulo = 'No existe la ruta';
-                break;
-      case 500: titulo = 'Error interno del servidor';
-                break;
-      default: titulo = err.error.response;
-    }
+    const titulo = this.titulo(err);
+    const mensaje = this.mensaje(err);
 
-    console.log(err.error.err);
+    console.log(err);
 
     Swal.close();
     Swal.fire({
       icon: 'error',
       title: titulo,
-      text: err.error.err.message
+      text: mensaje
     });
+  }
+
+  // Especificando el título
+  titulo(err: any): string {
+    switch (err.status) {
+      case 0: return 'No hay respuesta del servidor';
+      case 404: return 'No existe la ruta';
+      case 500: return 'Error interno del servidor';
+      default: return err.error.response;
+    }
+  }
+
+  // Especificando el mensaje
+  mensaje(err: any): string {
+    const error = err.error.err;
+    switch (error.code) {
+      case 201: return 'Falta un parámetro para el procedimiento almacenado';
+      case 241: return 'Error al convertir un dato en el procedimiento almacenado';
+      case 515: return `Se entregó un valor nulo "${this.valorNulo(error)}" al procedimiento almacendo`;
+      case 547: return `La FK entregada: "${this.errorFK(error)}" es errónea`;
+      case 2627: return `El valor "${this.valorDuplicado(error)}" ya existe en la base de datos`;
+      default: return error.message;
+    }
+  }
+
+  // Obtenemos el valor duplicado
+  valorDuplicado(err: any): string {
+    const arreglo = err['message'].split('(');
+    const valor = arreglo[1].replace(').', '');
+    return valor;
+  }
+
+  // Obtenemos el valor nulo
+  valorNulo(err: any): string {
+    const arreglo = err['message'].split("'");
+    const valor = arreglo[1];
+    return valor;
+  }
+
+  /**
+   * Obtenemos la FK errónea
+   * Observación: el nombre viene del script de creación de la base de datos
+   */
+  errorFK(err: any): string {
+    const arreglo = err['message'].split('"');
+    const valor = arreglo[1];
+    return valor;
   }
 
   /**

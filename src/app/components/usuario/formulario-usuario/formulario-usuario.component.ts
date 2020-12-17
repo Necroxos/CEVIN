@@ -36,13 +36,6 @@ export class FormularioUsuarioComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerRoles();
-    this.usuario.rut = '18.372.498-3';
-    this.usuario.nombres = 'Rodrigo';
-    this.usuario.apellidos = 'Dorat';
-    this.usuario.email = 'rdoratm@outlook.com';
-    this.usuario.password = '123456';
-    this.usuario.confirm_password = '123456';
-    this.usuario.rol_id = 2;
   }
 
   /**
