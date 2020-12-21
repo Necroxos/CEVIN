@@ -58,8 +58,9 @@ export class ActivoDetalleComponent implements OnInit {
       this.isAdmin = this.esAdmin();
     }, (err: any) => {
       console.log(err);
-      this.isLoadingResults = false;
       this.isRateLimitReached = true;
+      this.isLoadingResults = false;
+      this.estadoPeticion.error(err);
     });
   }
 

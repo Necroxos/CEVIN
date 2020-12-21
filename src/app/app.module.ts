@@ -36,6 +36,7 @@ import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle/us
 import { UsuarioNuevoComponent } from './components/usuario/usuario-nuevo/usuario-nuevo.component';
 import { UsuarioEditarComponent } from './components/usuario/usuario-editar/usuario-editar.component';
 import { FormularioUsuarioComponent } from './components/usuario/formulario-usuario/formulario-usuario.component';
+import { EscanerQrComponent } from './components/escaner-qr/escaner-qr.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { FormularioUsuarioComponent } from './components/usuario/formulario-usua
     UsuarioDetalleComponent,
     UsuarioNuevoComponent,
     UsuarioEditarComponent,
-    FormularioUsuarioComponent
+    FormularioUsuarioComponent,
+    EscanerQrComponent
   ],
   imports: [
     BrowserModule,

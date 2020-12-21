@@ -34,7 +34,7 @@ export class ActivoNuevoComponent {
       Swal.close();
       this.estadoPeticion.success('Nuevo activo ingresado con éxito!', ['activo', 'nuevo'], 1000);
     }, (err: any) => {
-      cilindro.codigo_activo = cilindro.codigo_activo.replace('activo-cevin-', '');
+      cilindro.codigo_activo = cilindro.codigo_activo.replace(this.estadoPeticion.prefijoCodigo, '');
       this.estadoPeticion.error(err);
     });
   }

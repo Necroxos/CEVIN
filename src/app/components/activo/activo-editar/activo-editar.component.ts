@@ -20,7 +20,6 @@ export class ActivoEditarComponent {
   mostrar = false;
   accionBtn = 'Editar';
   cilindro = new CilindroModel();
-  prefijoCodigo = 'activo-cevin-';
   cilindroLocal = this.cilindroServ.leerCilindro();
 
   constructor(private estadoPeticion: PeticionesService, private cilindroServ: CilindroService) { }
@@ -51,7 +50,7 @@ export class ActivoEditarComponent {
       this.estadoPeticion.success(res.message, [], 650);
       this.cilindro = { ...res.response };
       this.QrValue = this.cilindro.codigo_activo;
-      this.cilindro.codigo_activo = this.cilindro.codigo_activo.replace(this.prefijoCodigo, '');
+      this.cilindro.codigo_activo = this.cilindro.codigo_activo.replace(this.estadoPeticion.prefijoCodigo, '');
       this.mostrar = true;
     }, (err: any) => {
       this.estadoPeticion.error(err);
@@ -71,7 +70,7 @@ export class ActivoEditarComponent {
       Swal.close();
       this.estadoPeticion.success('Activo actualizado con éxito!', ['activo', 'editar'], 1000);
     }, (err: any) => {
-      cilindro.codigo_activo = this.QrValue.replace('activo-cevin-', '');
+      cilindro.codigo_activo = this.QrValue.replace(this.estadoPeticion.prefijoCodigo, '');
       this.estadoPeticion.error(err);
       this.estadoPeticion.recargar(['activo', 'editar']);
     });

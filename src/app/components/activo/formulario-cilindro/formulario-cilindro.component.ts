@@ -21,7 +21,6 @@ export class FormularioCilindroComponent implements OnInit {
 
   // Variables del componenete
   Width = 200;
-  prefijoCodigo = 'activo-cevin-';
   QrValue = 'Código QR de ejemplo';
   esconder = true;
   maxDate = new Date();
@@ -32,7 +31,7 @@ export class FormularioCilindroComponent implements OnInit {
   @Input() accionBtn: string;
   @Input() deleteBtn: boolean;
   @Input() CilindroEdit: CilindroModel;
-   // Variables enviadas a componentes hijos
+  // Variables enviadas a componentes hijos
   @Output() registrarCilindro: EventEmitter<CilindroModel>;
 
   constructor(private estadoPeticion: PeticionesService, private gasServ: TipoGasService, private propietarioServ: PropietarioService) {
@@ -53,7 +52,7 @@ export class FormularioCilindroComponent implements OnInit {
    * @param texto Recibe el string del input correspondiente al número de serie del cilindro
    */
   changeQRVal(texto: string): void {
-    if (texto !== '') { this.QrValue = this.prefijoCodigo + texto; }
+    if (texto !== '') { this.QrValue = this.estadoPeticion.prefijoCodigo + texto; }
     else { this.QrValue = 'Código QR de ejemplo'; }
   }
 

@@ -10,6 +10,8 @@ import Swal from 'sweetalert2';
 })
 export class PeticionesService {
 
+  public prefijoCodigo = 'activo-cevin-';
+
   constructor(private router: Router) { }
 
   /**
@@ -31,8 +33,11 @@ export class PeticionesService {
    * @param err Recibe el error de las peticiones
    */
   error(err: any): void {
-    const titulo = this.titulo(err);
-    const mensaje = this.mensaje(err);
+    const titulo = this.tituloError(err);
+    let mensaje = 'No se pudo conectar al servidor';
+    if (err.status !== 0) {
+      mensaje = this.mensajeError(err);
+    }
 
     console.log(err);
 
@@ -45,7 +50,7 @@ export class PeticionesService {
   }
 
   // Especificando el título
-  titulo(err: any): string {
+  private tituloError(err: any): string {
     switch (err.status) {
       case 0: return 'No hay respuesta del servidor';
       case 404: return 'No existe la ruta';
@@ -55,27 +60,28 @@ export class PeticionesService {
   }
 
   // Especificando el mensaje
-  mensaje(err: any): string {
+  private mensajeError(err: any): string {
     const error = err.error.err;
     switch (error.code) {
       case 201: return 'Falta un parámetro para el procedimiento almacenado';
       case 241: return 'Error al convertir un dato en el procedimiento almacenado';
       case 515: return `Se entregó un valor nulo "${this.valorNulo(error)}" al procedimiento almacendo`;
-      case 547: return `La FK entregada: "${this.errorFK(error)}" es errónea`;
+      case 547: return `La FK entregada: "${this.valorFK(error)}" es errónea`;
       case 2627: return `El valor "${this.valorDuplicado(error)}" ya existe en la base de datos`;
       default: return error.message;
     }
   }
 
   // Obtenemos el valor duplicado
-  valorDuplicado(err: any): string {
+  private valorDuplicado(err: any): string {
     const arreglo = err['message'].split('(');
-    const valor = arreglo[1].replace(').', '');
+    let valor = arreglo[1].replace(').', '');
+    valor = valor.replace(this.prefijoCodigo, '');
     return valor;
   }
 
   // Obtenemos el valor nulo
-  valorNulo(err: any): string {
+  private valorNulo(err: any): string {
     const arreglo = err['message'].split("'");
     const valor = arreglo[1];
     return valor;
@@ -85,7 +91,7 @@ export class PeticionesService {
    * Obtenemos la FK errónea
    * Observación: el nombre viene del script de creación de la base de datos
    */
-  errorFK(err: any): string {
+  private valorFK(err: any): string {
     const arreglo = err['message'].split('"');
     const valor = arreglo[1];
     return valor;
@@ -106,11 +112,7 @@ export class PeticionesService {
     });
     setTimeout(() => {
       Swal.close();
-      if (ruta.length > 0){
-        this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
-          this.router.navigate(ruta);
-        });
-      }
+      if (ruta.length > 0){ this.recargar(ruta); }
     }, ms);
   }
 

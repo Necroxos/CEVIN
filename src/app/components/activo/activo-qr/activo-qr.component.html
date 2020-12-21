@@ -1,22 +1,7 @@
 <div class="animated fadeIn fast" *ngIf="!mostrar">
-    <!-- Selección de dispositivo de video -->
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01">Escoga una cámara</label>
-        </div>
-        <!-- Opciones de dispositivos -->
-        <select class="custom-select" (change)="cambiarCam($event.target.value)">
-          <option>Seleccione un dispositivo de video...</option>
-          <option *ngFor="let device of videoDevices">{{ device.label }}</option>
-        </select>
-    </div>
-
-    <!-- Se muestra lo que capta la cámara -->
     <div class="dev-container animated fadeIn" id="target">
-        <qr-scanner [ngClass]="{ 'hideElem': esconder }" [debug]="false" [canvasWidth]="ancho" [canvasHeight]="alto" [stopAfterScan]="true" [updateTime]="500">
-        </qr-scanner>
+        <app-escaner-qr (mostrarCodigo)="mostrarCodigo($event)"></app-escaner-qr>
     </div>
-
 </div>
 
 <div class="mt-3 animated fadeIn fast" *ngIf="mostrar">
