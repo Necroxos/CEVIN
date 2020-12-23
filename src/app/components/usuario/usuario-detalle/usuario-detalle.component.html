@@ -1,1 +1,118 @@
-<p>usuario-detalle works!</p>
+<div class="example-container mat-elevation-z8 animated fadeIn fast">
+    <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        <div class="rate-limit-reached" *ngIf="isRateLimitReached">
+            Error al obtener la información...
+        </div>
+    </div>
+
+
+    <mat-form-field class="ml-2">
+        <mat-label>Búsqueda</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="filtro" #input>
+    </mat-form-field>
+
+    <div class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <!-- Columna del ID -->
+            <ng-container matColumnDef="usuario_id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <td mat-cell *matCellDef="let row"> {{ row.usuario_id }} </td>
+            </ng-container>
+
+            <!-- Columna de los nombres -->
+            <ng-container matColumnDef="nombres">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombres </th>
+                <td mat-cell *matCellDef="let row"> {{ row.nombres }} </td>
+            </ng-container>
+
+            <!-- Columna de los apellidos -->
+            <ng-container matColumnDef="apellidos">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </th>
+                <td mat-cell *matCellDef="let row"> {{row.apellidos}} </td>
+            </ng-container>
+
+            <!-- Columna del rut -->
+            <ng-container matColumnDef="rut">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Rut </th>
+                <td mat-cell *matCellDef="let row"> {{row.rut}} </td>
+            </ng-container>
+
+            <!-- Columna de estado -->
+            <ng-container matColumnDef="activo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Activo </th>
+                <td mat-cell *matCellDef="let row" [ngClass]="{ 'activo': row.activo, 'inactivo': !row.activo }">
+                    <mat-icon>{{row.activo | boolean}}</mat-icon>
+                </td>
+            </ng-container>
+
+            <!-- Columna del email -->
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+                <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+            </ng-container>
+
+            <!-- Columna del rol -->
+            <ng-container matColumnDef="rol">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Rol </th>
+                <td mat-cell *matCellDef="let row"> {{row.rol}} </td>
+            </ng-container>
+
+            <!-- Columna de opciones -->
+            <ng-container matColumnDef="opciones">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Opciones </th>
+                <td mat-cell *matCellDef="let row" #reescalado>
+                    <div *ngIf="!tableSmall">
+                        <button mat-icon-button matTooltip="Imprimir etiqueta" (click)="imprimir(row)">
+                            <mat-icon>print</mat-icon>
+                          </button>
+                        <button mat-icon-button color="accent" matTooltip="Editar usuario" (click)="editar(row)">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                        <button mat-icon-button *ngIf="isAdmin && row.activo" color="warn" matTooltip="Eliminar usuario" (click)="cambiarEstado(row)">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        <button mat-icon-button *ngIf="isAdmin && !row.activo" color="primary" matTooltip="Activar usuario" (click)="cambiarEstado(row)">
+                            <mat-icon>add</mat-icon>
+                          </button>
+                    </div>
+                    <div *ngIf="tableSmall">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                          </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="imprimir(row)">
+                              <mat-icon>print</mat-icon>
+                              <span>Imprimir etiqueta</span>
+                            </button>
+                            <button mat-menu-item (click)="editar(row)">
+                              <mat-icon>edit</mat-icon>
+                              <span>Editar usuario</span>
+                            </button>
+                            <button mat-menu-item *ngIf="isAdmin && row.activo" (click)="cambiarEstado(row)">
+                              <mat-icon>delete</mat-icon>
+                              <span>Eliminar usuario</span>
+                            </button>
+                            <button mat-menu-item *ngIf="isAdmin && !row.activo" (click)="cambiarEstado(row)">
+                                <mat-icon>add</mat-icon>
+                                <span>Activar usuario</span>
+                              </button>
+                        </mat-menu>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- Se muestra si no se encuantra información con el valor filtrado. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell text-danger" colspan="4">Sin resultados para "{{input.value}}"</td>
+            </tr>
+        </table>
+
+    </div>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+
+</div>

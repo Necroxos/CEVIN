@@ -1,5 +1,6 @@
 export class UsuarioModel {
     // tslint:disable: variable-name
+    usuario_id: number;
     nombres: string;
     apellidos: string;
     rut: string;
@@ -8,5 +9,7 @@ export class UsuarioModel {
     email: string;
     password: string;
     confirm_password: string;
+    activo: boolean;
     rol_id: number;
+    rol: string;
 }

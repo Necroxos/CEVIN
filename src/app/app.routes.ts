@@ -1,11 +1,15 @@
 // Angular
 import { RouterModule, Routes } from '@angular/router';
 // Componentes a cargar (Vistas)
+import { RolComponent } from './components/rol/rol.component';
 import { HomeComponent } from './components/home/home.component';
+import { TipoComponent } from './components/tipo/tipo.component';
 import { LoginComponent } from './components/login/login.component';
 import { AboutComponent } from './components/about/about.component';
+import { VentaComponent } from './components/venta/venta.component';
 import { ActivoComponent } from './components/activo/activo.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
+import { ClienteComponent } from './components/cliente/cliente.component';
 // Rutas hijas
 import { ACTIVO_ROUTES } from './components/activo/activo.routes';
 import { USUARIO_ROUTES } from './components/usuario/usuario.routes';
@@ -22,12 +26,16 @@ const APP_ROUTES: Routes = [
     canActivate: [AuthGuard],
     children: ACTIVO_ROUTES
   },
+  { path: 'cliente', component: ClienteComponent, canActivate: [AuthGuard] },
+  { path: 'venta', component: VentaComponent, canActivate: [AuthGuard] },
   {
     path: 'usuario',
     component: UsuarioComponent,
     canActivate: [AuthGuard],
     children: USUARIO_ROUTES
   },
+  { path: 'rol', component: RolComponent, canActivate: [AuthGuard] },
+  { path: 'tipo', component: TipoComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: '**', pathMatch: 'full', redirectTo: 'home' },
   { path: '', pathMatch: 'full', redirectTo: 'login' }

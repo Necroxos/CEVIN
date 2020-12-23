@@ -41,4 +41,8 @@ export class NavbarComponent implements OnInit {
     return this.auth.esAuth;
   }
 
+  verficarAdmin(): boolean {
+    return this.auth.esAdmin;
+  }
+
 }

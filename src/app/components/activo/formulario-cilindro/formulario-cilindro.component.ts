@@ -26,10 +26,9 @@ export class FormularioCilindroComponent implements OnInit {
   maxDate = new Date();
   gases: [EstandarModel];
   propietarios: [EstandarModel];
-  cilindro: CilindroModel = new CilindroModel();
+  cilindro = new CilindroModel();
   // Variables recibidas de componentes hijos
   @Input() accionBtn: string;
-  @Input() deleteBtn: boolean;
   @Input() CilindroEdit: CilindroModel;
   // Variables enviadas a componentes hijos
   @Output() registrarCilindro: EventEmitter<CilindroModel>;
@@ -75,7 +74,7 @@ export class FormularioCilindroComponent implements OnInit {
    * Y borra información innecesaria
    */
   transformarData(): void {
-    if (this.cilindro.mantencion) {
+    if (this.cilindro.mantencion && this.cilindro.mantencion.isValid()) {
       this.cilindro.fecha_mantencion = moment(this.cilindro.mantencion).format('DD/MM/YYYY').toString();
     } else {
       this.cilindro.fecha_mantencion = null;

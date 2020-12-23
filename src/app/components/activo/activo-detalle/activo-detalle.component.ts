@@ -102,10 +102,9 @@ export class ActivoDetalleComponent implements OnInit {
     evento.activo = !evento.activo;
     this.cilindroServ.cambiarEstado(evento).subscribe((res: any) => {
       Swal.close();
-      this.estadoPeticion.success(res.message, ['activo', 'detalle'], 700);
+      this.estadoPeticion.success(res.message, [], 700);
     }, (err: any) => {
       this.estadoPeticion.error(err);
-      this.router.navigate(['activo', 'editar']);
     });
   }
 
@@ -115,14 +114,6 @@ export class ActivoDetalleComponent implements OnInit {
    */
   esAdmin(): boolean {
     return this.auth.esAdmin;
-  }
-
-  nuevoCilindro(): void {
-    this.router.navigate(['activo', 'nuevo']);
-  }
-
-  escanearCilindro(): void {
-    this.router.navigate(['activo', 'escaner']);
   }
 
 }

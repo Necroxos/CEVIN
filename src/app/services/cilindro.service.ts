@@ -7,11 +7,6 @@ import { CilindroModel } from '../models/cilindro.model';
 // Servicios
 import { AuthService } from './auth.service';
 
-export interface GithubApi {
-  items: CilindroModel[];
-  total_count: number;
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -49,7 +44,7 @@ export class CilindroService {
    */
   obtenerTodos(): any {
     const headers = this.auth.headers();
-    return this.http.get<GithubApi>(`${this.url}/cilindros`, { headers });
+    return this.http.get(`${this.url}/cilindros`, { headers });
   }
 
   /**
@@ -62,7 +57,7 @@ export class CilindroService {
   }
 
   /**
-   * Manda la data a la API para actualizar el cilindro en la base de datos
+   * Manda la data a la API para actualizar el estado de un cilindro en la base de datos
    * @param cilindro Recibe un modelo de cilindro
    */
   cambiarEstado(cilindro: CilindroModel): any {

@@ -33,7 +33,7 @@
         <span *ngIf="f.submitted && f.controls['email'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
     </div>
     <!-- Input contraseñas -->
-    <div class="form-group row">
+    <div class="form-group row" *ngIf="!UsuarioEdit">
         <div class="col-md-5">
             <label><b>Contraseña:</b></label>
             <input class="form-control" [type]="hide ? 'password' : 'text'" [(ngModel)]="usuario.password" name="password" placeholder="Contraseña" minlength="6" required>

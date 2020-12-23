@@ -37,6 +37,10 @@ import { UsuarioNuevoComponent } from './components/usuario/usuario-nuevo/usuari
 import { UsuarioEditarComponent } from './components/usuario/usuario-editar/usuario-editar.component';
 import { FormularioUsuarioComponent } from './components/usuario/formulario-usuario/formulario-usuario.component';
 import { EscanerQrComponent } from './components/escaner-qr/escaner-qr.component';
+import { ClienteComponent } from './components/cliente/cliente.component';
+import { VentaComponent } from './components/venta/venta.component';
+import { RolComponent } from './components/rol/rol.component';
+import { TipoComponent } from './components/tipo/tipo.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +62,11 @@ import { EscanerQrComponent } from './components/escaner-qr/escaner-qr.component
     UsuarioNuevoComponent,
     UsuarioEditarComponent,
     FormularioUsuarioComponent,
-    EscanerQrComponent
+    EscanerQrComponent,
+    ClienteComponent,
+    VentaComponent,
+    RolComponent,
+    TipoComponent
   ],
   imports: [
     BrowserModule,

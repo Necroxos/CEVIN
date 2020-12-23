@@ -68,7 +68,7 @@ export class ActivoEditarComponent {
 
     this.cilindroServ.actualizar(cilindro).subscribe(() => {
       Swal.close();
-      this.estadoPeticion.success('Activo actualizado con éxito!', ['activo', 'editar'], 1000);
+      this.estadoPeticion.success('Activo actualizado con éxito!', ['activo', 'detalle'], 1000);
     }, (err: any) => {
       cilindro.codigo_activo = this.QrValue.replace(this.estadoPeticion.prefijoCodigo, '');
       this.estadoPeticion.error(err);

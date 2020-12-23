@@ -24,7 +24,6 @@ export class FormularioUsuarioComponent implements OnInit {
   hide = true;
   // Variables recibidas de componentes hijos
   @Input() accionBtn: string;
-  @Input() deleteBtn: boolean;
   @Input() UsuarioEdit: UsuarioModel;
   // Variables enviadas a componentes hijos
   @Output() registrarUsuario: EventEmitter<UsuarioModel>;
@@ -36,6 +35,7 @@ export class FormularioUsuarioComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerRoles();
+    if (this.UsuarioEdit) { this.usuario = this.UsuarioEdit; }
   }
 
   /**

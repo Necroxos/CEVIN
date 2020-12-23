@@ -1,1 +1,7 @@
-<p>usuario-editar works!</p>
+<div class="card animated fadeIn" *ngIf="mostrar">
+    <h1 class="card-header text-center"> Editar Usuario </h1>
+    <div class="card-body">
+        <app-formulario-usuario (registrarUsuario)="actualizar($event)" [UsuarioEdit]="usuario" [accionBtn]="accionBtn"></app-formulario-usuario>
+    </div>
+</div>
+<br>
