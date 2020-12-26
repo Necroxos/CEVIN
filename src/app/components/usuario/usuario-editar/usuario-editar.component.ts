@@ -11,12 +11,11 @@ import { UsuarioModel } from '../../../models/usuario.model';
 @Component({
   selector: 'app-usuario-editar',
   templateUrl: './usuario-editar.component.html',
-  styleUrls: ['./usuario-editar.component.css']
+  styleUrls: []
 })
 export class UsuarioEditarComponent {
 
   // Variables locales
-  QrValue: string;
   mostrar = false;
   accionBtn = 'Editar';
   usuario = new UsuarioModel();
@@ -25,13 +24,11 @@ export class UsuarioEditarComponent {
   constructor(private estadoPeticion: PeticionesService, private usuarioServ: UsuarioService) { }
 
   /**
-   * Si se redirigió desde la lectura de QR (Donde se guarda el code en localStorage) ejecutamos esta función
    * Leemos el [codigo_activo] del locaStorage y buscamos el usuario en la BD para poder editarlo
    */
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterContentInit(): void {
     if (this.usuarioLocal) {
-      this.QrValue = this.usuarioLocal;
       this.usuario.rut = this.usuarioLocal;
       this.cargarInfo();
     } else {

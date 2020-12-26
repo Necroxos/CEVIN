@@ -1,0 +1,7 @@
+<div class="card animated fadeIn" *ngIf="mostrar">
+    <h1 class="card-header text-center"> Editar Cliente </h1>
+    <div class="card-body">
+        <app-formulario-cliente (registrarCliente)="actualizar($event)" [ClienteEdit]="cliente" [accionBtn]="accionBtn"></app-formulario-cliente>
+    </div>
+</div>
+<br>

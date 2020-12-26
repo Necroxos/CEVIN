@@ -1,10 +1,10 @@
 // Angular
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Peticiones
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 // Módulos
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgQrScannerModule } from 'angular2-qrscanner';
@@ -16,6 +16,7 @@ import { AuthService } from './services/auth.service';
 import { PeticionesService } from './services/peticiones.service';
 // Pipes
 import { BooleanPipe } from './pipes/boolean.pipe';
+import { NotNullPipe } from './pipes/not-null.pipe';
 // Configuraciones
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -24,20 +25,28 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { LoginComponent } from './components/login/login.component';
-import { ActivoComponent } from './components/activo/activo.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
+import { EscanerQrComponent } from './components/escaner-qr/escaner-qr.component';
+// Activo
+import { ActivoComponent } from './components/activo/activo.component';
 import { ActivoQrComponent } from './components/activo/activo-qr/activo-qr.component';
 import { ActivoNuevoComponent } from './components/activo/activo-nuevo/activo-nuevo.component';
 import { ActivoEditarComponent } from './components/activo/activo-editar/activo-editar.component';
 import { ActivoDetalleComponent } from './components/activo/activo-detalle/activo-detalle.component';
 import { FormularioCilindroComponent } from './components/activo/formulario-cilindro/formulario-cilindro.component';
+// Usuario
 import { UsuarioComponent } from './components/usuario/usuario.component';
-import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle/usuario-detalle.component';
 import { UsuarioNuevoComponent } from './components/usuario/usuario-nuevo/usuario-nuevo.component';
 import { UsuarioEditarComponent } from './components/usuario/usuario-editar/usuario-editar.component';
+import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle/usuario-detalle.component';
 import { FormularioUsuarioComponent } from './components/usuario/formulario-usuario/formulario-usuario.component';
-import { EscanerQrComponent } from './components/escaner-qr/escaner-qr.component';
+// Cliente
 import { ClienteComponent } from './components/cliente/cliente.component';
+import { ClienteNuevoComponent } from './components/cliente/cliente-nuevo/cliente-nuevo.component';
+import { ClienteEditarComponent } from './components/cliente/cliente-editar/cliente-editar.component';
+import { ClienteDetalleComponent } from './components/cliente/cliente-detalle/cliente-detalle.component';
+import { FormularioClienteComponent } from './components/cliente/formulario-cliente/formulario-cliente.component';
+// Venta
 import { VentaComponent } from './components/venta/venta.component';
 import { RolComponent } from './components/rol/rol.component';
 import { TipoComponent } from './components/tipo/tipo.component';
@@ -49,24 +58,33 @@ import { TipoComponent } from './components/tipo/tipo.component';
     LoginComponent,
     HomeComponent,
     NavbarComponent,
+    EscanerQrComponent,
+    // Activo
     ActivoComponent,
     ActivoNuevoComponent,
     ActivoEditarComponent,
     ActivoDetalleComponent,
-    LoginComponent,
     ActivoQrComponent,
     FormularioCilindroComponent,
+    // Usuario
     UsuarioComponent,
-    BooleanPipe,
     UsuarioDetalleComponent,
     UsuarioNuevoComponent,
     UsuarioEditarComponent,
     FormularioUsuarioComponent,
-    EscanerQrComponent,
+    // Cliente
     ClienteComponent,
+    ClienteNuevoComponent,
+    ClienteEditarComponent,
+    ClienteDetalleComponent,
+    FormularioClienteComponent,
+    // Centa
     VentaComponent,
     RolComponent,
-    TipoComponent
+    TipoComponent,
+    // Pipes
+    BooleanPipe,
+    NotNullPipe
   ],
   imports: [
     BrowserModule,
@@ -79,8 +97,10 @@ import { TipoComponent } from './components/tipo/tipo.component';
     APP_ROUTING
   ],
   providers: [
+    // Services
     AuthService,
     PeticionesService,
+    // Moment config
     { provide: MAT_DATE_LOCALE, useValue: 'es' },
     { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] }
   ],

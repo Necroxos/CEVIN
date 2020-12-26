@@ -7,23 +7,23 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 // Servicios
 import { AuthService } from '../../../services/auth.service';
-import { UsuarioService } from '../../../services/usuario.service';
+import { ClienteService } from '../../../services/cliente.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
 import Swal from 'sweetalert2';
 // Modelos
-import { UsuarioModel } from '../../../models/usuario.model';
+import { ClienteModel } from '../../../models/cliente.model';
 
 @Component({
-  selector: 'app-usuario-detalle',
-  templateUrl: './usuario-detalle.component.html',
-  styleUrls: ['./usuario-detalle.component.css']
+  selector: 'app-cliente-detalle',
+  templateUrl: './cliente-detalle.component.html',
+  styleUrls: ['./cliente-detalle.component.css']
 })
-export class UsuarioDetalleComponent implements OnInit {
+export class ClienteDetalleComponent implements OnInit {
 
-  displayedColumns: string[] = ['usuario_id', 'nombres', 'apellidos', 'rut', 'email', 'rol', 'activo', 'opciones'];
+  displayedColumns: string[] = ['cliente_id', 'rut', 'contacto', 'email', 'telefono', 'empresa', 'razon_social', 'activo', 'opciones'];
 
-  dataSource: MatTableDataSource<UsuarioModel>;
+  dataSource: MatTableDataSource<ClienteModel>;
   isAdmin = false;
   tableSmall = false;
   panelOpenState = false;
@@ -36,11 +36,11 @@ export class UsuarioDetalleComponent implements OnInit {
   @HostListener('window:resize', ['$event']) onResize(event): void {
     // guard against resize before view is rendered
     const tmpWidth = window.innerWidth;
-    if (tmpWidth < 992) { this.tableSmall = true; }
+    if (tmpWidth < 1200) { this.tableSmall = true; }
     else { this.tableSmall = false; }
   }
 
-  constructor(private usuarioServ: UsuarioService, private router: Router,
+  constructor(private router: Router, private clienteServ: ClienteService,
               private auth: AuthService, private estadoPeticion: PeticionesService) { }
 
   ngOnInit(): void {
@@ -49,8 +49,9 @@ export class UsuarioDetalleComponent implements OnInit {
 
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit(): void {
-    this.usuarioServ.obtenerTodos().subscribe((res: any) => {
+    this.clienteServ.obtenerTodos().subscribe((res: any) => {
       this.dataSource = new MatTableDataSource(res.response);
+      console.log(res.response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.isLoadingResults = false;
@@ -81,18 +82,18 @@ export class UsuarioDetalleComponent implements OnInit {
    * Función que se encarga de redirigir a la vista de Editar
    * @param evento Recibe el objeto Cilindro de la fila
    */
-  editar(evento: UsuarioModel): void {
-    this.usuarioServ.guardarUsuario(evento);
-    this.router.navigate(['usuario', 'editar']);
+  editar(evento: ClienteModel): void {
+    this.clienteServ.guardarCliente(evento);
+    this.router.navigate(['cliente', 'editar']);
   }
 
   /**
    * Función que cambia el estado de un cilindro a desactivado en la base de datos
    */
-  cambiarEstado(evento: UsuarioModel): void {
+  cambiarEstado(evento: ClienteModel): void {
     this.estadoPeticion.loading();
     evento.activo = !evento.activo;
-    this.usuarioServ.cambiarEstado(evento).subscribe((res: any) => {
+    this.clienteServ.cambiarEstado(evento).subscribe((res: any) => {
       Swal.close();
       this.estadoPeticion.success(res.message, [], 700);
     }, (err: any) => {

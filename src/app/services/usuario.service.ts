@@ -38,7 +38,7 @@ export class UsuarioService {
   }
 
   /**
-   * Se realiza una petición a la API para obtener todos los activos de tipo [usuario]
+   * Se realiza una petición a la API para obtener todos los usuarios
    * @param usuario Recibe un modelo de usuario
    */
   obtenerTodos(): any {

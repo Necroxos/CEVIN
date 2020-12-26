@@ -11,7 +11,7 @@ import { UsuarioModel } from '../../../models/usuario.model';
 @Component({
   selector: 'app-usuario-nuevo',
   templateUrl: './usuario-nuevo.component.html',
-  styleUrls: ['./usuario-nuevo.component.css']
+  styleUrls: []
 })
 export class UsuarioNuevoComponent implements OnInit {
 
@@ -19,8 +19,7 @@ export class UsuarioNuevoComponent implements OnInit {
 
   constructor(private usuarioServ: UsuarioService, private estadoPeticion: PeticionesService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   /**
    * Esta función recibe el usuario enviado por el componente [formulario-usuario]

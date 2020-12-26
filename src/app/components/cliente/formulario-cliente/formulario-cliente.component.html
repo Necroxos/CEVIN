@@ -1,0 +1,51 @@
+<form class="validate-form m-1" (ngSubmit)="registrar( f )" #f="ngForm">
+    <!-- Input rut -->
+    <div class="form-group">
+        <label><b>Rut:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="cliente.rut" name="rut" placeholder="Rut del cliente" required>
+        <span *ngIf="f.submitted && f.controls['rut'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input si es empresa -->
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" name="empresa" [(ngModel)]="cliente.empresa">
+        <label class="form-check-label" for="empresa">Es empresa?</label>
+    </div>
+    <!-- Input nombres -->
+    <div class="form-group">
+        <label><b>Nombres:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="cliente.nombres" name="nombres" placeholder="Nombres del contacto" required>
+        <span *ngIf="f.submitted && f.controls['nombres'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input apellidos -->
+    <div class="form-group">
+        <label><b>Apellidos:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="cliente.apellidos" name="apellidos" placeholder="Apellidos del contacto" required>
+        <span *ngIf="f.submitted && f.controls['apellidos'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input correo -->
+    <div class="form-group">
+        <label><b>Correo:</b></label>
+        <input class="form-control email" type="text" [(ngModel)]="cliente.email" name="email" placeholder="Correo del contacto" pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$">
+        <small id="passwordHelpInline" class="text-muted">
+            Campo opcional.
+        </small><br>
+        <span *ngIf="f.submitted && f.controls['email'].errors" class="text-danger animated fadeIn">Formato de correo: 'example@email.com'</span>
+    </div>
+    <!-- Input telefono -->
+    <div class="form-group">
+        <label><b>Teléfono:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="cliente.telefono" name="telefono" placeholder="Teléfono del contacto" pattern="[0-9]*">
+        <small id="passwordHelpInline" class="text-muted">
+            Campo opcional.
+        </small><br>
+        <span *ngIf="f.submitted && f.controls['telefono'].errors" class="text-danger animated fadeIn">Sólo números</span>
+    </div>
+    <!-- Input rezon social -->
+    <div class="form-group" *ngIf="cliente.empresa">
+        <label><b>Nombre empresa:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="cliente.razon_social" name="razon_social" placeholder="Razón social de la empresa" required>
+        <span *ngIf="f.submitted && f.controls['razon_social'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Botones -->
+    <button type="submit" class="btn btn-outline-primary btn-block"> {{ accionBtn }} </button>
+</form>

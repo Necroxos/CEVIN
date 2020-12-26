@@ -13,6 +13,7 @@ import { ClienteComponent } from './components/cliente/cliente.component';
 // Rutas hijas
 import { ACTIVO_ROUTES } from './components/activo/activo.routes';
 import { USUARIO_ROUTES } from './components/usuario/usuario.routes';
+import { CLIENTE_ROUTES } from './components/cliente/cliente.routes';
 // Validaciones para las vistas
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
@@ -26,7 +27,12 @@ const APP_ROUTES: Routes = [
     canActivate: [AuthGuard],
     children: ACTIVO_ROUTES
   },
-  { path: 'cliente', component: ClienteComponent, canActivate: [AuthGuard] },
+  {
+    path: 'cliente',
+    component: ClienteComponent,
+    canActivate: [AuthGuard],
+    children: CLIENTE_ROUTES
+  },
   { path: 'venta', component: VentaComponent, canActivate: [AuthGuard] },
   {
     path: 'usuario',

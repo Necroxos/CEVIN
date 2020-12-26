@@ -8,6 +8,10 @@ export class RutService {
 
   constructor(private estadoPeticion: PeticionesService) { }
 
+  /**
+   * Función que revisa que el rut ingresado sea válido
+   * @param rutInput Se le manda el rut a verificar
+   */
   async CheckRUT(rutInput: any): Promise<boolean> {
     let crut = '';
     let rut: any;
@@ -57,6 +61,10 @@ export class RutService {
     }
   }
 
+  /**
+   * Función que limpia el string de caracteres innecesarios
+   * @param rut Recibe el string del rut
+   */
   quitarFormato(rut: string): string {
     while (rut.indexOf('.') !== -1) { rut = rut.replace('.', ''); }
     while (rut.indexOf('-') !== -1) { rut = rut.replace('-', ''); }
@@ -65,10 +73,15 @@ export class RutService {
     return rut;
   }
 
-  formatear(sRut: string, digitoVerificador: string): string {
+  /**
+   * Función que se encarga de formatear el rut con puntos y guion
+   * @param sRut Recibe el dni
+   * @param dv recibe el digito verificador
+   */
+  formatear(sRut: string, dv: string): string {
     let sRutFormateado = '';
     let sDV = '';
-    if (digitoVerificador) {
+    if (dv) {
       sDV = sRut.charAt(sRut.length - 1);
       sRut = sRut.substring(0, sRut.length - 1);
     }
@@ -77,8 +90,8 @@ export class RutService {
       sRut = sRut.substring(0, sRut.length - 3);
     }
     sRutFormateado = sRut + sRutFormateado;
-    if (sRutFormateado !== '' && digitoVerificador) { sRutFormateado += '-' + sDV; }
-    else if (digitoVerificador) { sRutFormateado += sDV; }
+    if (sRutFormateado !== '' && dv) { sRutFormateado += '-' + sDV; }
+    else if (dv) { sRutFormateado += sDV; }
     return sRutFormateado;
   }
 
