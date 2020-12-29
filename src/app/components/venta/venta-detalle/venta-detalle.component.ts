@@ -7,23 +7,23 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 // Servicios
 import { AuthService } from '../../../services/auth.service';
-import { ClienteService } from '../../../services/cliente.service';
+import { VentaService } from '../../../services/venta.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
 import Swal from 'sweetalert2';
 // Modelos
-import { ClienteModel } from '../../../models/cliente.model';
+import { VentaModel } from '../../../models/venta.model';
 
 @Component({
-  selector: 'app-cliente-detalle',
-  templateUrl: './cliente-detalle.component.html',
-  styleUrls: ['./cliente-detalle.component.css']
+  selector: 'app-venta-detalle',
+  templateUrl: './venta-detalle.component.html',
+  styleUrls: ['./venta-detalle.component.css']
 })
-export class ClienteDetalleComponent implements OnInit {
+export class VentaDetalleComponent implements OnInit {
 
-  displayedColumns: string[] = ['cliente_id', 'rut', 'contacto', 'email', 'telefono', 'empresa', 'razon_social', 'activo', 'opciones'];
+  displayedColumns: string[] = ['codigo', 'rut_cliente', 'codigo_activo', 'activo', 'opciones'];
 
-  dataSource: MatTableDataSource<ClienteModel>;
+  dataSource: MatTableDataSource<VentaModel>;
   isAdmin = false;
   tableSmall = false;
   panelOpenState = false;
@@ -40,16 +40,14 @@ export class ClienteDetalleComponent implements OnInit {
     else { this.tableSmall = false; }
   }
 
-  constructor(private router: Router, private clienteServ: ClienteService,
+  constructor(private router: Router, private ventaServ: VentaService,
               private auth: AuthService, private estadoPeticion: PeticionesService) { }
 
-  ngOnInit(): void {
-    this.onResize(0);
-  }
+  ngOnInit(): void {}
 
   // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit(): void {
-    this.clienteServ.obtenerTodos().subscribe((res: any) => {
+    this.ventaServ.obtenerTodos().subscribe((res: any) => {
       this.dataSource = new MatTableDataSource(res.response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -81,23 +79,15 @@ export class ClienteDetalleComponent implements OnInit {
    * Función que se encarga de redirigir a la vista de Editar
    * @param evento Recibe el objeto Cilindro de la fila
    */
-  editar(evento: ClienteModel): void {
-    this.clienteServ.guardarCliente(evento);
-    this.router.navigate(['cliente', 'editar']);
+  editar(evento: VentaModel): void {
+    console.log('editar');
   }
 
   /**
    * Función que cambia el estado de un cilindro a desactivado en la base de datos
    */
-  cambiarEstado(evento: ClienteModel): void {
-    this.estadoPeticion.loading();
-    evento.activo = !evento.activo;
-    this.clienteServ.cambiarEstado(evento).subscribe((res: any) => {
-      Swal.close();
-      this.estadoPeticion.success(res.message, [], 700);
-    }, (err: any) => {
-      this.estadoPeticion.error(err);
-    });
+  cambiarEstado(evento: VentaModel): void {
+    console.log('cambiar estado');
   }
 
   /**

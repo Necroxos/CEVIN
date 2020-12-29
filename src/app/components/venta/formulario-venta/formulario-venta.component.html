@@ -1,0 +1,30 @@
+<form class="validate-form m-1" (ngSubmit)="registrar( f )" #f="ngForm">
+    <!-- Input codigo -->
+    <div class="form-group">
+        <label><b>Código de transacción:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="venta.codigo" name="codigo" placeholder="Código de venta/factura" required>
+        <span *ngIf="f.submitted && f.controls['codigo'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input cliente -->
+    <div class="form-group">
+        <label for="cliente_id"><b>Seleccione al cliente</b></label>
+        <select class="form-control" [(ngModel)]="venta.cliente_id" name="cliente_id" placeholder="Clientes" required>
+          <option value="undefined" disabled>Seleccione un cliente</option>
+          <option *ngFor="let cliente of clientes" value="{{cliente.cliente_id}}"> {{ cliente.nombres }} {{ cliente.apellidos }} ({{ cliente.rut }}) </option>
+        </select>
+        <span *ngIf="f.submitted && f.controls['cliente_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input entrega -->
+    <label><b>Ingrese la fecha de entrega</b></label>
+    <div class="form-group">
+        <input class="form-control datepicker" [(ngModel)]="venta.entrega" name="entrega" [matDatepicker]="entrega" placeholder="Entrega" disabled required>
+        <mat-datepicker-toggle matSuffix [for]="entrega" matTooltip="Escoger fecha"></mat-datepicker-toggle>
+        <mat-datepicker #entrega disabled="false"></mat-datepicker>
+        <mat-datepicker-toggle matSuffix (click)="limpiarFecha()">
+            <mat-icon matDatepickerToggleIcon matTooltip="Limpiar fecha">clear</mat-icon>
+        </mat-datepicker-toggle>
+        <span *ngIf="!fechaOk" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Botones -->
+    <button type="submit" class="btn btn-outline-primary btn-block"> {{ accionBtn }} </button>
+</form>

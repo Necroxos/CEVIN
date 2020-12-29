@@ -48,6 +48,10 @@ import { ClienteDetalleComponent } from './components/cliente/cliente-detalle/cl
 import { FormularioClienteComponent } from './components/cliente/formulario-cliente/formulario-cliente.component';
 // Venta
 import { VentaComponent } from './components/venta/venta.component';
+import { VentaNuevoComponent } from './components/venta/venta-nuevo/venta-nuevo.component';
+import { VentaDetalleComponent } from './components/venta/venta-detalle/venta-detalle.component';
+import { FormularioVentaComponent } from './components/venta/formulario-venta/formulario-venta.component';
+// Otros
 import { RolComponent } from './components/rol/rol.component';
 import { TipoComponent } from './components/tipo/tipo.component';
 
@@ -78,8 +82,12 @@ import { TipoComponent } from './components/tipo/tipo.component';
     ClienteEditarComponent,
     ClienteDetalleComponent,
     FormularioClienteComponent,
-    // Centa
+    // Venta
     VentaComponent,
+    VentaNuevoComponent,
+    VentaDetalleComponent,
+    FormularioVentaComponent,
+    // Otros
     RolComponent,
     TipoComponent,
     // Pipes

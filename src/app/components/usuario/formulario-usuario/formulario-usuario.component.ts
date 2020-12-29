@@ -40,7 +40,7 @@ export class FormularioUsuarioComponent implements OnInit {
 
   /**
    * Angular From tiene la facultad de actualizar la información automáticamente
-   * En este caso, la función se encarga de enviar la información que se guarda en el modelo de Cilindro
+   * En este caso, la función se encarga de enviar la información que se guarda en el modelo de Usuario
    * @param form Escucha al formulario de Angular
    */
   registrar(form: NgForm): void {

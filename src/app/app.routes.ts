@@ -11,6 +11,7 @@ import { ActivoComponent } from './components/activo/activo.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
 import { ClienteComponent } from './components/cliente/cliente.component';
 // Rutas hijas
+import { VENTA_ROUTES } from './components/venta/venta.routes';
 import { ACTIVO_ROUTES } from './components/activo/activo.routes';
 import { USUARIO_ROUTES } from './components/usuario/usuario.routes';
 import { CLIENTE_ROUTES } from './components/cliente/cliente.routes';
@@ -33,7 +34,11 @@ const APP_ROUTES: Routes = [
     canActivate: [AuthGuard],
     children: CLIENTE_ROUTES
   },
-  { path: 'venta', component: VentaComponent, canActivate: [AuthGuard] },
+  {
+    path: 'venta',
+    component: VentaComponent,
+    canActivate: [AuthGuard],
+    children: VENTA_ROUTES },
   {
     path: 'usuario',
     component: UsuarioComponent,

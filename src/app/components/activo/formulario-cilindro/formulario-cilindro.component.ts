@@ -64,23 +64,21 @@ export class FormularioCilindroComponent implements OnInit {
     if (form.invalid) { return; }
 
     this.changeQRVal(this.cilindro.codigo_activo);
-    this.transformarData();
+    this.transformarDatos();
     this.registrarCilindro.emit(this.cilindro);
   }
 
   /**
    * Función que se encarga de transforma la Fecha en un String con formato 'dd/mm/yyyy'
    * Guarda el código concatenado con 'activo-cevin-'
-   * Y borra información innecesaria
    */
-  transformarData(): void {
+  transformarDatos(): void {
     if (this.cilindro.mantencion && this.cilindro.mantencion.isValid()) {
       this.cilindro.fecha_mantencion = moment(this.cilindro.mantencion).format('DD/MM/YYYY').toString();
     } else {
       this.cilindro.fecha_mantencion = null;
     }
     this.cilindro.codigo_activo = this.QrValue;
-    delete this.cilindro.mantencion;
   }
 
   /**
