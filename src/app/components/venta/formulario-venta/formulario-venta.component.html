@@ -1,30 +1,118 @@
 <form class="validate-form m-1" (ngSubmit)="registrar( f )" #f="ngForm">
-    <!-- Input codigo -->
-    <div class="form-group">
-        <label><b>Código de transacción:</b></label>
-        <input class="form-control" type="text" [(ngModel)]="venta.codigo" name="codigo" placeholder="Código de venta/factura" required>
-        <span *ngIf="f.submitted && f.controls['codigo'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
-    </div>
-    <!-- Input cliente -->
-    <div class="form-group">
-        <label for="cliente_id"><b>Seleccione al cliente</b></label>
-        <select class="form-control" [(ngModel)]="venta.cliente_id" name="cliente_id" placeholder="Clientes" required>
-          <option value="undefined" disabled>Seleccione un cliente</option>
-          <option *ngFor="let cliente of clientes" value="{{cliente.cliente_id}}"> {{ cliente.nombres }} {{ cliente.apellidos }} ({{ cliente.rut }}) </option>
-        </select>
-        <span *ngIf="f.submitted && f.controls['cliente_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
-    </div>
-    <!-- Input entrega -->
-    <label><b>Ingrese la fecha de entrega</b></label>
-    <div class="form-group">
-        <input class="form-control datepicker" [(ngModel)]="venta.entrega" name="entrega" [matDatepicker]="entrega" placeholder="Entrega" disabled required>
-        <mat-datepicker-toggle matSuffix [for]="entrega" matTooltip="Escoger fecha"></mat-datepicker-toggle>
-        <mat-datepicker #entrega disabled="false"></mat-datepicker>
-        <mat-datepicker-toggle matSuffix (click)="limpiarFecha()">
-            <mat-icon matDatepickerToggleIcon matTooltip="Limpiar fecha">clear</mat-icon>
-        </mat-datepicker-toggle>
-        <span *ngIf="!fechaOk" class="text-danger animated fadeIn">Campo obligatorio</span>
-    </div>
-    <!-- Botones -->
-    <button type="submit" class="btn btn-outline-primary btn-block"> {{ accionBtn }} </button>
+    <mat-vertical-stepper [linear]="isLinear" #stepper>
+        <!-- Paso 1 -->
+        <mat-step>
+            <ng-template matStepLabel>Venta</ng-template>
+            <!-- Input codigo -->
+            <div class="form-group">
+                <label><b>Código de transacción:</b></label>
+                <input class="form-control" type="text" [(ngModel)]="venta.codigo" name="codigo" placeholder="Código de venta/factura" required>
+                <span *ngIf="f.submitted && f.controls['codigo'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+            </div>
+            <!-- Input cliente -->
+            <div class="form-group">
+                <label for="cliente_id"><b>Seleccione al cliente</b></label>
+                <select class="form-control" [(ngModel)]="venta.cliente_id" name="cliente_id" (change)="clienteVenta($event.target)" required>
+                    <option value="undefined" disabled>Seleccione un cliente</option>
+                    <option *ngFor="let cliente of clientes" value="{{cliente.cliente_id}}"> {{ cliente.nombres }} {{ cliente.apellidos }} ({{ cliente.rut }}) </option>
+                </select>
+                <span *ngIf="f.submitted && f.controls['cliente_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+            </div>
+            <!-- Input entrega -->
+            <label><b>Ingrese la fecha de entrega</b></label>
+            <div class="form-group">
+                <input class="form-control datepicker" [(ngModel)]="venta.entrega" name="entrega" [matDatepicker]="entrega" placeholder="Entrega" disabled required>
+                <mat-datepicker-toggle matSuffix [for]="entrega" matTooltip="Escoger fecha"></mat-datepicker-toggle>
+                <mat-datepicker #entrega disabled="false"></mat-datepicker>
+                <mat-datepicker-toggle matSuffix (click)="limpiarFecha()">
+                    <mat-icon matDatepickerToggleIcon matTooltip="Limpiar fecha">clear</mat-icon>
+                </mat-datepicker-toggle>
+                <span *ngIf="!fechaOk" class="text-danger animated fadeIn">Campo obligatorio</span>
+            </div>
+        </mat-step>
+        <!-- Paso 2 -->
+        <mat-step>
+            <ng-template matStepLabel>Cilindros</ng-template>
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="escanerSwitch">
+                <label class="custom-control-label" for="escanerSwitch">Escaner</label>
+            </div>
+            <br>
+            <div class="table-container">
+                <mat-form-field>
+                    <mat-label>Filter</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+                </mat-form-field>
+
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                    <!-- Columna de correlativo -->
+                    <ng-container matColumnDef="num">
+                        <th mat-header-cell *matHeaderCellDef> No. </th>
+                        <td mat-cell *matCellDef="let element"> {{ element.correlativo }}</td>
+                    </ng-container>
+
+                    <!-- Columna del código -->
+                    <ng-container matColumnDef="codigo">
+                        <th mat-header-cell *matHeaderCellDef> Código </th>
+                        <td mat-cell *matCellDef="let element"> {{ element.codigo_activo | slice: 13 }} </td>
+                    </ng-container>
+
+                    <!-- Columna para marcar opción -->
+                    <ng-container matColumnDef="opciones">
+                        <th mat-header-cell *matHeaderCellDef> Opciones </th>
+                        <td mat-cell *matCellDef="let element">
+                            <mat-checkbox color="primary" (change)="cilindroVenta(element, $event.checked)" [checked]="element.escogido"></mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4">Sin información para el valor "{{input.value}}"</td>
+                    </tr>
+                </table>
+            </div>
+            <br>
+            <span *ngIf="!cilindrosOk" class="text-danger animated fadeIn">Falta a lo menos un cilindro para la venta</span>
+            <br>
+            <button class="btn btn-outline-danger center-icons" (click)="limpiarLista()">
+                <mat-icon class="center-icons">delete</mat-icon>
+                Limpiar lista
+            </button>
+        </mat-step>
+        <!-- Paso 3 -->
+        <mat-step>
+            <ng-template matStepLabel>Finalizar</ng-template>
+            <div class="mt-3 animated fadeIn fast" *ngIf="mostrar">
+                <!-- Una Tarjeta para mostrar la información -->
+                <div class="card bg-light mb-3 animated fadeIn">
+                    <div class="card-header">
+                        <h5 class="card-title">Venta</h5>
+                    </div>
+                    <!-- Información medular, se pueden usar pipes para transformar visualmente la data -->
+                    <div class="card-body">
+                        <p class="card-text"><b>Código venta:</b> {{ venta.codigo }} </p>
+                        <p class="card-text"><b>Cliente:</b> {{ venta.rut_cliente }}</p>
+                        <p class="card-text"><b>Fecha:</b> {{ venta.fecha_entrega }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <p *ngIf="f.submitted && f.controls['codigo'].errors" class="text-danger animated fadeIn">Falta el campo de código de venta/factura</p>
+                <p *ngIf="f.submitted && f.controls['cliente_id'].errors" class="text-danger animated fadeIn">Falta seleccionar un cliente</p>
+                <p *ngIf="!fechaOk" class="text-danger animated fadeIn">Falta una fecha de entrega</p>
+                <p *ngIf="!cilindrosOk" class="text-danger animated fadeIn">Falta a lo menos un cilindro para la venta</p>
+            </div>
+
+            <div>
+                <button class="btn btn-outline-danger btn-block" (click)="stepper.reset(); limpiarTodo();">Borrar</button>
+                <br>
+                <button type="submit" class="btn btn-outline-primary btn-block"> {{ accionBtn }} </button>
+            </div>
+        </mat-step>
+    </mat-vertical-stepper>
 </form>

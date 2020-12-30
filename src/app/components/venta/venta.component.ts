@@ -1,5 +1,5 @@
 // Angular
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 // Módulos
 import { MatTabChangeEvent } from '@angular/material/tabs';
 // Enrutador

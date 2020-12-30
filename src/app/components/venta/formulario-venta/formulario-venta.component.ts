@@ -1,5 +1,5 @@
 // Angular
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 // Servicios
 import { ClienteService } from '../../../services/cliente.service';
@@ -11,11 +11,14 @@ import * as moment from 'moment';
 import { VentaModel } from '../../../models/venta.model';
 import { ClienteModel } from '../../../models/cliente.model';
 import { CilindroModel } from 'src/app/models/cilindro.model';
+import { MatTableDataSource } from '@angular/material/table';
+//
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-formulario-venta',
   templateUrl: './formulario-venta.component.html',
-  styleUrls: []
+  styleUrls: ['./formulario-venta.component.css']
 })
 export class FormularioVentaComponent implements OnInit {
 
@@ -24,22 +27,38 @@ export class FormularioVentaComponent implements OnInit {
   clientes: [ClienteModel];
   cilindros: [CilindroModel];
   fechaOk = true;
+  mostrar = false;
+  cilindrosOk = true;
   // Variables recibidas de componentes hijos
   @Input() accionBtn: string;
   @Input() VentaEdit: VentaModel;
   // Variables enviadas a componentes hijos
   @Output() registrarVenta: EventEmitter<VentaModel>;
+  // Variables para la tabla de cilindros
+  @ViewChild(MatSort) sort: MatSort;
+  displayedColumns: string[] = ['num', 'codigo', 'opciones'];
+  dataSource: MatTableDataSource<CilindroModel>;
+  // Variable para el stepper
+  isLinear = false;
 
   constructor(private clienteServ: ClienteService, private estadoPeticion: PeticionesService,
               private cilindroServ: CilindroService) {
     this.registrarVenta = new EventEmitter();
   }
 
+  /**
+   * Al iniciar el componente obtenemos los datos necesarios para los selectors
+   * Inicializamos la fecha actual como predeterminado e inicializamos la lista de cilindros en venta
+   * Si existe información previa la cargamos a modo de edición
+   */
   ngOnInit(): void {
     this.obtenerClientes();
     this.obtenerCilindros();
     this.venta.entrega = moment();
+    this.venta.cilindros = new Array();
+    this.transformarDatos();
     if (this.VentaEdit) { this.venta = this.VentaEdit; }
+    this.mostrar = true;
   }
 
   /**
@@ -48,11 +67,15 @@ export class FormularioVentaComponent implements OnInit {
    * @param form Escucha al formulario de Angular
    */
   registrar(form: NgForm): void {
-    if (form.invalid) { return; }
+
+    console.log(this.venta);
 
     this.transformarDatos();
+    this.cilindrosEscogidos();
 
-    if (this.fechaOk) {
+    if (form.invalid) { return; }
+
+    if (this.fechaOk && this.cilindrosOk) {
       this.registrarVenta.emit(this.venta);
     }
 
@@ -75,7 +98,9 @@ export class FormularioVentaComponent implements OnInit {
   obtenerCilindros(): void {
     this.cilindroServ.obtenerTodos().subscribe((res: any) => {
       this.cilindros = res.response;
+      this.dataSource = new MatTableDataSource(res.response);
     }, (err: any) => {
+      console.log(err);
       this.estadoPeticion.error(err);
     });
   }
@@ -99,6 +124,73 @@ export class FormularioVentaComponent implements OnInit {
   limpiarFecha(): void {
     this.venta.fecha_entrega = null;
     this.venta.entrega = null;
+  }
+
+  /**
+   * Función que extrae el Texto del elemnto HTML
+   * @param cliente Obtiene el elemento HTML <option> del cliente
+   */
+  clienteVenta(cliente: any): void {
+    const selectElementText = cliente['options'][cliente['options'].selectedIndex].text;
+    let text = selectElementText.split('(');
+    text = text[1].replace(')', '');
+    this.venta.rut_cliente = text;
+  }
+
+  /**
+   * Función que busca un elemento (cilindro) en la tabla
+   * @param event Recibe el input del filtro
+   */
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  /**
+   * Función que se encarga de marcar como "Cilindro escogido" para la venta
+   * @param cilindo Obtiene el objeto cilindro de la tabla
+   * @param evento Obtiene el check o uncheck (boolean)
+   */
+  cilindroVenta(cilindo: CilindroModel, evento: boolean): void {
+    cilindo.escogido = evento;
+    this.cilindrosEscogidos();
+  }
+
+  /**
+   * Función que revisa los cilindros marcados y los agrega a la lista de venta
+   * Para ser enviados al Back End
+   * También revisa que a lo menos vaya un cilindro
+   */
+  cilindrosEscogidos(): void {
+    this.cilindros.forEach(cilindro => {
+      if (cilindro.escogido) {
+        if (this.venta.cilindros.indexOf(cilindro.cilindro_id) === -1) {
+          this.venta.cilindros.push(cilindro.cilindro_id);
+        }
+      }
+    });
+
+    if (this.venta.cilindros.length > 0) { this.cilindrosOk = true; }
+    else { this.cilindrosOk = false; }
+  }
+
+  /**
+   * Función que limpia los cilindros marcados de la tabla
+   */
+  limpiarLista(): void {
+    this.cilindros.forEach(cilindro => cilindro.escogido = false);
+    this.venta.cilindros = new Array();
+  }
+
+  /**
+   * Función que limpia todo el formulario
+   */
+  limpiarTodo(): void {
+    this.limpiarLista();
+    this.venta = new VentaModel();
+    this.venta.entrega = moment();
+    this.venta.cilindros = new Array();
+    this.transformarDatos();
   }
 
 }
