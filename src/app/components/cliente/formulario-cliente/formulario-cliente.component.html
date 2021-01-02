@@ -1,51 +1,121 @@
 <form class="validate-form m-1" (ngSubmit)="registrar( f )" #f="ngForm">
-    <!-- Input rut -->
-    <div class="form-group">
-        <label><b>Rut:</b></label>
-        <input class="form-control" type="text" [(ngModel)]="cliente.rut" name="rut" placeholder="Rut del cliente" required>
-        <span *ngIf="f.submitted && f.controls['rut'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
-    </div>
-    <!-- Input si es empresa -->
-    <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" name="empresa" [(ngModel)]="cliente.empresa">
-        <label class="form-check-label" for="empresa">Es empresa?</label>
-    </div>
-    <!-- Input nombres -->
-    <div class="form-group">
-        <label><b>Nombres:</b></label>
-        <input class="form-control" type="text" [(ngModel)]="cliente.nombres" name="nombres" placeholder="Nombres del contacto" required>
-        <span *ngIf="f.submitted && f.controls['nombres'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
-    </div>
-    <!-- Input apellidos -->
-    <div class="form-group">
-        <label><b>Apellidos:</b></label>
-        <input class="form-control" type="text" [(ngModel)]="cliente.apellidos" name="apellidos" placeholder="Apellidos del contacto" required>
-        <span *ngIf="f.submitted && f.controls['apellidos'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
-    </div>
-    <!-- Input correo -->
-    <div class="form-group">
-        <label><b>Correo:</b></label>
-        <input class="form-control email" type="text" [(ngModel)]="cliente.email" name="email" placeholder="Correo del contacto" pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$">
-        <small id="passwordHelpInline" class="text-muted">
-            Campo opcional.
-        </small><br>
-        <span *ngIf="f.submitted && f.controls['email'].errors" class="text-danger animated fadeIn">Formato de correo: 'example@email.com'</span>
-    </div>
-    <!-- Input telefono -->
-    <div class="form-group">
-        <label><b>Teléfono:</b></label>
-        <input class="form-control" type="text" [(ngModel)]="cliente.telefono" name="telefono" placeholder="Teléfono del contacto" pattern="[0-9]*">
-        <small id="passwordHelpInline" class="text-muted">
-            Campo opcional.
-        </small><br>
-        <span *ngIf="f.submitted && f.controls['telefono'].errors" class="text-danger animated fadeIn">Sólo números</span>
-    </div>
-    <!-- Input rezon social -->
-    <div class="form-group" *ngIf="cliente.empresa">
-        <label><b>Nombre empresa:</b></label>
-        <input class="form-control" type="text" [(ngModel)]="cliente.razon_social" name="razon_social" placeholder="Razón social de la empresa" required>
-        <span *ngIf="f.submitted && f.controls['razon_social'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
-    </div>
-    <!-- Botones -->
-    <button type="submit" class="btn btn-outline-primary btn-block"> {{ accionBtn }} </button>
+    <mat-vertical-stepper [linear]="isLinear" #stepper>
+        <!-- Paso 1 -->
+        <mat-step>
+            <ng-template matStepLabel>Cliente</ng-template>
+            <!-- Input rut -->
+            <div class="form-group">
+                <label><b>Rut:</b></label>
+                <input class="form-control" type="text" [(ngModel)]="cliente.rut" name="rut" placeholder="Rut del cliente" required>
+                <span *ngIf="f.submitted && f.controls['rut'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+            </div>
+            <!-- Input si es empresa -->
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" name="empresa" [(ngModel)]="cliente.empresa">
+                <label class="form-check-label" for="empresa">Es empresa?</label>
+            </div>
+            <!-- Input nombres -->
+            <div class="form-group">
+                <label><b>Nombre:</b></label>
+                <input class="form-control" type="text" [(ngModel)]="cliente.nombre_completo" name="nombre_completo" placeholder="Nombre completo del contacto" required>
+                <span *ngIf="f.submitted && f.controls['nombre_completo'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+            </div>
+            <!-- Input correo -->
+            <div class="form-group">
+                <label><b>Correo:</b></label>
+                <input class="form-control email" type="text" [(ngModel)]="cliente.email" name="email" placeholder="Correo del contacto" pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$" required>
+                <span *ngIf="f.submitted && f.controls['email'].errors" class="text-danger animated fadeIn">Formato de correo: 'example@email.com'</span>
+            </div>
+            <!-- Input telefono -->
+            <div class="form-group">
+                <label><b>Teléfono:</b></label>
+                <input class="form-control" type="text" [(ngModel)]="cliente.telefono" name="telefono" placeholder="Teléfono del contacto" pattern="[0-9]{6,20}$" required>
+                <span *ngIf="f.submitted && f.controls['telefono'].errors" class="text-danger animated fadeIn">Sólo números</span>
+            </div>
+            <!-- Input rezon social -->
+            <div class="form-group" *ngIf="cliente.empresa">
+                <label><b>Nombre empresa:</b></label>
+                <input class="form-control" type="text" [(ngModel)]="cliente.razon_social" name="razon_social" placeholder="Razón social de la empresa" required>
+                <span *ngIf="f.submitted && f.controls['razon_social'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+            </div>
+        </mat-step>
+        <!-- Paso 2 -->
+        <mat-step>
+            <ng-template matStepLabel>Dirección</ng-template>
+            <!-- Input direccion -->
+            <div class="form-group form-row">
+                <!-- Calle -->
+                <div class="col-md-7">
+                    <label><b>Calle:</b></label>
+                    <input class="form-control" type="text" [(ngModel)]="direccion.calle" name="calle" placeholder="Calle o pasaje" required>
+                    <span *ngIf="f.submitted && f.controls['calle'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+                </div>
+                <!-- Número -->
+                <div class="col-md-4">
+                    <label><b>Número:</b></label>
+                    <input class="form-control" type="text" [(ngModel)]="direccion.numero" name="numero" placeholder="Número de casa o sucursal" required>
+                    <span *ngIf="f.submitted && f.controls['numero'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+                </div>
+            </div>
+            <!-- Input ubicación -->
+            <div class="form-group form-row">
+                <!-- Comuna -->
+                <div class="col-md-4">
+                    <label for="tipo_id"><b>Seleccione la comuna</b></label>
+                    <select class="form-control" [(ngModel)]="direccion.comuna_id" name="comuna_id" (change)="obtenerZonas($event.target.value)" required>
+                        <option value="undefined" disabled>Seleccione una comuna</option>
+                        <option *ngFor="let comuna of comunas" value="{{comuna.id}}"> {{ comuna.descripcion }} </option>
+                    </select>
+                    <span *ngIf="f.submitted && f.controls['comuna_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+                </div>
+                <!-- Zona -->
+                <div class="col-md-7">
+                    <label for="tipo_id"><b>Seleccione la zona</b></label>
+                    <select class="form-control" [(ngModel)]="direccion.zona_id" name="zona_id" required>
+                        <option value="undefined" disabled>Seleccione una zona</option>
+                        <option *ngFor="let zona of zonas" value="{{zona.id}}"> {{ zona.descripcion }} </option>
+                    </select>
+                    <span *ngIf="f.submitted && f.controls['zona_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+                </div>
+            </div>
+        </mat-step>
+
+        <!-- Paso 3 -->
+        <mat-step>
+            <ng-template matStepLabel>Finalizar</ng-template>
+            <div class="mt-3 animated fadeIn fast">
+                <!-- Una Tarjeta para mostrar la información -->
+                <div class="card bg-light mb-3 animated fadeIn">
+                    <div class="card-header">
+                        <h5 class="card-title">Cliente</h5>
+                    </div>
+                    <!-- Información medular, se pueden usar pipes para transformar visualmente la data -->
+                    <div class="card-body">
+                        <p class="card-text"><b>Rut:</b> {{ cliente.rut }}</p>
+                        <p class="card-text"><b>Nombre:</b> {{ cliente.nombre_completo }} </p>
+                        <p class="card-text"><b>Correo:</b> {{ cliente.email }}</p>
+                        <p class="card-text"><b>Teléfono:</b> {{ cliente.telefono }}</p>
+                        <p class="card-text" *ngIf="cliente.empresa"><b>Empresa:</b> {{ cliente.razon_social }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <p *ngIf="f.submitted && f.controls['rut'].errors" class="text-danger animated fadeIn">Falta el campo de RUT</p>
+                <p *ngIf="f.submitted && f.controls['nombre_completo'].errors" class="text-danger animated fadeIn">Falta el nombre del contacto</p>
+                <p *ngIf="f.submitted && f.controls['email'].errors" class="text-danger animated fadeIn">Falta el correo del contacto</p>
+                <p *ngIf="f.submitted && f.controls['telefono'].errors" class="text-danger animated fadeIn">Falta el teléfono del contacto</p>
+                <p *ngIf="f.submitted && f.controls['calle'].errors" class="text-danger animated fadeIn">Falta la calle</p>
+                <p *ngIf="f.submitted && f.controls['numero'].errors" class="text-danger animated fadeIn">Falta el número</p>
+                <p *ngIf="f.submitted && f.controls['zona_id'].errors" class="text-danger animated fadeIn">Falta la zona</p>
+            </div>
+
+            <!-- Botones -->
+            <div>
+                <button class="btn btn-outline-danger btn-block" (click)="stepper.reset(); limpiarTodo();">Borrar</button>
+                <br>
+                <button type="submit" class="btn btn-outline-primary btn-block"> {{ accionBtn }} </button>
+            </div>
+        </mat-step>
+    </mat-vertical-stepper>
 </form>

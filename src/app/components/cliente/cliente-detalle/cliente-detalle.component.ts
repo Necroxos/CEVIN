@@ -36,7 +36,7 @@ export class ClienteDetalleComponent implements OnInit {
   @HostListener('window:resize', ['$event']) onResize(event): void {
     // guard against resize before view is rendered
     const tmpWidth = window.innerWidth;
-    if (tmpWidth < 1200) { this.tableSmall = true; }
+    if (tmpWidth < 2500) { this.tableSmall = true; }
     else { this.tableSmall = false; }
   }
 

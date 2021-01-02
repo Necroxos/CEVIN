@@ -27,7 +27,6 @@ export class FormularioVentaComponent implements OnInit {
   clientes: [ClienteModel];
   cilindros: [CilindroModel];
   fechaOk = true;
-  mostrar = false;
   cilindrosOk = true;
   // Variables recibidas de componentes hijos
   @Input() accionBtn: string;
@@ -58,7 +57,6 @@ export class FormularioVentaComponent implements OnInit {
     this.venta.cilindros = new Array();
     this.transformarDatos();
     if (this.VentaEdit) { this.venta = this.VentaEdit; }
-    this.mostrar = true;
   }
 
   /**
@@ -67,8 +65,6 @@ export class FormularioVentaComponent implements OnInit {
    * @param form Escucha al formulario de Angular
    */
   registrar(form: NgForm): void {
-
-    console.log(this.venta);
 
     this.transformarDatos();
     this.cilindrosEscogidos();

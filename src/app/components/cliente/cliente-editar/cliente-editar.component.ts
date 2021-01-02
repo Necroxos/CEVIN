@@ -1,5 +1,5 @@
 // Angular
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 // Servicios
 import { ClienteService } from '../../../services/cliente.service';
 import { PeticionesService } from '../../../services/peticiones.service';
@@ -7,27 +7,29 @@ import { PeticionesService } from '../../../services/peticiones.service';
 import Swal from 'sweetalert2';
 // Modelos
 import { ClienteModel } from '../../../models/cliente.model';
+import { DireccionModel } from '../../../models/direccion.model';
 
 @Component({
   selector: 'app-cliente-editar',
   templateUrl: './cliente-editar.component.html',
   styleUrls: []
 })
-export class ClienteEditarComponent {
+export class ClienteEditarComponent implements OnInit{
 
   // Variables locales
   mostrar = false;
   accionBtn = 'Editar';
   cliente = new ClienteModel();
+  direccion = new DireccionModel();
   clienteLocal = this.clienteServ.leerCliente();
+  direccionLocal = this.clienteServ.leerDireccion();
 
   constructor(private estadoPeticion: PeticionesService, private clienteServ: ClienteService) { }
 
   /**
-   * Leemos el [codigo_activo] del locaStorage y buscamos el cliente en la BD para poder editarlo
+   * Leemos el [rut] del locaStorage y buscamos el cliente en la BD para poder editarlo
    */
-  // tslint:disable-next-line: use-lifecycle-interface
-  ngAfterContentInit(): void {
+  ngOnInit(): void {
     if (this.clienteLocal) {
       this.cliente.rut = this.clienteLocal;
       this.cargarInfo();
@@ -46,10 +48,26 @@ export class ClienteEditarComponent {
       Swal.close();
       this.estadoPeticion.success(res.message, [], 650);
       this.cliente = { ...res.response };
-      this.mostrar = true;
+      this.obtenerDireccion();
     }, (err: any) => {
       this.estadoPeticion.error(err);
     });
+  }
+
+  /**
+   * Función que se encarga de buscar la última dirección activa
+   */
+  obtenerDireccion(): void {
+    if (this.direccionLocal && this.direccionLocal !== 'null') {
+      this.clienteServ.obtenerDireccion(this.direccionLocal).subscribe((res: any) => {
+        this.direccion = { ...res.response };
+        this.mostrar = true;
+      }, (err: any) => {
+        this.estadoPeticion.error(err);
+      });
+    } else {
+      this.mostrar = true;
+    }
   }
 
   /**
@@ -58,15 +76,14 @@ export class ClienteEditarComponent {
    * Además de usar el servicio de [PeticionesService] para mostrar mensajes de [loading] y [error]
    * @param cliente Escucha la información emitida por el componente hijo
    */
-  actualizar(cliente: ClienteModel): void {
+  actualizar(cliente: any): void {
     this.estadoPeticion.loading();
 
-    this.clienteServ.actualizar(cliente).subscribe((res) => {
+    this.clienteServ.actualizar(cliente).subscribe(() => {
       Swal.close();
       this.estadoPeticion.success('Cliente actualizado con éxito!', ['cliente', 'detalle'], 1000);
     }, (err: any) => {
       this.estadoPeticion.error(err);
-      this.estadoPeticion.recargar(['cliente', 'editar']);
     });
   }
 

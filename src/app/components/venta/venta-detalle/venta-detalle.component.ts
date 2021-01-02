@@ -9,8 +9,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '../../../services/auth.service';
 import { VentaService } from '../../../services/venta.service';
 import { PeticionesService } from '../../../services/peticiones.service';
-// Módulos
-import Swal from 'sweetalert2';
 // Modelos
 import { VentaModel } from '../../../models/venta.model';
 
@@ -40,8 +38,7 @@ export class VentaDetalleComponent implements OnInit {
     else { this.tableSmall = false; }
   }
 
-  constructor(private router: Router, private ventaServ: VentaService,
-              private auth: AuthService, private estadoPeticion: PeticionesService) { }
+  constructor(private ventaServ: VentaService, private auth: AuthService, private estadoPeticion: PeticionesService) { }
 
   ngOnInit(): void {}
 

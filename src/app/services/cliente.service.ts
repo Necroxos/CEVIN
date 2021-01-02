@@ -23,7 +23,7 @@ export class ClienteService {
    * @param cliente Recibe un modelo de cliente
    *                  (nombres, apellidos, dni, dv, email, razon_social, telefono, empresa)
    */
-  registrar(cliente: ClienteModel): any {
+  registrar(cliente: any): any {
     const headers = this.auth.headers();
     return this.http.post(`${this.url}/cliente`, cliente, { headers });
   }
@@ -50,7 +50,7 @@ export class ClienteService {
    * Manda la data a la API para actualizar el cliente en la base de datos
    * @param cliente Recibe un modelo de cliente
    */
-  actualizar(cliente: ClienteModel): any {
+  actualizar(cliente: any): any {
     const headers = this.auth.headers();
     return this.http.put(`${this.url}/cliente`, cliente, { headers });
   }
@@ -65,11 +65,12 @@ export class ClienteService {
   }
 
   /**
-   * Esta función guarda el rut del Cliente y lo almacena en local
+   * Esta función guarda el rut y direccion del Cliente y lo almacena en local
    * @param cliente Recibe el cliente del que se desea guardar información
    */
   guardarCliente(cliente: ClienteModel): void {
     localStorage.setItem('cliente', cliente.dni + '-' + cliente.dv);
+    localStorage.setItem('direccion', String(cliente.direccion_id));
   }
 
   /**
@@ -80,6 +81,21 @@ export class ClienteService {
     const rut = localStorage.getItem('cliente');
     localStorage.removeItem('cliente');
     return rut;
+  }
+
+  /**
+   * Leemos la información de la dirección guardada para regresarla al componente
+   * Y la quitamos de la memoria local
+   */
+  leerDireccion(): string {
+    const direccionID = localStorage.getItem('direccion');
+    localStorage.removeItem('direccion');
+    return direccionID;
+  }
+
+  obtenerDireccion(id: string): any {
+    const headers = this.auth.headers();
+    return this.http.get(`${this.url}/direccion/${id}`, { headers });
   }
 
 }

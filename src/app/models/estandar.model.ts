@@ -4,4 +4,5 @@ export class EstandarModel {
     updated_at: string;
     descripcion: string;
     activo: boolean;
+    id: number;
 }
