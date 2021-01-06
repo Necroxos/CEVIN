@@ -17,6 +17,16 @@
             <p class="card-text"><b>Tipo de Gas:</b> {{ cilindro.tipo_gas }}</p>
             <p class="card-text"><b>Última mantención:</b> {{ cilindro.fecha_mantencion }}</p>
             <p class="card-text"><b>Propietario:</b> {{ cilindro.propietario }}</p>
+            <p class="card-text center-icons"><b>Stock:</b>&nbsp;
+                <mat-icon [ngClass]="{ 'activo': cilindro.stock, 'inactivo': !cilindro.stock, 'center-icons': true }">
+                    {{ cilindro.stock | boolean }}
+                </mat-icon>
+            </p>
+            <p class="card-text center-icons"><b>Con carga:</b>&nbsp;
+                <mat-icon [ngClass]="{ 'activo': cilindro.cargado, 'inactivo': !cilindro.cargado, 'center-icons': true }">
+                    {{ cilindro.cargado | boolean }}
+                </mat-icon>
+            </p>
             <p class="card-text center-icons"><b>Estado:</b>&nbsp;
                 <mat-icon [ngClass]="{ 'activo': cilindro.activo, 'inactivo': !cilindro.activo, 'center-icons': true }">
                     {{ cilindro.activo | boolean }}
@@ -26,7 +36,7 @@
         <!-- Botones para redireccionar -->
         <div class="card-body">
             <button class="btn btn-outline-primary btn-block" (click)="recargar()">Buscar otro</button>
-            <button class="btn btn-outline-warning btn-block" (click)="guardar()">Editar</button>
+            <button class="btn btn-outline-warning btn-block" (click)="editar()">Editar</button>
             <button class="btn btn-outline-danger btn-block" (click)="cambiarEstado()" *ngIf="esAdmin() && cilindro.activo">Eliminar</button>
             <button class="btn btn-outline-success btn-block" (click)="cambiarEstado()" *ngIf="esAdmin() && !cilindro.activo">Activar</button>
         </div>

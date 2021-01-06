@@ -1,0 +1,27 @@
+<div class="mt-3 animated fadeIn fast">
+    <!-- Una Tarjeta para mostrar la información -->
+    <div class="card bg-light mb-3 animated fadeIn">
+        <div class="card-header">
+            <h5 class="card-title">Cliente</h5>
+        </div>
+        <!-- Información medular, se pueden usar pipes para transformar visualmente la data -->
+        <div class="card-body">
+            <p class="card-text"><b>Rut:</b> {{ cliente.rut }}</p>
+            <p class="card-text"><b>Nombre:</b> {{ cliente.nombre_completo }} </p>
+            <p class="card-text"><b>Correo:</b> {{ cliente.email }}</p>
+            <p class="card-text"><b>Teléfono:</b> {{ cliente.telefono }}</p>
+            <p class="card-text" *ngIf="cliente.empresa"><b>Empresa:</b> {{ cliente.razon_social }}</p>
+        </div>
+    </div>
+
+    <!-- Una Tarjeta para mostrar la información -->
+    <div class="card bg-light mb-3 animated fadeIn">
+        <div class="card-header">
+            <h5 class="card-title">Direcciones</h5>
+        </div>
+        <!-- Información medular, se pueden usar pipes para transformar visualmente la data -->
+        <div class="card-body">
+            <p class="card-text" *ngFor="let direccion of direcciones"> {{ direccion.calle }} #{{ direccion.numero }}, {{ direccion.zona }} - {{ direccion.comuna }}</p>
+        </div>
+    </div>
+</div>

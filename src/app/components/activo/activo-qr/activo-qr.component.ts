@@ -1,3 +1,6 @@
+/************************************************************************************************************************************
+ *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
+ ************************************************************************************************************************************/
 // Angualr
 import { Component, ViewChild, OnInit } from '@angular/core';
 // Servicios
@@ -18,10 +21,23 @@ import { Router } from '@angular/router';
 })
 export class ActivoQrComponent implements OnInit {
 
-  // Variables locales para guardar información
+  /**********************************************************************************************************************************
+   *                                                       VARIABLES                                                                *
+   **********************************************************************************************************************************/
   cilindro: CilindroModel;
   mostrar = false;
 
+  /**********************************************************************************************************************************
+   *                                                    EJECUCIÓN AL INICIAR                                                        *
+   **********************************************************************************************************************************/
+
+  /**
+   * Inicializa módulos y servicios
+   * @param auth Servicio de autenticación
+   * @param router Módulo que enruta y redirecciona
+   * @param cilindroServ Servicio con peticiones HTTP al Back End
+   * @param estadoPeticion Servicio con funciones de Carga y Error
+   */
   constructor(private estadoPeticion: PeticionesService, private cilindroServ: CilindroService,
               private auth: AuthService, private router: Router) { }
 
@@ -49,20 +65,6 @@ export class ActivoQrComponent implements OnInit {
     });
   }
 
-  // Utilizamos esta función para refrescar el componente y que no hayan errores con el Scanner-QR
-  recargar(): void {
-    this.estadoPeticion.recargar(['activo', 'escaner']);
-  }
-
-  /**
-   * Al presionar editar, guardamos el código único del cilindro en local storage
-   * Y redirigimos al componente de edición
-   */
-  guardar(): void {
-    this.cilindroServ.guardarCilindro(this.cilindro);
-    this.router.navigate(['activo', 'editar']);
-  }
-
   /**
    * Función que revisa que el usuario autenticado tenga permisos de administrador administrador
    * Regresa un true o false para habilitar funciones en la vista
@@ -70,6 +72,10 @@ export class ActivoQrComponent implements OnInit {
   esAdmin(): boolean {
     return this.auth.esAdmin;
   }
+
+  /**********************************************************************************************************************************
+   *                                                  FUNCIONES DEL COMPONENTE                                                      *
+   **********************************************************************************************************************************/
 
   /**
    * Función que cambia el estado de un cilindro a desactivado en la base de datos
@@ -84,6 +90,20 @@ export class ActivoQrComponent implements OnInit {
       this.estadoPeticion.error(err);
       this.recargar();
     });
+  }
+
+  // Utilizamos esta función para refrescar el componente y que no hayan errores con el Scanner-QR
+  recargar(): void {
+    this.estadoPeticion.recargar(['activo', 'escaner']);
+  }
+
+  /**
+   * Al presionar editar, guardamos el código único del cilindro en local storage
+   * Y redirigimos al componente de edición
+   */
+  editar(): void {
+    this.cilindroServ.guardarCilindro(this.cilindro);
+    this.router.navigate(['activo', 'editar']);
   }
 
 }

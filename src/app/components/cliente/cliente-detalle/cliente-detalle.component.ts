@@ -1,3 +1,6 @@
+/************************************************************************************************************************************
+ *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
+ ************************************************************************************************************************************/
 // Angular
 import { Component, HostListener, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -20,8 +23,11 @@ import { ClienteModel } from '../../../models/cliente.model';
   styleUrls: ['./cliente-detalle.component.css']
 })
 export class ClienteDetalleComponent implements OnInit {
+  /**********************************************************************************************************************************
+   *                                                       VARIABLES                                                                *
+   **********************************************************************************************************************************/
 
-  displayedColumns: string[] = ['cliente_id', 'rut', 'contacto', 'email', 'telefono', 'empresa', 'razon_social', 'activo', 'opciones'];
+  displayedColumns: string[] = ['cliente_id', 'rut', 'contacto', 'email', 'telefono', 'razon_social', 'activo', 'opciones'];
 
   dataSource: MatTableDataSource<ClienteModel>;
   isAdmin = false;
@@ -33,6 +39,10 @@ export class ClienteDetalleComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  /**********************************************************************************************************************************
+   *                                                    EJECUCIÓN AL INICIAR                                                        *
+   **********************************************************************************************************************************/
+
   @HostListener('window:resize', ['$event']) onResize(event): void {
     // guard against resize before view is rendered
     const tmpWidth = window.innerWidth;
@@ -40,14 +50,27 @@ export class ClienteDetalleComponent implements OnInit {
     else { this.tableSmall = false; }
   }
 
+  /**
+   * Inicializa módulos y servicios
+   * @param auth Servicio de autenticación
+   * @param router Módulo que enruta y redirecciona
+   * @param clienteServ Servicio con peticiones HTTP al Back End
+   * @param estadoPeticion Servicio con funciones de Carga y Error
+   */
   constructor(private router: Router, private clienteServ: ClienteService,
               private auth: AuthService, private estadoPeticion: PeticionesService) { }
 
+  /**
+   * Escucha el tamaño de escala de la ventana
+   */
   ngOnInit(): void {
     this.onResize(0);
   }
 
-  // tslint:disable-next-line: use-lifecycle-interface
+  /**
+   * Obtenemos la información del Back End y la usamos en el mat-table
+   * también verificamos los privilegios del usuario
+   */
   ngAfterViewInit(): void {
     this.clienteServ.obtenerTodos().subscribe((res: any) => {
       this.dataSource = new MatTableDataSource(res.response);
@@ -78,12 +101,33 @@ export class ClienteDetalleComponent implements OnInit {
   }
 
   /**
+   * Función que revisa que el usuario autenticado tenga permisos de administrador administrador
+   * Regresa un true o false para habilitar funciones en la vista
+   */
+  esAdmin(): boolean {
+    return this.auth.esAdmin;
+  }
+
+  /**********************************************************************************************************************************
+   *                                                  FUNCIONES DEL COMPONENTE                                                      *
+   **********************************************************************************************************************************/
+
+  /**
    * Función que se encarga de redirigir a la vista de Editar
    * @param evento Recibe el objeto Cilindro de la fila
    */
   editar(evento: ClienteModel): void {
     this.clienteServ.guardarCliente(evento);
     this.router.navigate(['cliente', 'editar']);
+  }
+
+  /**
+   * Función que se encarga de redirigir a la vista de Información
+   * @param evento Recibe el objeto Cilindro de la fila
+   */
+  info(evento: ClienteModel): void {
+    this.clienteServ.guardarCliente(evento);
+    this.router.navigate(['cliente', 'info']);
   }
 
   /**
@@ -98,14 +142,6 @@ export class ClienteDetalleComponent implements OnInit {
     }, (err: any) => {
       this.estadoPeticion.error(err);
     });
-  }
-
-  /**
-   * Función que revisa que el usuario autenticado tenga permisos de administrador administrador
-   * Regresa un true o false para habilitar funciones en la vista
-   */
-  esAdmin(): boolean {
-    return this.auth.esAdmin;
   }
 
 }

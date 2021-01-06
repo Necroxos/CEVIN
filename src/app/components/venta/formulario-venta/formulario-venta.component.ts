@@ -1,9 +1,12 @@
+/************************************************************************************************************************************
+ *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
+ ************************************************************************************************************************************/
 // Angular
 import { Component, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 // Servicios
+import { VentaService } from 'src/app/services/venta.service';
 import { ClienteService } from '../../../services/cliente.service';
-import { CilindroService } from 'src/app/services/cilindro.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
 import * as moment from 'moment';
@@ -22,7 +25,10 @@ import { MatSort } from '@angular/material/sort';
 })
 export class FormularioVentaComponent implements OnInit {
 
-  // Variables del componenete
+  /**********************************************************************************************************************************
+   *                                                       VARIABLES                                                                *
+   **********************************************************************************************************************************/
+
   venta = new VentaModel();
   clientes: [ClienteModel];
   cilindros: [CilindroModel];
@@ -40,8 +46,18 @@ export class FormularioVentaComponent implements OnInit {
   // Variable para el stepper
   isLinear = false;
 
+  /**********************************************************************************************************************************
+   *                                                    EJECUCIÓN AL INICIAR                                                        *
+   **********************************************************************************************************************************/
+
+  /**
+   * Inicializa servicios y el Emitter
+   * @param ventaServ Servicio con peticiones HTTP al Back End
+   * @param clienteServ Servicio con peticiones HTTP al Back End
+   * @param estadoPeticion Servicio con funciones de Carga y Error
+   */
   constructor(private clienteServ: ClienteService, private estadoPeticion: PeticionesService,
-              private cilindroServ: CilindroService) {
+              private ventaServ: VentaService) {
     this.registrarVenta = new EventEmitter();
   }
 
@@ -60,6 +76,43 @@ export class FormularioVentaComponent implements OnInit {
   }
 
   /**
+   * Cargamos la información de los posibles clientes
+   */
+  obtenerClientes(): void {
+    this.clienteServ.obtenerTodos().subscribe((res: any) => {
+      this.clientes = res.response;
+    }, (err: any) => {
+      this.estadoPeticion.error(err);
+    });
+  }
+
+  /**
+   * Cargamos la información de los cilindros
+   */
+  obtenerCilindros(): void {
+    this.ventaServ.obtenerCilindros().subscribe((res: any) => {
+      this.cilindros = res.response;
+      this.dataSource = new MatTableDataSource(res.response);
+    }, (err: any) => {
+      console.log(err);
+      this.estadoPeticion.error(err);
+    });
+  }
+
+  /**
+   * Función que busca un elemento (cilindro) en la tabla
+   * @param event Recibe el input del filtro
+   */
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  /**********************************************************************************************************************************
+   *                                                  FUNCIONES DEL COMPONENTE                                                      *
+   **********************************************************************************************************************************/
+
+  /**
    * Angular From tiene la facultad de actualizar la información automáticamente
    * En este caso, la función se encarga de enviar la información que se guarda en el modelo de Venta
    * @param form Escucha al formulario de Angular
@@ -75,30 +128,6 @@ export class FormularioVentaComponent implements OnInit {
       this.registrarVenta.emit(this.venta);
     }
 
-  }
-
-  /**
-   * Cargamos la información de los posibles clientes
-   */
-  obtenerClientes(): void {
-    this.clienteServ.obtenerTodos().subscribe((res: any) => {
-      this.clientes = res.response;
-    }, (err: any) => {
-      this.estadoPeticion.error(err);
-    });
-  }
-
-  /**
-   * Cargamos la información de los cilindros
-   */
-  obtenerCilindros(): void {
-    this.cilindroServ.obtenerTodos().subscribe((res: any) => {
-      this.cilindros = res.response;
-      this.dataSource = new MatTableDataSource(res.response);
-    }, (err: any) => {
-      console.log(err);
-      this.estadoPeticion.error(err);
-    });
   }
 
   /**
@@ -127,19 +156,11 @@ export class FormularioVentaComponent implements OnInit {
    * @param cliente Obtiene el elemento HTML <option> del cliente
    */
   clienteVenta(cliente: any): void {
-    const selectElementText = cliente['options'][cliente['options'].selectedIndex].text;
+    const idx = cliente.options.selectedIndex;
+    const selectElementText = cliente.options[idx].text;
     let text = selectElementText.split('(');
     text = text[1].replace(')', '');
     this.venta.rut_cliente = text;
-  }
-
-  /**
-   * Función que busca un elemento (cilindro) en la tabla
-   * @param event Recibe el input del filtro
-   */
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   /**

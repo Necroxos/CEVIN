@@ -2,7 +2,7 @@
  *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
  ************************************************************************************************************************************/
 // Angular
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 // Servicios
 import { ClienteService } from '../../../services/cliente.service';
 import { PeticionesService } from '../../../services/peticiones.service';
@@ -11,23 +11,25 @@ import Swal from 'sweetalert2';
 // Modelos
 import { ClienteModel } from '../../../models/cliente.model';
 import { DireccionModel } from '../../../models/direccion.model';
+// Enrutador
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-cliente-editar',
-  templateUrl: './cliente-editar.component.html',
-  styleUrls: []
+  selector: 'app-cliente-info',
+  templateUrl: './cliente-info.component.html',
+  styleUrls: ['./cliente-info.component.css']
 })
-export class ClienteEditarComponent implements OnInit {
+export class ClienteInfoComponent implements OnInit {
 
   /**********************************************************************************************************************************
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
   mostrar = false;
-  accionBtn = 'Editar';
   cliente = new ClienteModel();
-  direccion = new DireccionModel();
+  direcciones: DireccionModel[];
+  @Input() clienteCard: ClienteModel;
+  @Input() direccionCard: DireccionModel;
   clienteLocal = this.clienteServ.leerCliente();
-  direccionLocal = this.clienteServ.leerDireccion();
 
   /**********************************************************************************************************************************
    *                                                    EJECUCIÓN AL INICIAR                                                        *
@@ -38,7 +40,10 @@ export class ClienteEditarComponent implements OnInit {
    * @param clienteServ Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-  constructor(private estadoPeticion: PeticionesService, private clienteServ: ClienteService) { }
+  constructor(private estadoPeticion: PeticionesService, private clienteServ: ClienteService,
+              private router: Router) {
+    localStorage.removeItem('direccion');
+  }
 
   /**
    * Leemos el [rut] del locaStorage y buscamos el cliente en la BD para poder editarlo
@@ -47,8 +52,23 @@ export class ClienteEditarComponent implements OnInit {
     if (this.clienteLocal) {
       this.cliente.rut = this.clienteLocal;
       this.cargarInfo();
-    } else {
-      this.estadoPeticion.recargar(['cliente', 'detalle']);
+    } else if (this.clienteCard) {
+      this.cliente = this.clienteCard;
+      this.direcciones = [this.direccionCard];
+    }
+
+    this.checkRuta();
+  }
+
+  /**
+   * Redirigimos si no hay info para mostrar
+   * sólo ocurre en la ruta /cliente/info
+   */
+  checkRuta(): void {
+    if (this.router.url.indexOf('info') > -1) {
+      if (!this.cliente.rut) {
+        this.router.navigate(['cliente', 'detalle']);
+      }
     }
   }
 
@@ -62,7 +82,7 @@ export class ClienteEditarComponent implements OnInit {
       Swal.close();
       this.estadoPeticion.success(res.message, [], 650);
       this.cliente = { ...res.response };
-      this.obtenerDireccion();
+      this.obtenerDirecciones();
     }, (err: any) => {
       this.estadoPeticion.error(err);
     });
@@ -71,35 +91,10 @@ export class ClienteEditarComponent implements OnInit {
   /**
    * Función que se encarga de buscar la última dirección activa
    */
-  obtenerDireccion(): void {
-    if (this.direccionLocal && this.direccionLocal !== 'null') {
-      this.clienteServ.obtenerDireccion(this.direccionLocal).subscribe((res: any) => {
-        this.direccion = { ...res.response };
-        this.mostrar = true;
-      }, (err: any) => {
-        this.estadoPeticion.error(err);
-      });
-    } else {
+  obtenerDirecciones(): void {
+    this.clienteServ.obtenerDirecciones(this.cliente).subscribe((res: any) => {
+      this.direcciones = res.response;
       this.mostrar = true;
-    }
-  }
-
-  /**********************************************************************************************************************************
-   *                                                  FUNCIONES DEL COMPONENTE                                                      *
-   **********************************************************************************************************************************/
-
-  /**
-   * Esta función recibe el cliente enviado por el componente [formulario-cliente]
-   * Y hace uso de los servicio de [UsuarioService] para enviar la información al Back End
-   * Además de usar el servicio de [PeticionesService] para mostrar mensajes de [loading] y [error]
-   * @param cliente Escucha la información emitida por el componente hijo
-   */
-  actualizar(cliente: any): void {
-    this.estadoPeticion.loading();
-
-    this.clienteServ.actualizar(cliente).subscribe(() => {
-      Swal.close();
-      this.estadoPeticion.success('Cliente actualizado con éxito!', ['cliente', 'detalle'], 1000);
     }, (err: any) => {
       this.estadoPeticion.error(err);
     });

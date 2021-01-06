@@ -13,8 +13,14 @@ import Swal from 'sweetalert2';
 })
 export class ClienteNuevoComponent implements OnInit {
 
+  // Variables
   accionBtn = 'Registrar';
 
+  /**
+   * Inicializa servicios
+   * @param clienteServ Servicio con peticiones HTTP al Back End
+   * @param estadoPeticion Servicio con funciones de Carga y Error
+   */
   constructor(private clienteServ: ClienteService, private estadoPeticion: PeticionesService) { }
 
   ngOnInit(): void {}

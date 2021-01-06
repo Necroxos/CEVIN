@@ -45,14 +45,6 @@
                 <td mat-cell *matCellDef="let row"> {{ row.telefono | notNull }} </td>
             </ng-container>
 
-            <!-- Columna del empresa -->
-            <ng-container matColumnDef="empresa">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Empresa </th>
-                <td mat-cell *matCellDef="let row" [ngClass]="{ 'activo': row.empresa, 'inactivo': !row.empresa }">
-                    <mat-icon>{{ row.empresa | boolean }}</mat-icon>
-                </td>
-            </ng-container>
-
             <!-- Columna del razon social -->
             <ng-container matColumnDef="razon_social">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Razón social </th>
@@ -68,10 +60,13 @@
             </ng-container>
 
             <!-- Columna de opciones -->
-            <ng-container matColumnDef="opciones">
+            <ng-container matColumnDef="opciones" stickyEnd>
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Opciones </th>
                 <td mat-cell *matCellDef="let row" #reescalado>
                     <div *ngIf="!tableSmall">
+                        <button mat-icon-button matTooltip="Ver información" (click)="info(row)">
+                            <mat-icon>description</mat-icon>
+                        </button>
                         <button mat-icon-button color="accent" matTooltip="Editar cliente" (click)="editar(row)">
                             <mat-icon>edit</mat-icon>
                           </button>
@@ -85,8 +80,12 @@
                     <div *ngIf="tableSmall">
                         <button mat-icon-button [matMenuTriggerFor]="menu">
                             <mat-icon>more_vert</mat-icon>
-                          </button>
+                        </button>
                         <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="info(row)">
+                                <mat-icon>description</mat-icon>
+                                <span>Ver información</span>
+                            </button>
                             <button mat-menu-item (click)="editar(row)">
                               <mat-icon>edit</mat-icon>
                               <span>Editar cliente</span>

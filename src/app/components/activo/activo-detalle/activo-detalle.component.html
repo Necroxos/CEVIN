@@ -40,6 +40,22 @@
             </ng-container>
 
             <!-- Columna de estado -->
+            <ng-container matColumnDef="stock">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Stock </th>
+                <td mat-cell *matCellDef="let row" [ngClass]="{ 'activo': row.stock, 'inactivo': !row.stock }">
+                    <mat-icon>{{row.stock | boolean}}</mat-icon>
+                </td>
+            </ng-container>
+
+            <!-- Columna de estado -->
+            <ng-container matColumnDef="cargado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cargado </th>
+                <td mat-cell *matCellDef="let row" [ngClass]="{ 'activo': row.cargado, 'inactivo': !row.cargado }">
+                    <mat-icon>{{row.cargado | boolean}}</mat-icon>
+                </td>
+            </ng-container>
+
+            <!-- Columna de estado -->
             <ng-container matColumnDef="activo">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Activo </th>
                 <td mat-cell *matCellDef="let row" [ngClass]="{ 'activo': row.activo, 'inactivo': !row.activo }">
@@ -48,7 +64,7 @@
             </ng-container>
 
             <!-- Columna de opciones -->
-            <ng-container matColumnDef="opciones">
+            <ng-container matColumnDef="opciones" stickyEnd>
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Opciones </th>
                 <td mat-cell *matCellDef="let row" #reescalado>
                     <div *ngIf="!tableSmall">

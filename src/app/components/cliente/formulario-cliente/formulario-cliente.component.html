@@ -71,7 +71,7 @@
                 <!-- Zona -->
                 <div class="col-md-7">
                     <label for="tipo_id"><b>Seleccione la zona</b></label>
-                    <select class="form-control" [(ngModel)]="direccion.zona_id" name="zona_id" required>
+                    <select class="form-control" [(ngModel)]="direccion.zona_id" name="zona_id" (change)="textoZona($event)" required>
                         <option value="undefined" disabled>Seleccione una zona</option>
                         <option *ngFor="let zona of zonas" value="{{zona.id}}"> {{ zona.descripcion }} </option>
                     </select>
@@ -83,22 +83,7 @@
         <!-- Paso 3 -->
         <mat-step>
             <ng-template matStepLabel>Finalizar</ng-template>
-            <div class="mt-3 animated fadeIn fast">
-                <!-- Una Tarjeta para mostrar la información -->
-                <div class="card bg-light mb-3 animated fadeIn">
-                    <div class="card-header">
-                        <h5 class="card-title">Cliente</h5>
-                    </div>
-                    <!-- Información medular, se pueden usar pipes para transformar visualmente la data -->
-                    <div class="card-body">
-                        <p class="card-text"><b>Rut:</b> {{ cliente.rut }}</p>
-                        <p class="card-text"><b>Nombre:</b> {{ cliente.nombre_completo }} </p>
-                        <p class="card-text"><b>Correo:</b> {{ cliente.email }}</p>
-                        <p class="card-text"><b>Teléfono:</b> {{ cliente.telefono }}</p>
-                        <p class="card-text" *ngIf="cliente.empresa"><b>Empresa:</b> {{ cliente.razon_social }}</p>
-                    </div>
-                </div>
-            </div>
+            <app-cliente-info [clienteCard]="cliente" [direccionCard]="direccion"></app-cliente-info>
 
             <div>
                 <p *ngIf="f.submitted && f.controls['rut'].errors" class="text-danger animated fadeIn">Falta el campo de RUT</p>

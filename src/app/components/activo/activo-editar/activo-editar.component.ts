@@ -1,3 +1,6 @@
+/************************************************************************************************************************************
+ *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
+ ************************************************************************************************************************************/
 // Angular
 import { Component } from '@angular/core';
 // Servicios
@@ -15,20 +18,31 @@ import { CilindroModel } from '../../../models/cilindro.model';
 })
 export class ActivoEditarComponent {
 
-  // Variables locales
+  /**********************************************************************************************************************************
+   *                                                       VARIABLES                                                                *
+   **********************************************************************************************************************************/
+
   QrValue: string;
   mostrar = false;
   accionBtn = 'Editar';
   cilindro = new CilindroModel();
   cilindroLocal = this.cilindroServ.leerCilindro();
 
+  /**********************************************************************************************************************************
+   *                                                    EJECUCIÓN AL INICIAR                                                        *
+   **********************************************************************************************************************************/
+
+  /**
+   * Inicializa servicios
+   * @param cilindroServ Servicio con peticiones HTTP al Back End
+   * @param estadoPeticion Servicio con funciones de Carga y Error
+   */
   constructor(private estadoPeticion: PeticionesService, private cilindroServ: CilindroService) { }
 
   /**
    * Si se redirigió desde la lectura de QR (Donde se guarda el code en localStorage) ejecutamos esta función
    * Leemos el [codigo_activo] del locaStorage y buscamos el cilindro en la BD para poder editarlo
    */
-  // tslint:disable-next-line: use-lifecycle-interface
   ngAfterContentInit(): void {
     if (this.cilindroLocal) {
       this.QrValue = this.cilindroLocal;
@@ -56,6 +70,10 @@ export class ActivoEditarComponent {
       this.estadoPeticion.error(err);
     });
   }
+
+  /**********************************************************************************************************************************
+   *                                                  FUNCIONES DEL COMPONENTE                                                      *
+   **********************************************************************************************************************************/
 
   /**
    * Esta función recibe el cilindro enviado por el componente [formulario-cilindro]

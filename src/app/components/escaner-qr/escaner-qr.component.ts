@@ -1,5 +1,5 @@
 // Angular
-import { Component, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, Output, ViewChild, EventEmitter } from '@angular/core';
 // Módulos
 import { QrScannerComponent } from 'angular2-qrscanner';
 
@@ -8,7 +8,11 @@ import { QrScannerComponent } from 'angular2-qrscanner';
   templateUrl: './escaner-qr.component.html',
   styleUrls: ['./escaner-qr.component.css']
 })
-export class EscanerQrComponent implements OnInit {
+export class EscanerQrComponent {
+
+  /**********************************************************************************************************************************
+   *                                                       VARIABLES                                                                *
+   **********************************************************************************************************************************/
 
   // Variables locales para guardar información
   videoDevices: MediaDeviceInfo[] = [];
@@ -26,18 +30,20 @@ export class EscanerQrComponent implements OnInit {
   // Genera el elemento que leerá los códigos
   @ViewChild(QrScannerComponent) qrScannerComponent: QrScannerComponent;
 
-  constructor() {
-    this.mostrarCodigo = new EventEmitter();
-  }
+  /**********************************************************************************************************************************
+   *                                                    EJECUCIÓN AL INICIAR                                                        *
+   **********************************************************************************************************************************/
 
-  ngOnInit(): void {}
+  /**
+   * Inicializa el Emitter para enviar la información al componente padre
+   */
+  constructor() { this.mostrarCodigo = new EventEmitter(); }
 
   /**
    * En el AfterInit inicializaremos los dispositivos de video que estén disponibles en el equipo
    * Luego se seleccionará el primero de ellos (en el Array que se genere) como cámara
    * Y se inicia el escaneo de códigos QR
    */
-  // tslint:disable-next-line: use-lifecycle-interface
   ngAfterViewInit(): void {
 
     this.qrScannerComponent.getMediaDevices().then(devices => {
@@ -62,6 +68,10 @@ export class EscanerQrComponent implements OnInit {
 
     this.lecturaQR();
   }
+
+  /**********************************************************************************************************************************
+   *                                                  FUNCIONES DEL COMPONENTE                                                      *
+   **********************************************************************************************************************************/
 
   /**
    * Función que se encarga de escuchar al escaner y devolver el string leído

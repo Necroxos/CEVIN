@@ -29,19 +29,14 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" [routerLink]="['usuario']">Usuarios</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" [routerLink]="['rol']">Roles</a>
                     <a class="dropdown-item" [routerLink]="['tipo']">Tipo Gas</a>
+                    <a class="dropdown-item" [routerLink]="['propietario']">Propietarios</a>
                 </div>
             </li>
             <li class="nav-item" routerLinkActive="active">
                 <a class="nav-link" [routerLink]="['about']">Quiénes Somos</a>
             </li>
         </ul>
-        <!-- Barra para búsquedas -->
-        <!-- <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Buscar Activo" (keyup)="buscarHeroe(buscarTexto.value)" #buscarTexto>
-            <button (click)="buscarHeroe(buscarTexto.value)" class="btn btn-outline-primary my-2 my-sm-0" type="button">Buscar</button>
-        </form> -->
         <!-- Botones para Login y Logout -->
         <button *ngIf="!verificarValidez()" (click)="ingresar()" class="btn btn-outline-success my-2 my-sm-0" type="button">Ingresar</button>
         <button *ngIf="verificarValidez()" (click)="salir()" class="btn btn-outline-danger my-2 my-sm-0" type="button">Salir</button>

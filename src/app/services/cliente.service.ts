@@ -93,9 +93,22 @@ export class ClienteService {
     return direccionID;
   }
 
+  /**
+   * Función que se encarga de buscar la última dirección válida de un cliente
+   * @param id ID de la última dirección activa
+   */
   obtenerDireccion(id: string): any {
     const headers = this.auth.headers();
     return this.http.get(`${this.url}/direccion/${id}`, { headers });
+  }
+
+  /**
+   * Función que se encarga de buscar la última dirección válida de un cliente
+   * @param id ID de la última dirección activa
+   */
+  obtenerDirecciones(cliente: ClienteModel): any {
+    const headers = this.auth.headers();
+    return this.http.get(`${this.url}/direccion/cliente/${cliente.cliente_id}`, { headers });
   }
 
 }

@@ -46,4 +46,13 @@ export class VentaService {
     const headers = this.auth.headers();
     return this.http.get(`${this.url}/ventas`, { headers });
   }
+
+  /**
+   * Se realiza una petición a la API para obtener todos los activos de tipo [cilindro]
+   * @param cilindro Recibe un modelo de cilindro
+   */
+  obtenerCilindros(): any {
+    const headers = this.auth.headers();
+    return this.http.get(`${this.url}/ventas/cilindros`, { headers });
+  }
 }

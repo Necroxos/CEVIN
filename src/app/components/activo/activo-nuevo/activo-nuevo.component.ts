@@ -15,10 +15,15 @@ import { CilindroModel } from 'src/app/models/cilindro.model';
 
 export class ActivoNuevoComponent {
 
-  // Variables para guardar información de forma local
+  // Variables
   accionBtn = 'Registrar';
 
-  constructor(private cilindroServ: CilindroService, private estadoPeticion: PeticionesService) { }
+  /**
+   * Inicializa servicios
+   * @param cilindroServ Servicio con peticiones HTTP al Back End
+   * @param estadoPeticion Servicio con funciones de Carga y Error
+   */
+   constructor(private cilindroServ: CilindroService, private estadoPeticion: PeticionesService) { }
 
   /**
    * Esta función recibe el cilindro enviado por el componente [formulario-cilindro]

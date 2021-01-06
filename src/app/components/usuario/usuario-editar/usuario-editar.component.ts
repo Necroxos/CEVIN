@@ -1,3 +1,6 @@
+/************************************************************************************************************************************
+ *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
+ ************************************************************************************************************************************/
 // Angular
 import { Component } from '@angular/core';
 // Servicios
@@ -15,18 +18,29 @@ import { UsuarioModel } from '../../../models/usuario.model';
 })
 export class UsuarioEditarComponent {
 
-  // Variables locales
+  /**********************************************************************************************************************************
+   *                                                       VARIABLES                                                                *
+   **********************************************************************************************************************************/
+
   mostrar = false;
   accionBtn = 'Editar';
   usuario = new UsuarioModel();
   usuarioLocal = this.usuarioServ.leerUsuario();
 
+  /**********************************************************************************************************************************
+   *                                                    EJECUCIÓN AL INICIAR                                                        *
+   **********************************************************************************************************************************/
+
+  /**
+   * Inicializa servicios
+   * @param usuarioServ Servicio con peticiones HTTP al Back End
+   * @param estadoPeticion Servicio con funciones de Carga y Error
+   */
   constructor(private estadoPeticion: PeticionesService, private usuarioServ: UsuarioService) { }
 
   /**
    * Leemos el [codigo_activo] del locaStorage y buscamos el usuario en la BD para poder editarlo
    */
-  // tslint:disable-next-line: use-lifecycle-interface
   ngAfterContentInit(): void {
     if (this.usuarioLocal) {
       this.usuario.rut = this.usuarioLocal;
@@ -51,6 +65,10 @@ export class UsuarioEditarComponent {
       this.estadoPeticion.error(err);
     });
   }
+
+  /**********************************************************************************************************************************
+   *                                                  FUNCIONES DEL COMPONENTE                                                      *
+   **********************************************************************************************************************************/
 
   /**
    * Esta función recibe el usuario enviado por el componente [formulario-usuario]

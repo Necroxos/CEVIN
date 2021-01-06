@@ -1,7 +1,6 @@
 // Angular
 import { RouterModule, Routes } from '@angular/router';
 // Componentes a cargar (Vistas)
-import { RolComponent } from './components/rol/rol.component';
 import { HomeComponent } from './components/home/home.component';
 import { TipoComponent } from './components/tipo/tipo.component';
 import { LoginComponent } from './components/login/login.component';
@@ -45,7 +44,6 @@ const APP_ROUTES: Routes = [
     canActivate: [AuthGuard],
     children: USUARIO_ROUTES
   },
-  { path: 'rol', component: RolComponent, canActivate: [AuthGuard] },
   { path: 'tipo', component: TipoComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: '**', pathMatch: 'full', redirectTo: 'home' },

@@ -1,3 +1,6 @@
+/************************************************************************************************************************************
+ *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
+ ************************************************************************************************************************************/
 // Angular
 import { Component, HostListener, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -21,6 +24,10 @@ import { UsuarioModel } from '../../../models/usuario.model';
 })
 export class UsuarioDetalleComponent implements OnInit {
 
+  /**********************************************************************************************************************************
+   *                                                       VARIABLES                                                                *
+   **********************************************************************************************************************************/
+
   displayedColumns: string[] = ['usuario_id', 'nombres', 'apellidos', 'rut', 'email', 'rol', 'activo', 'opciones'];
 
   dataSource: MatTableDataSource<UsuarioModel>;
@@ -33,6 +40,10 @@ export class UsuarioDetalleComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  /**********************************************************************************************************************************
+   *                                                    EJECUCIÓN AL INICIAR                                                        *
+   **********************************************************************************************************************************/
+
   @HostListener('window:resize', ['$event']) onResize(event): void {
     // guard against resize before view is rendered
     const tmpWidth = window.innerWidth;
@@ -40,14 +51,27 @@ export class UsuarioDetalleComponent implements OnInit {
     else { this.tableSmall = false; }
   }
 
+  /**
+   * Inicializa módulos y servicios
+   * @param auth Servicio de autenticación
+   * @param router Módulo que enruta y redirecciona
+   * @param usuarioServ Servicio con peticiones HTTP al Back End
+   * @param estadoPeticion Servicio con funciones de Carga y Error
+   */
   constructor(private usuarioServ: UsuarioService, private router: Router,
               private auth: AuthService, private estadoPeticion: PeticionesService) { }
 
+  /**
+   * Escucha el tamaño de escala de la ventana
+   */
   ngOnInit(): void {
     this.onResize(0);
   }
 
-  // tslint:disable-next-line: use-lifecycle-interface
+  /**
+   * Obtenemos la información del Back End y la usamos en el mat-table
+   * también verificamos los privilegios del usuario
+   */
   ngAfterViewInit(): void {
     this.usuarioServ.obtenerTodos().subscribe((res: any) => {
       this.dataSource = new MatTableDataSource(res.response);
@@ -78,6 +102,18 @@ export class UsuarioDetalleComponent implements OnInit {
   }
 
   /**
+   * Función que revisa que el usuario autenticado tenga permisos de administrador administrador
+   * Regresa un true o false para habilitar funciones en la vista
+   */
+  esAdmin(): boolean {
+    return this.auth.esAdmin;
+  }
+
+  /**********************************************************************************************************************************
+   *                                                  FUNCIONES DEL COMPONENTE                                                      *
+   **********************************************************************************************************************************/
+
+  /**
    * Función que se encarga de redirigir a la vista de Editar
    * @param evento Recibe el objeto Cilindro de la fila
    */
@@ -98,14 +134,6 @@ export class UsuarioDetalleComponent implements OnInit {
     }, (err: any) => {
       this.estadoPeticion.error(err);
     });
-  }
-
-  /**
-   * Función que revisa que el usuario autenticado tenga permisos de administrador administrador
-   * Regresa un true o false para habilitar funciones en la vista
-   */
-  esAdmin(): boolean {
-    return this.auth.esAdmin;
   }
 
 }

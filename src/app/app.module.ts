@@ -52,8 +52,8 @@ import { VentaNuevoComponent } from './components/venta/venta-nuevo/venta-nuevo.
 import { VentaDetalleComponent } from './components/venta/venta-detalle/venta-detalle.component';
 import { FormularioVentaComponent } from './components/venta/formulario-venta/formulario-venta.component';
 // Otros
-import { RolComponent } from './components/rol/rol.component';
 import { TipoComponent } from './components/tipo/tipo.component';
+import { ClienteInfoComponent } from './components/cliente/cliente-info/cliente-info.component';
 
 @NgModule({
   declarations: [
@@ -88,11 +88,11 @@ import { TipoComponent } from './components/tipo/tipo.component';
     VentaDetalleComponent,
     FormularioVentaComponent,
     // Otros
-    RolComponent,
     TipoComponent,
     // Pipes
     BooleanPipe,
-    NotNullPipe
+    NotNullPipe,
+    ClienteInfoComponent
   ],
   imports: [
     BrowserModule,

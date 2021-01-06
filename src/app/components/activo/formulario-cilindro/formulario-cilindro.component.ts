@@ -1,3 +1,6 @@
+/************************************************************************************************************************************
+ *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
+ ************************************************************************************************************************************/
 // Angular
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -19,7 +22,10 @@ import { CilindroModel } from '../../../models/cilindro.model';
 })
 export class FormularioCilindroComponent implements OnInit {
 
-  // Variables del componenete
+  /**********************************************************************************************************************************
+   *                                                       VARIABLES                                                                *
+   **********************************************************************************************************************************/
+
   Width = 200;
   QrValue = 'Código QR de ejemplo';
   esconder = true;
@@ -27,13 +33,24 @@ export class FormularioCilindroComponent implements OnInit {
   gases: [EstandarModel];
   propietarios: [EstandarModel];
   cilindro = new CilindroModel();
-  // Variables recibidas de componentes hijos
+  // Variables recibidas del componente padre
   @Input() accionBtn: string;
   @Input() CilindroEdit: CilindroModel;
-  // Variables enviadas a componentes hijos
+  // Variables enviadas al componente padre
   @Output() registrarCilindro: EventEmitter<CilindroModel>;
 
-  constructor(private estadoPeticion: PeticionesService, private gasServ: TipoGasService, private propietarioServ: PropietarioService) {
+  /**********************************************************************************************************************************
+   *                                                    EJECUCIÓN AL INICIAR                                                        *
+   **********************************************************************************************************************************/
+
+  /**
+   * Inicializa servicios
+   * @param gasServ Servicio con peticiones HTTP al Back End
+   * @param estadoPeticion Servicio con funciones de Carga y Error
+   * @param propietarioServ Servicio con peticiones HTTP al Back End
+   */
+  constructor(private estadoPeticion: PeticionesService, private gasServ: TipoGasService,
+              private propietarioServ: PropietarioService) {
     this.registrarCilindro = new EventEmitter();
   }
 
@@ -45,6 +62,45 @@ export class FormularioCilindroComponent implements OnInit {
     this.obtenerTipoGases();
     this.obtenerPropietarios();
   }
+
+  /**
+   * Función que se encarga de recibir un cilindro en caso de que se desee actualizar la información
+   * Sólo se ejecuta si se le otorga el cilindro que viene del componente de [activo-editar]
+   */
+  ngAfterContentInit(): void {
+    if (this.CilindroEdit) {
+      this.cilindro = this.CilindroEdit;
+      this.cilindro.mantencion = moment(this.CilindroEdit.fecha_mantencion, 'DD/MM/YYYY');
+    } else {
+      this.cilindro = new CilindroModel();
+    }
+  }
+
+  /**
+   * Cargamos la información de los tipos de gases
+   */
+  obtenerTipoGases(): void {
+    this.gasServ.obtenerTodos().subscribe((res: any) => {
+      this.gases = res.response;
+    }, (err: any) => {
+      this.estadoPeticion.error(err);
+    });
+  }
+
+  /**
+   * Cargamos la información de los posibles propietarios
+   */
+  obtenerPropietarios(): void {
+    this.propietarioServ.obtenerTodos().subscribe((res: any) => {
+      this.propietarios = res.response;
+    }, (err: any) => {
+      this.estadoPeticion.error(err);
+    });
+  }
+
+  /**********************************************************************************************************************************
+   *                                                  FUNCIONES DEL COMPONENTE                                                      *
+   **********************************************************************************************************************************/
 
   /**
    * Función que transforma un string a un código QR
@@ -82,47 +138,11 @@ export class FormularioCilindroComponent implements OnInit {
   }
 
   /**
-   * Función que se encarga de recibir un cilindro en caso de que se desee actualizar la información
-   * Sólo se ejecuta si se le otorga el cilindro que viene del componente de [activo-editar]
-   */
-  // tslint:disable-next-line: use-lifecycle-interface
-  ngAfterContentInit(): void {
-    if (this.CilindroEdit) {
-      this.cilindro = this.CilindroEdit;
-      this.cilindro.mantencion = moment(this.CilindroEdit.fecha_mantencion, 'DD/MM/YYYY');
-    } else {
-      this.cilindro = new CilindroModel();
-    }
-  }
-
-  /**
    * Función que se encarga de limpiar la fecha de mantención
    */
   limpiarFecha(): void {
     this.cilindro.fecha_mantencion = null;
     this.cilindro.mantencion = null;
-  }
-
-  /**
-   * Cargamos la información de los tipos de gases
-   */
-  obtenerTipoGases(): void {
-    this.gasServ.obtenerTodos().subscribe((res: any) => {
-      this.gases = res.response;
-    }, (err: any) => {
-      this.estadoPeticion.error(err);
-    });
-  }
-
-  /**
-   * Cargamos la información de los posibles propietarios
-   */
-  obtenerPropietarios(): void {
-    this.propietarioServ.obtenerTodos().subscribe((res: any) => {
-      this.propietarios = res.response;
-    }, (err: any) => {
-      this.estadoPeticion.error(err);
-    });
   }
 
 }

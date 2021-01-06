@@ -1,3 +1,6 @@
+/************************************************************************************************************************************
+ *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
+ ************************************************************************************************************************************/
 // Angular
 import { Component, HostListener, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -21,7 +24,11 @@ import { CilindroModel } from 'src/app/models/cilindro.model';
 })
 export class ActivoDetalleComponent implements OnInit {
 
-  displayedColumns: string[] = ['cilindro_id', 'codigo_activo', 'fecha_mantencion', 'tipo_gas', 'propietario', 'activo', 'opciones'];
+  /**********************************************************************************************************************************
+   *                                                       VARIABLES                                                                *
+   **********************************************************************************************************************************/
+
+  displayedColumns: string[] = ['cilindro_id', 'codigo_activo', 'fecha_mantencion', 'tipo_gas', 'propietario', 'stock', 'cargado', 'activo', 'opciones'];
 
   dataSource: MatTableDataSource<CilindroModel>;
   isAdmin = false;
@@ -33,21 +40,38 @@ export class ActivoDetalleComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  @HostListener('window:resize', ['$event']) onResize(event): void {
+  /**********************************************************************************************************************************
+   *                                                    EJECUCIÓN AL INICIAR                                                        *
+   **********************************************************************************************************************************/
+
+  @HostListener('window:resize', ['$event']) onResize(event: any): void {
     // guard against resize before view is rendered
     const tmpWidth = window.innerWidth;
-    if (tmpWidth < 992) { this.tableSmall = true; }
+    if (tmpWidth < 1200) { this.tableSmall = true; }
     else { this.tableSmall = false; }
   }
 
+  /**
+   * Inicializa módulos y servicios
+   * @param auth Servicio de autenticación
+   * @param router Módulo que enruta y redirecciona
+   * @param cilindroServ Servicio con peticiones HTTP al Back End
+   * @param estadoPeticion Servicio con funciones de Carga y Error
+   */
   constructor(private cilindroServ: CilindroService, private router: Router,
               private auth: AuthService, private estadoPeticion: PeticionesService) { }
 
+  /**
+   * Escucha el tamaño de escala de la ventana
+   */
   ngOnInit(): void {
     this.onResize(0);
   }
 
-  // tslint:disable-next-line: use-lifecycle-interface
+  /**
+   * Obtenemos la información del Back End y la usamos en el mat-table
+   * también verificamos los privilegios del usuario
+   */
   ngAfterViewInit(): void {
     this.cilindroServ.obtenerTodos().subscribe((res: any) => {
       this.dataSource = new MatTableDataSource(res.response);
@@ -65,6 +89,14 @@ export class ActivoDetalleComponent implements OnInit {
   }
 
   /**
+   * Función que revisa que el usuario autenticado tenga permisos de administrador administrador
+   * Regresa un true o false para habilitar funciones en la vista
+   */
+  esAdmin(): boolean {
+    return this.auth.esAdmin;
+  }
+
+  /**
    * Filtro para el mat-table
    * @param event Recibe el texto escrito en el buscador
    */
@@ -76,6 +108,10 @@ export class ActivoDetalleComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  /**********************************************************************************************************************************
+   *                                                  FUNCIONES DEL COMPONENTE                                                      *
+   **********************************************************************************************************************************/
 
   /**
    * Función que se encarga de imprimir la etiqueta del cilindro con el código QR
@@ -106,14 +142,6 @@ export class ActivoDetalleComponent implements OnInit {
     }, (err: any) => {
       this.estadoPeticion.error(err);
     });
-  }
-
-  /**
-   * Función que revisa que el usuario autenticado tenga permisos de administrador administrador
-   * Regresa un true o false para habilitar funciones en la vista
-   */
-  esAdmin(): boolean {
-    return this.auth.esAdmin;
   }
 
 }
