@@ -29,6 +29,7 @@ export class FormularioCilindroComponent implements OnInit {
   Width = 200;
   QrValue = 'Código QR de ejemplo';
   esconder = true;
+  seccionEdit = false;
   maxDate = new Date();
   gases: [EstandarModel];
   propietarios: [EstandarModel];
@@ -68,9 +69,10 @@ export class FormularioCilindroComponent implements OnInit {
    * Sólo se ejecuta si se le otorga el cilindro que viene del componente de [activo-editar]
    */
   ngAfterContentInit(): void {
-    if (this.CilindroEdit) {
+    if (this.accionBtn === 'Editar') {
       this.cilindro = this.CilindroEdit;
       this.cilindro.mantencion = moment(this.CilindroEdit.fecha_mantencion, 'DD/MM/YYYY');
+      this.seccionEdit = true;
     } else {
       this.cilindro = new CilindroModel();
     }

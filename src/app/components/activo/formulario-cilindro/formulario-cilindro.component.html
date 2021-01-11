@@ -38,6 +38,18 @@
         </select>
         <span *ngIf="f.submitted && f.controls['propietario_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
     </div>
+    <!-- Sección que se muestra sólo en el editable -->
+    <div class="form-group" *ngIf="seccionEdit">
+        <label><b>Stock y Carga</b></label>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="stock" [(ngModel)]="cilindro.stock" [ngModelOptions]="{standalone: true}">
+            <label class="custom-control-label" for="stock">Está en Stock?</label>
+        </div>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="cargado" [(ngModel)]="cilindro.cargado" [ngModelOptions]="{standalone: true}">
+            <label class="custom-control-label" for="cargado">Está cargado?</label>
+        </div>
+    </div>
     <!-- Input código -->
     <div class="form-group">
         <label><b>Escriba el número de serie del cilindro</b></label>

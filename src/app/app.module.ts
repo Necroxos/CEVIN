@@ -54,6 +54,8 @@ import { FormularioVentaComponent } from './components/venta/formulario-venta/fo
 // Otros
 import { TipoComponent } from './components/tipo/tipo.component';
 import { ClienteInfoComponent } from './components/cliente/cliente-info/cliente-info.component';
+import { PropietarioComponent } from './components/propietario/propietario.component';
+import { FormularioTipoComponent } from './components/tipo/formulario-tipo/formulario-tipo.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +94,9 @@ import { ClienteInfoComponent } from './components/cliente/cliente-info/cliente-
     // Pipes
     BooleanPipe,
     NotNullPipe,
-    ClienteInfoComponent
+    ClienteInfoComponent,
+    PropietarioComponent,
+    FormularioTipoComponent
   ],
   imports: [
     BrowserModule,

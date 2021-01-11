@@ -1,0 +1,14 @@
+<h1 mat-dialog-title class="text-center">{{ data.titulo }}</h1>
+<div mat-dialog-content>
+    <div class="row">
+        <mat-form-field class="col-md-12">
+            <mat-label>Descripción</mat-label>
+            <input matInput [(ngModel)]="tipo.descripcion">
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions align="center">
+    <button mat-raised-button color="warn" (click)="onNoClick()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="registrar()" *ngIf="nuevo"><mat-icon>save</mat-icon>Guardar</button>
+    <button mat-raised-button color="accent" (click)="editar()" *ngIf="!nuevo"><mat-icon>edit</mat-icon>Editar</button>
+</div>

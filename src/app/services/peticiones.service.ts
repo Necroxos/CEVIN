@@ -56,6 +56,7 @@ export class PeticionesService {
   private tituloError(err: any): string {
     switch (err.status) {
       case 0: return 'No hay respuesta del servidor';
+      case 403: return 'Proceso fallido';
       case 404: return 'No existe la ruta';
       case 500: return 'Error interno del servidor';
       default: return err.error.response;
@@ -78,7 +79,7 @@ export class PeticionesService {
 
   // Obtenemos el valor duplicado
   private valorDuplicado(err: any): string {
-    const arreglo = err['message'].split('(');
+    const arreglo = err.message.split('(');
     let valor = arreglo[1].replace(').', '');
     valor = valor.replace(this.prefijoCodigo, '');
     return valor;
@@ -86,7 +87,7 @@ export class PeticionesService {
 
   // Obtenemos el valor nulo
   private valorNulo(err: any): string {
-    const arreglo = err['message'].split("'");
+    const arreglo = err.message.split("'");
     const valor = arreglo[1];
     return valor;
   }
@@ -96,7 +97,7 @@ export class PeticionesService {
    * Observación: el nombre viene del script de creación de la base de datos
    */
   private valorFK(err: any): string {
-    const arreglo = err['message'].split('"');
+    const arreglo = err.message.split('"');
     const valor = arreglo[1];
     return valor;
   }

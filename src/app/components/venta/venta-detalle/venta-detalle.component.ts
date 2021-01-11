@@ -3,7 +3,6 @@
  ************************************************************************************************************************************/
 // Angular
 import { Component, HostListener, ViewChild, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 // Angular Material
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';

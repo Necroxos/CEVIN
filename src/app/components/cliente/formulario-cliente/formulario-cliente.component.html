@@ -62,7 +62,7 @@
                 <!-- Comuna -->
                 <div class="col-md-4">
                     <label for="tipo_id"><b>Seleccione la comuna</b></label>
-                    <select class="form-control" [(ngModel)]="direccion.comuna_id" name="comuna_id" (change)="obtenerZonas($event.target.value)" required>
+                    <select class="form-control" [(ngModel)]="direccion.comuna_id" name="comuna_id" (change)="obtenerZonas($event.target.value); textoComuna($event);" required>
                         <option value="undefined" disabled>Seleccione una comuna</option>
                         <option *ngFor="let comuna of comunas" value="{{comuna.id}}"> {{ comuna.descripcion }} </option>
                     </select>

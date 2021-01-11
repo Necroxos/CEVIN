@@ -15,7 +15,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
 
   // URL donde corre la API
-  readonly url = 'http://192.168.0.9:3000';
+  readonly url = 'http://192.168.0.12:3000';
 
   // Guardamos el token del usuario
   userToken: string;
@@ -49,7 +49,7 @@ export class AuthService {
       usuario
     ).pipe(
       map((resp: any) => {
-        this.guardarToken(resp['token']);
+        this.guardarToken(resp.token);
         this.actualializar();
         return resp;
       }, (err: any) => {
