@@ -42,6 +42,7 @@ import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle/us
 import { FormularioUsuarioComponent } from './components/usuario/formulario-usuario/formulario-usuario.component';
 // Cliente
 import { ClienteComponent } from './components/cliente/cliente.component';
+import { ClienteInfoComponent } from './components/cliente/cliente-info/cliente-info.component';
 import { ClienteNuevoComponent } from './components/cliente/cliente-nuevo/cliente-nuevo.component';
 import { ClienteEditarComponent } from './components/cliente/cliente-editar/cliente-editar.component';
 import { ClienteDetalleComponent } from './components/cliente/cliente-detalle/cliente-detalle.component';
@@ -51,11 +52,15 @@ import { VentaComponent } from './components/venta/venta.component';
 import { VentaNuevoComponent } from './components/venta/venta-nuevo/venta-nuevo.component';
 import { VentaDetalleComponent } from './components/venta/venta-detalle/venta-detalle.component';
 import { FormularioVentaComponent } from './components/venta/formulario-venta/formulario-venta.component';
-// Otros
-import { TipoComponent } from './components/tipo/tipo.component';
-import { ClienteInfoComponent } from './components/cliente/cliente-info/cliente-info.component';
-import { PropietarioComponent } from './components/propietario/propietario.component';
-import { FormularioTipoComponent } from './components/tipo/formulario-tipo/formulario-tipo.component';
+// Datos Simples
+import { TipoComponent } from './components/datos-simples/tipo/tipo.component';
+import { FormularioTipoComponent } from './components/datos-simples/tipo/formulario-tipo/formulario-tipo.component';
+import { PropietarioComponent } from './components/datos-simples/propietario/propietario.component';
+import { FormularioPropietarioComponent } from './components/datos-simples/propietario/formulario-propietario/formulario-propietario.component';
+import { ComunaComponent } from './components/datos-simples/comuna/comuna.component';
+import { FormularioComunaComponent } from './components/datos-simples/comuna/formulario-comuna/formulario-comuna.component';
+import { ZonaComponent } from './components/datos-simples/zona/zona.component';
+import { FormularioZonaComponent } from './components/datos-simples/zona/formulario-zona/formulario-zona.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +101,12 @@ import { FormularioTipoComponent } from './components/tipo/formulario-tipo/formu
     NotNullPipe,
     ClienteInfoComponent,
     PropietarioComponent,
-    FormularioTipoComponent
+    FormularioTipoComponent,
+    FormularioPropietarioComponent,
+    ComunaComponent,
+    FormularioComunaComponent,
+    ZonaComponent,
+    FormularioZonaComponent
   ],
   imports: [
     BrowserModule,

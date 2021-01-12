@@ -82,7 +82,7 @@ export class FormularioCilindroComponent implements OnInit {
    * Cargamos la información de los tipos de gases
    */
   obtenerTipoGases(): void {
-    this.gasServ.obtenerTodos().subscribe((res: any) => {
+    this.gasServ.obtenerActivos().subscribe((res: any) => {
       this.gases = res.response;
     }, (err: any) => {
       this.estadoPeticion.error(err);
@@ -93,7 +93,7 @@ export class FormularioCilindroComponent implements OnInit {
    * Cargamos la información de los posibles propietarios
    */
   obtenerPropietarios(): void {
-    this.propietarioServ.obtenerTodos().subscribe((res: any) => {
+    this.propietarioServ.obtenerActivos().subscribe((res: any) => {
       this.propietarios = res.response;
     }, (err: any) => {
       this.estadoPeticion.error(err);

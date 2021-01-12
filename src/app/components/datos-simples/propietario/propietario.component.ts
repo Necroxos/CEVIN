@@ -4,38 +4,38 @@
 // Angular
 import { Component, HostListener, ViewChild, OnInit } from '@angular/core';
 // Componentes
-import { FormularioTipoComponent } from './formulario-tipo/formulario-tipo.component';
+import { FormularioPropietarioComponent } from './formulario-propietario/formulario-propietario.component';
 // Angular Material
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 // Servicios
-import { AuthService } from '../../services/auth.service';
-import { TipoGasService } from '../../services/tipo.service';
-import { PeticionesService } from '../../services/peticiones.service';
+import { AuthService } from '../../../services/auth.service';
+import { PeticionesService } from '../../../services/peticiones.service';
+import { PropietarioService } from '../../../services/propietario.service';
 // Modelos
-import { EstandarModel } from '../../models/estandar.model';
+import { EstandarModel } from '../../../models/estandar.model';
 // Módulos
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-tipo',
-  templateUrl: './tipo.component.html',
-  styleUrls: ['./tipo.component.css']
+  selector: 'app-propietario',
+  templateUrl: './propietario.component.html',
+  styleUrls: ['./propietario.component.css']
 })
-export class TipoComponent implements OnInit {
+export class PropietarioComponent implements OnInit {
 
   /**********************************************************************************************************************************
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
 
-  displayedColumns: string[] = ['correlativo', 'tipo', 'activo', 'opciones'];
+  displayedColumns: string[] = ['correlativo', 'descripcion', 'activo', 'opciones'];
 
   cilindrosDevueltos = 0;
   cilindrosRestantes = 0;
 
-  tipo = new EstandarModel();
+  propietario = new EstandarModel();
 
   isAdmin = false;
   tableSmall = false;
@@ -61,10 +61,10 @@ export class TipoComponent implements OnInit {
   /**
    * Inicializa servicios
    * @param auth Servicio de autenticación
-   * @param tipoServ Servicio con peticiones HTTP al Back End
+   * @param servicio Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-  constructor(private tipoServ: TipoGasService, private estadoPeticion: PeticionesService,
+  constructor(private servicio: PropietarioService, private estadoPeticion: PeticionesService,
               private auth: AuthService, public dialog: MatDialog) { }
 
   /**
@@ -79,7 +79,7 @@ export class TipoComponent implements OnInit {
    * también verificamos los privilegios del usuario
    */
   ngAfterViewInit(): void {
-    this.tipoServ.obtenerTodos().subscribe((res: any) => {
+    this.servicio.obtenerTodos().subscribe((res: any) => {
       this.dataSource = new MatTableDataSource(res.response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -121,34 +121,34 @@ export class TipoComponent implements OnInit {
 
   /**
    * Función que se encarga de redirigir a la vista de Editar
-   * @param evento Recibe el objeto Cilindro de la fila
+   * @param evento Recibe el objeto Estandar de la fila
    */
   editar(evento: EstandarModel): void {
-    this.dialog.open(FormularioTipoComponent, {
+    this.dialog.open(FormularioPropietarioComponent, {
       width: '40vh',
-      data: {titulo: 'Editar un tipo de gas', descripcion: evento.descripcion, id: evento.id}
+      data: {titulo: 'Editar al propietario', descripcion: evento.descripcion, id: evento.id}
     });
   }
 
   /**
-   * Función que cambia el estado de un cilindro a desactivado en la base de datos
+   * Función que cambia el estado de activo para un propietario en la base de datos
    */
   cambiarEstado(evento: EstandarModel): void {
     this.estadoPeticion.loading();
     evento.activo = !evento.activo;
 
-    this.tipoServ.cambiarEstado(evento).subscribe(() => {
+    this.servicio.cambiarEstado(evento).subscribe(() => {
       Swal.close();
-      this.estadoPeticion.success('Nuevo tipo de gas ingresado con éxito!', ['tipo'], 1000);
+      this.estadoPeticion.success('Estado cambiado', ['propietario'], 1000);
     }, (err: any) => {
       this.estadoPeticion.error(err);
     });
   }
 
   openDialog(): void {
-    this.dialog.open(FormularioTipoComponent, {
+    this.dialog.open(FormularioPropietarioComponent, {
       width: '40vh',
-      data: {titulo: 'Ingresar un nuevo tipo de gas'}
+      data: {titulo: 'Ingresar un nuevo propietario'}
     });
   }
 

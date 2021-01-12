@@ -28,8 +28,17 @@ export class TipoGasService {
   }
 
   /**
+   * Se realiza una petición a la API para obtener todos los [tipoGas] de la base de datos
+   * que posean [activo = true]
+   */
+  obtenerActivos(): any {
+    const headers = this.auth.headers();
+    return this.http.get(`${this.url}/gases/activos`, { headers });
+  }
+
+  /**
    * Manda la data a la API para registrar el tipo en la base de datos
-   * @param cilindro Recibe un modelo de tipo
+   * @param tipo Recibe un modelo de estándar
    */
   registrar(tipo: EstandarModel): any {
     const headers = this.auth.headers();
@@ -38,7 +47,7 @@ export class TipoGasService {
 
   /**
    * Manda la data a la API para actualizar el tipo de gas en la base de datos
-   * @param tipo Recibe un modelo estandar
+   * @param tipo Recibe un modelo estándar
    */
   actualizar(tipo: EstandarModel): any {
     const headers = this.auth.headers();
@@ -47,7 +56,7 @@ export class TipoGasService {
 
   /**
    * Manda la data a la API para actualizar el estado de un tipo de gas en la base de datos
-   * @param tipo Recibe un modelo de estandar
+   * @param tipo Recibe un modelo de estándar
    */
   cambiarEstado(tipo: EstandarModel): any {
     const headers = this.auth.headers();

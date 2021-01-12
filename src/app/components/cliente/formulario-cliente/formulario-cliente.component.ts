@@ -87,7 +87,7 @@ export class FormularioClienteComponent implements OnInit {
    * Función que busca todas las comunas disponibles en la base de datos
    */
   obtenerComunas(): void {
-    this.comunaServ.obtenerTodos().subscribe((res: any) => {
+    this.comunaServ.obtenerActivos().subscribe((res: any) => {
       this.comunas = res.response;
     }, (err: any) => {
       this.estadoPeticion.error(err);

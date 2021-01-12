@@ -2,13 +2,16 @@
 import { RouterModule, Routes } from '@angular/router';
 // Componentes a cargar (Vistas)
 import { HomeComponent } from './components/home/home.component';
-import { TipoComponent } from './components/tipo/tipo.component';
 import { LoginComponent } from './components/login/login.component';
 import { AboutComponent } from './components/about/about.component';
 import { VentaComponent } from './components/venta/venta.component';
 import { ActivoComponent } from './components/activo/activo.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
 import { ClienteComponent } from './components/cliente/cliente.component';
+import { TipoComponent } from './components/datos-simples/tipo/tipo.component';
+import { ZonaComponent } from './components/datos-simples/zona/zona.component';
+import { ComunaComponent } from './components/datos-simples/comuna/comuna.component';
+import { PropietarioComponent } from './components/datos-simples/propietario/propietario.component';
 // Rutas hijas
 import { VENTA_ROUTES } from './components/venta/venta.routes';
 import { ACTIVO_ROUTES } from './components/activo/activo.routes';
@@ -45,6 +48,9 @@ const APP_ROUTES: Routes = [
     children: USUARIO_ROUTES
   },
   { path: 'tipo', component: TipoComponent, canActivate: [AuthGuard] },
+  { path: 'zona', component: ZonaComponent, canActivate: [AuthGuard] },
+  { path: 'comuna', component: ComunaComponent, canActivate: [AuthGuard] },
+  { path: 'propietario', component: PropietarioComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: '**', pathMatch: 'full', redirectTo: 'home' },
   { path: '', pathMatch: 'full', redirectTo: 'login' }

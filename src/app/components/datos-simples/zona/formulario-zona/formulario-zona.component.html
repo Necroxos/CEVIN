@@ -1,0 +1,27 @@
+<h1 mat-dialog-title class="text-center">{{ data.titulo }}</h1>
+<div mat-dialog-content>
+    <form class="validate-form m-1" (ngSubmit)="registrar( f )" #f="ngForm">
+        <!-- Input rut -->
+        <div class="form-group col-md-12">
+            <label><b>Descripción:</b></label>
+            <input class="form-control" type="text" [(ngModel)]="zona.descripcion" name="descripcion" placeholder="Nombre de la zona" required>
+            <span *ngIf="f.submitted && f.controls['descripcion'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+        </div>
+        <!-- Comuna -->
+        <div class="col-md-12">
+            <label for="tipo_id"><b>Seleccione la comuna</b></label>
+            <select class="form-control" [(ngModel)]="zona.comuna_id" name="comuna_id" [value]="zona.comuna_id" required>
+                <option value="undefined" disabled>Seleccione una comuna</option>
+                <option *ngFor="let comuna of comunas" value="{{comuna.id}}"> {{ comuna.descripcion }} </option>
+            </select>
+            <span *ngIf="f.submitted && f.controls['comuna_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+        </div>
+        <br>
+        <div mat-dialog-actions align="center">
+            <button mat-raised-button color="warn" type="button" (click)="onNoClick()">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" *ngIf="nuevo"><mat-icon>save</mat-icon>Guardar</button>
+            <button mat-raised-button color="accent" type="button" (click)="editar()" *ngIf="!nuevo"><mat-icon>edit</mat-icon>Editar</button>
+        </div>
+        <br>
+    </form>
+</div>

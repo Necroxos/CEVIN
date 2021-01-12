@@ -10,19 +10,19 @@
     <!-- Contenedor de los links de direccionamiento -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item" routerLinkActive="active">
+            <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" routerLinkActive="active">
                 <a class="nav-link" [routerLink]="['home']">Inicio</a>
             </li>
-            <li class="nav-item" routerLinkActive="active" *ngIf="verificarValidez()">
+            <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" routerLinkActive="active" *ngIf="verificarValidez()">
                 <a class="nav-link" [routerLink]="['activo']">Activos</a>
             </li>
-            <li class="nav-item" routerLinkActive="active" *ngIf="verificarValidez()">
+            <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" routerLinkActive="active" *ngIf="verificarValidez()">
                 <a class="nav-link" [routerLink]="['cliente']">Clientes</a>
             </li>
-            <li class="nav-item" routerLinkActive="active" *ngIf="verificarValidez()">
+            <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" routerLinkActive="active" *ngIf="verificarValidez()">
                 <a class="nav-link" [routerLink]="['venta']">Ventas</a>
             </li>
-            <li class="nav-item dropdown" routerLinkActive="active" *ngIf="verificarValidez() && verficarAdmin()">
+            <li class="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show" routerLinkActive="active" *ngIf="verificarValidez() && verficarAdmin()">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Administración
                 </a>
@@ -31,9 +31,12 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" [routerLink]="['tipo']">Tipo Gas</a>
                     <a class="dropdown-item" [routerLink]="['propietario']">Propietarios</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" [routerLink]="['zona']">Zonas</a>
+                    <a class="dropdown-item" [routerLink]="['comuna']">Comunas</a>
                 </div>
             </li>
-            <li class="nav-item" routerLinkActive="active">
+            <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" routerLinkActive="active">
                 <a class="nav-link" [routerLink]="['about']">Quiénes Somos</a>
             </li>
         </ul>
