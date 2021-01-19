@@ -1,0 +1,7 @@
+<div class="card animated fadeIn">
+    <h1 class="card-header text-center"> Editar Venta </h1>
+    <div class="card-body" *ngIf="mostrar">
+        <app-formulario-venta (registrarVenta)="editar($event)" [accionBtn]="accionBtn" [VentaEdit]="venta" [CilindrosEdit]="cilindros"></app-formulario-venta>
+    </div>
+</div>
+<br>

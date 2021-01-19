@@ -48,7 +48,7 @@ export class PeticionesService {
       text: mensaje,
       willClose: () => {
         if (ruta.length > 0) { this.recargar(ruta); }
-    }
+      }
     });
   }
 

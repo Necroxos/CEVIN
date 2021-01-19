@@ -49,8 +49,11 @@ import { ClienteDetalleComponent } from './components/cliente/cliente-detalle/cl
 import { FormularioClienteComponent } from './components/cliente/formulario-cliente/formulario-cliente.component';
 // Venta
 import { VentaComponent } from './components/venta/venta.component';
+import { VentaInfoComponent } from './components/venta/venta-info/venta-info.component';
 import { VentaNuevoComponent } from './components/venta/venta-nuevo/venta-nuevo.component';
+import { VentaEditarComponent } from './components/venta/venta-editar/venta-editar.component';
 import { VentaDetalleComponent } from './components/venta/venta-detalle/venta-detalle.component';
+import { FechaRetornoComponent } from './components/venta/fecha-retorno/fecha-retorno.component';
 import { FormularioVentaComponent } from './components/venta/formulario-venta/formulario-venta.component';
 // Datos Simples
 import { TipoComponent } from './components/datos-simples/tipo/tipo.component';
@@ -61,6 +64,7 @@ import { ComunaComponent } from './components/datos-simples/comuna/comuna.compon
 import { FormularioComunaComponent } from './components/datos-simples/comuna/formulario-comuna/formulario-comuna.component';
 import { ZonaComponent } from './components/datos-simples/zona/zona.component';
 import { FormularioZonaComponent } from './components/datos-simples/zona/formulario-zona/formulario-zona.component';
+import { VentaEliminarComponent } from './components/venta/venta-eliminar/venta-eliminar.component';
 
 @NgModule({
   declarations: [
@@ -106,7 +110,11 @@ import { FormularioZonaComponent } from './components/datos-simples/zona/formula
     ComunaComponent,
     FormularioComunaComponent,
     ZonaComponent,
-    FormularioZonaComponent
+    FormularioZonaComponent,
+    VentaInfoComponent,
+    VentaEditarComponent,
+    FechaRetornoComponent,
+    VentaEliminarComponent
   ],
   imports: [
     BrowserModule,

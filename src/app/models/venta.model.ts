@@ -4,6 +4,7 @@ export class VentaModel {
     // tslint:disable: variable-name
     created_at: string;
     rut_cliente: string;
+    venta_id: number;
     codigo: string;
     finalizado: boolean;
     cliente_id: number;

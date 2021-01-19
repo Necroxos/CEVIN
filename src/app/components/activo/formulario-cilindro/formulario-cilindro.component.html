@@ -7,7 +7,7 @@
     </div>
     <!-- Input gas -->
     <div class="form-group">
-        <label for="tipo_id"><b>Seleccione el tipo de gas</b></label>
+        <label for="tipo_id"><b>Tipo de gas</b></label>
         <select class="form-control" [(ngModel)]="cilindro.tipo_id" name="tipo_id" placeholder="Tipo de gas" required>
           <option value="undefined" disabled>Seleccione tipo de gas</option>
           <option *ngFor="let gas of gases" value="{{gas.id}}"> {{ gas.descripcion }} </option>
@@ -15,7 +15,7 @@
         <span *ngIf="f.submitted && f.controls['tipo_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
     </div>
     <!-- Input mantención -->
-    <label><b>Ingrese la última fecha de mantención</b></label>
+    <label><b>Última mantención</b></label>
     <div class="form-group">
         <input class="form-control datepicker" [(ngModel)]="cilindro.mantencion" name="mantencion" [max]="maxDate" [matDatepicker]="mantencion" placeholder="Mantención" disabled>
         <mat-datepicker-toggle matSuffix [for]="mantencion" matTooltip="Escoger fecha"></mat-datepicker-toggle>
@@ -31,7 +31,7 @@
     </div>
     <!-- Input dueño -->
     <div class="form-group">
-        <label for="propietario_id"><b>Seleccione al dueño del cilindro</b></label>
+        <label for="propietario_id"><b>Dueño del cilindro</b></label>
         <select class="form-control" [(ngModel)]="cilindro.propietario_id" name="propietario_id" placeholder="Propietario" required>
           <option value="undefined" disabled>Seleccione propietario</option>
           <option *ngFor="let propietario of propietarios" value="{{propietario.id}}"> {{ propietario.descripcion }} </option>

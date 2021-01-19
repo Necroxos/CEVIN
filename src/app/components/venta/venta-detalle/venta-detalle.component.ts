@@ -11,8 +11,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '../../../services/auth.service';
 import { VentaService } from '../../../services/venta.service';
 import { PeticionesService } from '../../../services/peticiones.service';
+// Módulos
+import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
 // Modelos
 import { VentaModel } from '../../../models/venta.model';
+// Componente
+import { VentaEliminarComponent } from '../venta-eliminar/venta-eliminar.component';
 
 @Component({
   selector: 'app-venta-detalle',
@@ -25,7 +30,7 @@ export class VentaDetalleComponent implements OnInit {
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
 
-  displayedColumns: string[] = ['codigo', 'rut_cliente', 'codigo_activo', 'activo', 'opciones'];
+  displayedColumns: string[] = ['codigo', 'rut_cliente', 'codigo_activo', 'finalizado', 'activo', 'opciones'];
 
   cilindrosDevueltos = 0;
   cilindrosRestantes = 0;
@@ -44,7 +49,7 @@ export class VentaDetalleComponent implements OnInit {
    *                                                    EJECUCIÓN AL INICIAR                                                        *
    **********************************************************************************************************************************/
 
-  @HostListener('window:resize', ['$event']) onResize(event): void {
+  @HostListener('window:resize', ['$event']) onResize(event: any): void {
     // guard against resize before view is rendered
     const tmpWidth = window.innerWidth;
     if (tmpWidth < 992) { this.tableSmall = true; }
@@ -57,7 +62,8 @@ export class VentaDetalleComponent implements OnInit {
    * @param ventaServ Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-  constructor(private ventaServ: VentaService, private auth: AuthService, private estadoPeticion: PeticionesService) { }
+  constructor(private ventaServ: VentaService, private auth: AuthService,
+              private estadoPeticion: PeticionesService, public dialog: MatDialog) { }
 
   /**
    * Escucha el tamaño de escala de la ventana
@@ -116,18 +122,24 @@ export class VentaDetalleComponent implements OnInit {
    * @param evento Recibe el objeto Cilindro de la fila
    */
   editar(evento: VentaModel): void {
-    console.log('editar');
+    this.ventaServ.guardarVenta(evento);
+    this.estadoPeticion.recargar(['venta', 'editar']);
   }
 
   /**
-   * Función que cambia el estado de un cilindro a desactivado en la base de datos
+   * Función que desactiva el estado de una venta en la base de datos
+   * @param evento Recibe la venta a eliminar
    */
-  cambiarEstado(evento: VentaModel): void {
-    console.log('cambiar estado');
+  confirmarAccion(evento: VentaModel): void {
+    this.dialog.open(VentaEliminarComponent, {
+      width: '40vh',
+      data: evento
+    });
   }
 
   info(evento: VentaModel): void {
-    console.log(evento);
+    this.ventaServ.guardarVenta(evento);
+    this.estadoPeticion.recargar(['venta', 'info']);
   }
 
 }

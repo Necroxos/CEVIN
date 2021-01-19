@@ -15,5 +15,7 @@ export class CilindroModel {
     activo: boolean;
     propietario_id: number;
     propietario: string;
+    stock: boolean;
     escogido: boolean;
+    correlativo: number;
 }

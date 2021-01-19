@@ -2,87 +2,115 @@
  *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
  ************************************************************************************************************************************/
 // Angular
-import { Component, HostListener, ViewChild, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 // Angular Material
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 // Servicios
-import { AuthService } from '../../../services/auth.service';
-import { ClienteService } from '../../../services/cliente.service';
+import { VentaService } from '../../../services/venta.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
 // Modelos
-import { ClienteModel } from '../../../models/cliente.model';
+import { VentaModel } from '../../../models/venta.model';
+import { CilindroModel } from 'src/app/models/cilindro.model';
+// Enrutador
+import { Router } from '@angular/router';
+// Componente
+import { FechaRetornoComponent } from '../fecha-retorno/fecha-retorno.component';
 
 @Component({
-  selector: 'app-cliente-detalle',
-  templateUrl: './cliente-detalle.component.html',
-  styleUrls: ['./cliente-detalle.component.css']
+  selector: 'app-venta-info',
+  templateUrl: './venta-info.component.html',
+  styleUrls: ['./venta-info.component.css']
 })
-export class ClienteDetalleComponent implements OnInit {
+export class VentaInfoComponent implements OnInit {
+
   /**********************************************************************************************************************************
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
+  mostrar = false;
 
-  displayedColumns: string[] = ['cliente_id', 'rut', 'contacto', 'email', 'telefono', 'razon_social', 'activo', 'opciones'];
+  venta = new VentaModel();
+  cilindros = new Array<CilindroModel>();
 
-  dataSource: MatTableDataSource<ClienteModel>;
-  isAdmin = false;
-  tableSmall = false;
   panelOpenState = false;
   isLoadingResults = true;
   isRateLimitReached = false;
+  dataSource: MatTableDataSource<CilindroModel>;
+  displayedColumns: string[] = ['correlativo', 'codigo_activo', 'metros_cubicos', 'fecha_retorno', 'opciones'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
+  @Input() ventaCard: VentaModel;
+  @Input() cilindrosElegidos: CilindroModel[];
+  ventaLocal = this.ventaServ.leerVenta();
 
   /**********************************************************************************************************************************
    *                                                    EJECUCIÓN AL INICIAR                                                        *
    **********************************************************************************************************************************/
 
-  @HostListener('window:resize', ['$event']) onResize(event): void {
-    // guard against resize before view is rendered
-    const tmpWidth = window.innerWidth;
-    if (tmpWidth < 2500) { this.tableSmall = true; }
-    else { this.tableSmall = false; }
-  }
-
   /**
-   * Inicializa módulos y servicios
-   * @param auth Servicio de autenticación
-   * @param router Módulo que enruta y redirecciona
+   * Inicializa servicios
    * @param clienteServ Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-  constructor(private router: Router, private clienteServ: ClienteService,
-              private auth: AuthService, private estadoPeticion: PeticionesService) { }
+  constructor(private estadoPeticion: PeticionesService, private ventaServ: VentaService,
+              private router: Router, public dialog: MatDialog) { }
 
   /**
-   * Escucha el tamaño de escala de la ventana
+   * Leemos el [rut] del locaStorage y buscamos el cliente en la BD para poder editarlo
    */
   ngOnInit(): void {
-    this.onResize(0);
+    if (this.ventaLocal) {
+      this.venta.codigo = this.ventaLocal;
+      this.cargarInfo();
+    } else if (this.ventaCard) {
+      this.venta = this.ventaCard;
+      this.cilindros = this.cilindrosElegidos;
+      this.mostrar = true;
+    }
+
+    this.checkRuta();
   }
 
   /**
-   * Obtenemos la información del Back End y la usamos en el mat-table
-   * también verificamos los privilegios del usuario
+   * Redirigimos si no hay info para mostrar
+   * sólo ocurre en la ruta /cliente/info
    */
-  ngAfterViewInit(): void {
-    this.clienteServ.obtenerTodos().subscribe((res: any) => {
+  checkRuta(): void {
+    if (this.router.url.indexOf('info') > -1) {
+      if (!this.venta.codigo) {
+        this.router.navigate(['venta', 'detalle']);
+      }
+    }
+  }
+
+  /**
+   * Función que carga la información en la venta
+   */
+  cargarInfo(): void {
+    this.estadoPeticion.loading();
+    this.ventaServ.obtenerUno(this.venta).subscribe((res: any) => {
+      Swal.close();
+      this.venta = { ...res.response };
+      this.cilindrosDeVenta(this.venta);
+    }, (err: any) => {
+      this.estadoPeticion.error(err);
+    });
+  }
+
+  cilindrosDeVenta(venta: VentaModel): void {
+    this.ventaServ.obtenerCilindrosDeVenta(venta).subscribe((res: any) => {
       this.dataSource = new MatTableDataSource(res.response);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.isLoadingResults = false;
       this.isRateLimitReached = false;
-      this.isAdmin = this.esAdmin();
     }, (err: any) => {
-      console.log(err);
-      this.isRateLimitReached = true;
-      this.isLoadingResults = false;
       this.estadoPeticion.error(err);
     });
   }
@@ -100,48 +128,40 @@ export class ClienteDetalleComponent implements OnInit {
     }
   }
 
-  /**
-   * Función que revisa que el usuario autenticado tenga permisos de administrador administrador
-   * Regresa un true o false para habilitar funciones en la vista
-   */
-  esAdmin(): boolean {
-    return this.auth.esAdmin;
-  }
-
   /**********************************************************************************************************************************
    *                                                  FUNCIONES DEL COMPONENTE                                                      *
    **********************************************************************************************************************************/
 
-  /**
-   * Función que se encarga de redirigir a la vista de Editar
-   * @param evento Recibe el objeto Cilindro de la fila
-   */
-  editar(evento: ClienteModel): void {
-    this.clienteServ.guardarCliente(evento);
-    this.router.navigate(['cliente', 'editar']);
+  devolver(cilindro: CilindroModel): void {
+    this.dialog.open(FechaRetornoComponent, {
+      width: '40vh',
+      data: {
+        titulo: 'Confirmar fecha de devolución',
+        cilindro_id: cilindro.cilindro_id,
+        venta_id: this.venta.venta_id,
+        codigo: this.venta.codigo,
+        estado: true
+      }
+    });
   }
 
-  /**
-   * Función que se encarga de redirigir a la vista de Información
-   * @param evento Recibe el objeto Cilindro de la fila
-   */
-  info(evento: ClienteModel): void {
-    this.clienteServ.guardarCliente(evento);
-    this.router.navigate(['cliente', 'info']);
-  }
-
-  /**
-   * Función que cambia el estado de un cilindro a desactivado en la base de datos
-   */
-  cambiarEstado(evento: ClienteModel): void {
+  cancelar(cilindro: CilindroModel): void {
     this.estadoPeticion.loading();
-    evento.activo = !evento.activo;
-    this.clienteServ.cambiarEstado(evento).subscribe((res: any) => {
+    this.venta.cilindro_id = cilindro.cilindro_id;
+    this.venta.finalizado = false;
+    this.venta.fecha_retorno = '01/01/1990';
+    this.ventaServ.devolverCilindro(this.venta).subscribe((res: any) => {
       Swal.close();
-      this.estadoPeticion.success(res.message, ['cliente', 'detalle'], 700);
+      this.ventaServ.guardarVenta(this.venta);
+      this.estadoPeticion.success(res.message, ['venta', 'info'], 750);
     }, (err: any) => {
       this.estadoPeticion.error(err);
     });
+  }
+
+  checkEstado(cilindro: CilindroModel): void {
+    if (cilindro.stock) { this.devolver(cilindro); }
+    else { this.cancelar(cilindro); }
   }
 
 }

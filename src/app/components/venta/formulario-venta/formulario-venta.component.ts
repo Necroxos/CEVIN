@@ -30,13 +30,17 @@ export class FormularioVentaComponent implements OnInit {
    **********************************************************************************************************************************/
 
   venta = new VentaModel();
-  clientes: [ClienteModel];
-  cilindros: [CilindroModel];
+  clientes: ClienteModel[];
+  cilindros: CilindroModel[];
+  cilindrosCard = new Array<CilindroModel>();
+
   fechaOk = true;
   cilindrosOk = true;
+
   // Variables recibidas de componentes hijos
   @Input() accionBtn: string;
   @Input() VentaEdit: VentaModel;
+  @Input() CilindrosEdit: CilindroModel[];
   // Variables enviadas a componentes hijos
   @Output() registrarVenta: EventEmitter<VentaModel>;
   // Variables para la tabla de cilindros
@@ -67,12 +71,12 @@ export class FormularioVentaComponent implements OnInit {
    * Si existe información previa la cargamos a modo de edición
    */
   ngOnInit(): void {
-    this.obtenerClientes();
-    this.obtenerCilindros();
+    if (this.VentaEdit) { this.venta = this.VentaEdit; }
     this.venta.entrega = moment();
     this.venta.cilindros = new Array();
+    this.obtenerClientes();
+    this.obtenerCilindros();
     this.transformarDatos();
-    if (this.VentaEdit) { this.venta = this.VentaEdit; }
   }
 
   /**
@@ -92,7 +96,8 @@ export class FormularioVentaComponent implements OnInit {
   obtenerCilindros(): void {
     this.ventaServ.obtenerCilindros().subscribe((res: any) => {
       this.cilindros = res.response;
-      this.dataSource = new MatTableDataSource(res.response);
+      if (this.CilindrosEdit) { this.cilindrosParaEditar(this.cilindros); }
+      this.dataSource = new MatTableDataSource(this.cilindros);
     }, (err: any) => {
       console.log(err);
       this.estadoPeticion.error(err);
@@ -108,6 +113,20 @@ export class FormularioVentaComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  /**
+   * Función que agrega a la tabla los cilindros que están involucrados en la venta
+   */
+  cilindrosParaEditar(cilindros: CilindroModel[]): void {
+    this.CilindrosEdit.forEach(cilindro => {
+      cilindro.escogido = true;
+      cilindro.correlativo = cilindros.length + 1;
+      cilindros.push(cilindro);
+      this.cilindrosCard.push(cilindro);
+      this.venta.cilindros.push(cilindro.cilindro_id);
+    });
+    this.checkCilindros();
+  }
+
   /**********************************************************************************************************************************
    *                                                  FUNCIONES DEL COMPONENTE                                                      *
    **********************************************************************************************************************************/
@@ -120,7 +139,7 @@ export class FormularioVentaComponent implements OnInit {
   registrar(form: NgForm): void {
 
     this.transformarDatos();
-    this.cilindrosEscogidos();
+    this.checkCilindros();
 
     if (form.invalid) { return; }
 
@@ -168,25 +187,35 @@ export class FormularioVentaComponent implements OnInit {
    * @param cilindo Obtiene el objeto cilindro de la tabla
    * @param evento Obtiene el check o uncheck (boolean)
    */
-  cilindroVenta(cilindo: CilindroModel, evento: boolean): void {
-    cilindo.escogido = evento;
-    this.cilindrosEscogidos();
+  cilindroVenta(cilindro: CilindroModel, evento: boolean): void {
+    cilindro.escogido = evento;
+    this.cilindrosEscogidos(cilindro);
   }
 
   /**
-   * Función que revisa los cilindros marcados y los agrega a la lista de venta
+   * Función que revisa los cilindros marcados y los agrega a la lista de venta,
+   * Además de eliminar los cilindros que se desmarquen,
    * Para ser enviados al Back End
-   * También revisa que a lo menos vaya un cilindro
    */
-  cilindrosEscogidos(): void {
-    this.cilindros.forEach(cilindro => {
-      if (cilindro.escogido) {
-        if (this.venta.cilindros.indexOf(cilindro.cilindro_id) === -1) {
-          this.venta.cilindros.push(cilindro.cilindro_id);
-        }
+  cilindrosEscogidos(cilindro: CilindroModel): void {
+    const index = this.venta.cilindros.indexOf(cilindro.cilindro_id);
+    if (cilindro.escogido) {
+        this.venta.cilindros.push(cilindro.cilindro_id);
+        this.cilindrosCard.push(cilindro);
+    } else {
+      if (index > -1) {
+        this.venta.cilindros.splice(index, 1);
+        this.cilindrosCard.splice(index, 1);
       }
-    });
+    }
 
+    this.checkCilindros();
+  }
+
+  /**
+   * Función que revisa que a lo menos vaya un cilindro en la venta
+   */
+  checkCilindros(): void {
     if (this.venta.cilindros.length > 0) { this.cilindrosOk = true; }
     else { this.cilindrosOk = false; }
   }
@@ -195,8 +224,10 @@ export class FormularioVentaComponent implements OnInit {
    * Función que limpia los cilindros marcados de la tabla
    */
   limpiarLista(): void {
-    this.cilindros.forEach(cilindro => cilindro.escogido = false);
-    this.venta.cilindros = new Array();
+    this.cilindros.forEach(cilindro => {
+      cilindro.escogido = false;
+      this.cilindrosEscogidos(cilindro);
+    });
   }
 
   /**
@@ -204,9 +235,9 @@ export class FormularioVentaComponent implements OnInit {
    */
   limpiarTodo(): void {
     this.limpiarLista();
-    this.venta = new VentaModel();
+    this.venta.codigo = '';
+    this.venta.cliente_id = null;
     this.venta.entrega = moment();
-    this.venta.cilindros = new Array();
     this.transformarDatos();
   }
 

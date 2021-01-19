@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-cliente-info',
   templateUrl: './cliente-info.component.html',
-  styleUrls: ['./cliente-info.component.css']
+  styleUrls: []
 })
 export class ClienteInfoComponent implements OnInit {
 
@@ -74,7 +74,6 @@ export class ClienteInfoComponent implements OnInit {
 
   /**
    * Función que carga la información en el cliente
-   * @param res Recibe la respuesta de la subscripción
    */
   cargarInfo(): void {
     this.estadoPeticion.loading();

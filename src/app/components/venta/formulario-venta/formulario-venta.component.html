@@ -14,7 +14,7 @@
                 <label for="cliente_id"><b>Seleccione al cliente</b></label>
                 <select class="form-control" [(ngModel)]="venta.cliente_id" name="cliente_id" (change)="clienteVenta($event.target)" required>
                     <option value="undefined" disabled>Seleccione un cliente</option>
-                    <option *ngFor="let cliente of clientes" value="{{cliente.cliente_id}}"> {{ cliente.nombres }} {{ cliente.apellidos }} ({{ cliente.rut }}) </option>
+                    <option *ngFor="let cliente of clientes" value="{{cliente.cliente_id}}"> {{ cliente.nombre_completo }} ({{ cliente.rut }}) </option>
                 </select>
                 <span *ngIf="f.submitted && f.controls['cliente_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
             </div>
@@ -33,11 +33,6 @@
         <!-- Paso 2 -->
         <mat-step>
             <ng-template matStepLabel>Cilindros</ng-template>
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="escanerSwitch">
-                <label class="custom-control-label" for="escanerSwitch">Escaner</label>
-            </div>
-            <br>
             <div class="table-container">
                 <mat-form-field>
                     <mat-label>Filter</mat-label>
@@ -86,20 +81,7 @@
         <!-- Paso 3 -->
         <mat-step>
             <ng-template matStepLabel>Finalizar</ng-template>
-            <div class="mt-3 animated fadeIn fast">
-                <!-- Una Tarjeta para mostrar la información -->
-                <div class="card bg-light mb-3 animated fadeIn">
-                    <div class="card-header">
-                        <h5 class="card-title">Venta</h5>
-                    </div>
-                    <!-- Información medular, se pueden usar pipes para transformar visualmente la data -->
-                    <div class="card-body">
-                        <p class="card-text"><b>Código venta:</b> {{ venta.codigo }} </p>
-                        <p class="card-text"><b>Cliente:</b> {{ venta.rut_cliente }}</p>
-                        <p class="card-text"><b>Fecha:</b> {{ venta.fecha_entrega }}</p>
-                    </div>
-                </div>
-            </div>
+            <app-venta-info [ventaCard]="venta" [cilindrosElegidos]="cilindrosCard"></app-venta-info>
 
             <div>
                 <p *ngIf="f.submitted && f.controls['codigo'].errors" class="text-danger animated fadeIn">Falta el campo de código de venta/factura</p>

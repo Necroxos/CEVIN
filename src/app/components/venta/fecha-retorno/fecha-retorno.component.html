@@ -1,0 +1,12 @@
+<h1 mat-dialog-title class="text-center">{{ data.titulo }}</h1>
+<div mat-dialog-content>
+    <div align="center">
+        <input class="form-control datepicker" [(ngModel)]="venta.retorno" name="retorno" [max]="maxDate" [matDatepicker]="retorno" placeholder="Devolución" disabled>
+        <mat-datepicker-toggle matSuffix [for]="retorno" matTooltip="Escoger fecha"></mat-datepicker-toggle>
+        <mat-datepicker #retorno disabled="false"></mat-datepicker>
+    </div>
+</div>
+<div mat-dialog-actions align="center">
+    <button mat-raised-button color="warn" (click)="onNoClick()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="registrar()"><mat-icon>save</mat-icon>Confirmar</button>
+</div>
