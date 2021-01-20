@@ -40,7 +40,7 @@ export class VentaInfoComponent implements OnInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   dataSource: MatTableDataSource<CilindroModel>;
-  displayedColumns: string[] = ['correlativo', 'codigo_activo', 'metros_cubicos', 'fecha_retorno', 'opciones'];
+  displayedColumns: string[] = ['correlativo', 'codigo_activo', 'metros_cubicos', 'cobros', 'fecha_retorno', 'opciones'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -162,6 +162,18 @@ export class VentaInfoComponent implements OnInit {
   checkEstado(cilindro: CilindroModel): void {
     if (cilindro.stock) { this.devolver(cilindro); }
     else { this.cancelar(cilindro); }
+  }
+
+  checkPrecios(): boolean {
+    let seguir = false;
+    if (this.cilindros.length > 0) {
+      this.cilindros.forEach(cilindro => {
+        if (cilindro.cobro && cilindro.cobro !== 0) { seguir = true; }
+        else { seguir = false; }
+      });
+    }
+
+    return seguir;
   }
 
 }

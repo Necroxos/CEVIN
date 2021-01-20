@@ -17,6 +17,7 @@ import { CilindroModel } from 'src/app/models/cilindro.model';
 import { MatTableDataSource } from '@angular/material/table';
 //
 import { MatSort } from '@angular/material/sort';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formulario-venta',
@@ -35,7 +36,9 @@ export class FormularioVentaComponent implements OnInit {
   cilindrosCard = new Array<CilindroModel>();
 
   fechaOk = true;
+  preciosOk = false;
   cilindrosOk = true;
+  confirmarPrecios = true;
 
   // Variables recibidas de componentes hijos
   @Input() accionBtn: string;
@@ -200,8 +203,8 @@ export class FormularioVentaComponent implements OnInit {
   cilindrosEscogidos(cilindro: CilindroModel): void {
     const index = this.venta.cilindros.indexOf(cilindro.cilindro_id);
     if (cilindro.escogido) {
-        this.venta.cilindros.push(cilindro.cilindro_id);
-        this.cilindrosCard.push(cilindro);
+      this.venta.cilindros.push(cilindro.cilindro_id);
+      this.cilindrosCard.push(cilindro);
     } else {
       if (index > -1) {
         this.venta.cilindros.splice(index, 1);
@@ -228,6 +231,9 @@ export class FormularioVentaComponent implements OnInit {
       cilindro.escogido = false;
       this.cilindrosEscogidos(cilindro);
     });
+    this.venta.cobros = new Array<CilindroModel>();
+    this.venta.monto = 0;
+    this.confirmarPrecios = true;
   }
 
   /**
@@ -239,6 +245,25 @@ export class FormularioVentaComponent implements OnInit {
     this.venta.cliente_id = null;
     this.venta.entrega = moment();
     this.transformarDatos();
+    this.preciosOk = false;
+  }
+
+  calcularMonto(evento: any): void {
+    if (!evento.checkPrecios()) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Los precios por cilindro no son correctos'
+      });
+      return;
+    }
+
+    this.venta.cobros = new Array<CilindroModel>();
+    this.confirmarPrecios = false;
+    this.cilindrosCard.forEach(cilindro => {
+      this.venta.monto += cilindro.cobro;
+      this.venta.cobros.push(cilindro);
+    });
+    this.preciosOk = true;
   }
 
 }

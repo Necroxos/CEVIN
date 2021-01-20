@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { CilindroModel } from './cilindro.model';
 
 export class VentaModel {
     // tslint:disable: variable-name
@@ -16,4 +17,6 @@ export class VentaModel {
     cilindro_activo: boolean;
     cilindro_id: number;
     cilindros: number[];
+    cobros: CilindroModel[];
+    monto = 0;
 }

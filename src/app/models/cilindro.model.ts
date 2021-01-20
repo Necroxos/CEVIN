@@ -18,4 +18,5 @@ export class CilindroModel {
     stock: boolean;
     escogido: boolean;
     correlativo: number;
+    cobro: number;
 }

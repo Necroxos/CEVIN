@@ -57,6 +57,21 @@
                     <span *ngIf="f.submitted && f.controls['numero'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
                 </div>
             </div>
+            <!-- Input direccion opcional -->
+            <div class="form-group form-row">
+                <!-- Bloque -->
+                <div class="col-md-7">
+                    <label><b>Bloque:</b></label>
+                    <input class="form-control" type="text" [(ngModel)]="direccion.bloque" name="bloque" placeholder="Bloque de condominio">
+                    <small class="text-muted">Campo opcional</small>
+                </div>
+                <!-- Departamento -->
+                <div class="col-md-4">
+                    <label><b>Departamento:</b></label>
+                    <input class="form-control" type="text" [(ngModel)]="direccion.departamento" name="departamento" placeholder="Número de departamento">
+                    <small class="text-muted">Campo opcional</small>
+                </div>
+            </div>
             <!-- Input ubicación -->
             <div class="form-group form-row">
                 <!-- Comuna -->

@@ -12,14 +12,17 @@ import { TipoComponent } from './components/datos-simples/tipo/tipo.component';
 import { ZonaComponent } from './components/datos-simples/zona/zona.component';
 import { ComunaComponent } from './components/datos-simples/comuna/comuna.component';
 import { PropietarioComponent } from './components/datos-simples/propietario/propietario.component';
+import { StockComponent } from './components/stock/stock.component';
 // Rutas hijas
 import { VENTA_ROUTES } from './components/venta/venta.routes';
 import { ACTIVO_ROUTES } from './components/activo/activo.routes';
 import { USUARIO_ROUTES } from './components/usuario/usuario.routes';
 import { CLIENTE_ROUTES } from './components/cliente/cliente.routes';
+import { STOCK_ROUTES } from './components/stock/stock.routes';
 // Validaciones para las vistas
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
+import { AdminGuard } from './guards/admin.guard';
 // Rutas
 const APP_ROUTES: Routes = [
   { path: 'home', component: HomeComponent },
@@ -40,17 +43,24 @@ const APP_ROUTES: Routes = [
     path: 'venta',
     component: VentaComponent,
     canActivate: [AuthGuard],
-    children: VENTA_ROUTES },
+    children: VENTA_ROUTES
+  },
+  {
+    path: 'stock',
+    component: StockComponent,
+    canActivate: [AuthGuard],
+    children: STOCK_ROUTES
+  },
   {
     path: 'usuario',
     component: UsuarioComponent,
     canActivate: [AuthGuard],
     children: USUARIO_ROUTES
   },
-  { path: 'tipo', component: TipoComponent, canActivate: [AuthGuard] },
-  { path: 'zona', component: ZonaComponent, canActivate: [AuthGuard] },
-  { path: 'comuna', component: ComunaComponent, canActivate: [AuthGuard] },
-  { path: 'propietario', component: PropietarioComponent, canActivate: [AuthGuard] },
+  { path: 'tipo', component: TipoComponent, canActivate: [AdminGuard] },
+  { path: 'zona', component: ZonaComponent, canActivate: [AdminGuard] },
+  { path: 'comuna', component: ComunaComponent, canActivate: [AdminGuard] },
+  { path: 'propietario', component: PropietarioComponent, canActivate: [AdminGuard] },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: '**', pathMatch: 'full', redirectTo: 'home' },
   { path: '', pathMatch: 'full', redirectTo: 'login' }

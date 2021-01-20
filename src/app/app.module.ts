@@ -65,6 +65,8 @@ import { FormularioComunaComponent } from './components/datos-simples/comuna/for
 import { ZonaComponent } from './components/datos-simples/zona/zona.component';
 import { FormularioZonaComponent } from './components/datos-simples/zona/formulario-zona/formulario-zona.component';
 import { VentaEliminarComponent } from './components/venta/venta-eliminar/venta-eliminar.component';
+// Stocks
+import { StockComponent } from './components/stock/stock.component';
 
 @NgModule({
   declarations: [
@@ -89,32 +91,34 @@ import { VentaEliminarComponent } from './components/venta/venta-eliminar/venta-
     FormularioUsuarioComponent,
     // Cliente
     ClienteComponent,
+    ClienteInfoComponent,
     ClienteNuevoComponent,
     ClienteEditarComponent,
     ClienteDetalleComponent,
     FormularioClienteComponent,
     // Venta
     VentaComponent,
+    VentaInfoComponent,
     VentaNuevoComponent,
+    VentaEditarComponent,
     VentaDetalleComponent,
     FormularioVentaComponent,
+    VentaEliminarComponent,
+    FechaRetornoComponent,
     // Otros
     TipoComponent,
-    // Pipes
-    BooleanPipe,
-    NotNullPipe,
-    ClienteInfoComponent,
-    PropietarioComponent,
     FormularioTipoComponent,
+    PropietarioComponent,
     FormularioPropietarioComponent,
     ComunaComponent,
     FormularioComunaComponent,
     ZonaComponent,
     FormularioZonaComponent,
-    VentaInfoComponent,
-    VentaEditarComponent,
-    FechaRetornoComponent,
-    VentaEliminarComponent
+    // Stock
+    StockComponent,
+    // Pipes
+    BooleanPipe,
+    NotNullPipe
   ],
   imports: [
     BrowserModule,
