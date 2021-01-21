@@ -61,5 +61,13 @@
         <qrcode [qrdata]="QrValue" [width]="Width" [errorCorrectionLevel]="'M'"></qrcode>
     </div>
     <!-- Botones -->
-    <button type="submit" class="btn btn-outline-primary btn-block"> {{ accionBtn }} </button>
+    <button type="submit" class="btn btn-outline-primary btn-block">
+        <mat-icon class="center-icons" *ngIf="seccionEdit">edit</mat-icon>
+        <mat-icon class="center-icons" *ngIf="!seccionEdit">save</mat-icon>
+         {{ accionBtn }}
+    </button>
+    <button type="button" class="btn btn-outline-dark btn-block" (click)="recargar()">
+        <mat-icon class="center-icons">navigate_before</mat-icon>
+         Regresar
+    </button>
 </form>

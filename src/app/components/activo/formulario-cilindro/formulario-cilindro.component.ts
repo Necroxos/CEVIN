@@ -147,4 +147,11 @@ export class FormularioCilindroComponent implements OnInit {
     this.cilindro.mantencion = null;
   }
 
+  /**
+   * Función para volver a detalle
+   */
+  recargar(): void {
+    this.estadoPeticion.recargar(['activo', 'detalle']);
+  }
+
 }

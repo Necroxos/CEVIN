@@ -16,9 +16,9 @@
         <table mat-table [dataSource]="dataSource" matSort>
 
             <!-- Columna del ID -->
-            <ng-container matColumnDef="cilindro_id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-                <td mat-cell *matCellDef="let row"> {{ row.cilindro_id }} </td>
+            <ng-container matColumnDef="correlativo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+                <td mat-cell *matCellDef="let row"> {{ row.correlativo }} </td>
             </ng-container>
 
             <!-- Columna del número de serie del activo -->
@@ -37,6 +37,12 @@
             <ng-container matColumnDef="tipo_gas">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Gas </th>
                 <td mat-cell *matCellDef="let row"> {{row.tipo_gas}} </td>
+            </ng-container>
+
+            <!-- Columna de los metros cúbicos -->
+            <ng-container matColumnDef="metros_cubicos">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Capacidad </th>
+                <td mat-cell *matCellDef="let row"> {{ row.metros_cubicos }} m<sup>3</sup> </td>
             </ng-container>
 
             <!-- Columna de estado -->

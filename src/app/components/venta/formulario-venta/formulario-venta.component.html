@@ -91,11 +91,20 @@
             </div>
 
             <div>
-                <button class="btn btn-outline-danger btn-block" (click)="stepper.reset(); limpiarTodo();">Borrar</button>
+                <button type="button" class="btn btn-outline-success btn-block" (click)="calcularMonto(ventainfo)" *ngIf="confirmarPrecios">
+                    <mat-icon>save</mat-icon> Guardar precios
+                </button>
+                <button type="submit" class="btn btn-outline-primary btn-block" *ngIf="preciosOk">
+                    <mat-icon>save</mat-icon> {{ accionBtn }}
+                </button>
                 <br>
-                <button type="button" class="btn btn-outline-success btn-block" (click)="calcularMonto(ventainfo)" *ngIf="confirmarPrecios"><mat-icon>save</mat-icon> Guardar precios</button>
-                <br *ngIf="confirmarPrecios">
-                <button type="submit" class="btn btn-outline-primary btn-block" *ngIf="preciosOk"> {{ accionBtn }} </button>
+                <button class="btn btn-outline-danger btn-block" (click)="stepper.reset(); limpiarTodo();">
+                    <mat-icon>delete</mat-icon> Borrar
+                </button>
+                <br>
+                <button class="btn btn-outline-dark btn-block" (click)="recargar()">
+                    <mat-icon>navigate_before</mat-icon> Regresar
+                </button>
             </div>
         </mat-step>
     </mat-vertical-stepper>

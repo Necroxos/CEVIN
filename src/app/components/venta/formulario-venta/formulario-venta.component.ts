@@ -279,4 +279,11 @@ export class FormularioVentaComponent implements OnInit {
     this.preciosOk = false;
   }
 
+  /**
+   * Función para volver a detalle
+   */
+  recargar(): void {
+    this.estadoPeticion.recargar(['venta', 'detalle']);
+  }
+
 }

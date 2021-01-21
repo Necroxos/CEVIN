@@ -47,6 +47,14 @@ export class ClienteService {
   }
 
   /**
+   * Se realiza una petición a la API para obtener todos los cilindros comprados
+   */
+  obtenerCilindrosComprados(cliente: ClienteModel): any {
+    const headers = this.auth.headers();
+    return this.http.get(`${this.url}/cliente-cilindros/${cliente.cliente_id}`, { headers });
+  }
+
+  /**
    * Manda la data a la API para actualizar el cliente en la base de datos
    * @param cliente Recibe un modelo de cliente
    */

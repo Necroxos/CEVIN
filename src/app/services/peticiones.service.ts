@@ -71,7 +71,7 @@ export class PeticionesService {
       case 241: return 'Error al convertir un dato en el procedimiento almacenado';
       case 515: return `Se entregó un valor nulo "${this.valorNulo(error)}" al procedimiento almacendo`;
       case 547: return `La FK entregada: "${this.valorFK(error)}" es errónea`;
-      case 2627: return `El valor "${this.valorDuplicado(error)}" ya existe en la base de datos`;
+      case 2627: return `El valor "${this.valorDuplicado(error)}" ya está registrado`;
       case 8144: return `Demasiados parámetros para un procedimiento almacenado`;
       default: return error.message;
     }

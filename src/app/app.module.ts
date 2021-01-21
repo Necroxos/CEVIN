@@ -6,8 +6,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Peticiones
 import { HttpClientModule } from '@angular/common/http';
 // Módulos
+import { ToastrModule } from 'ngx-toastr';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgQrScannerModule } from 'angular2-qrscanner';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MaterialModule } from './modules/material.module';
 import { OlMapsModule } from './components/shared/ol-maps/ol-maps.module';
 // Rutas
@@ -48,6 +50,7 @@ import { ClienteNuevoComponent } from './components/cliente/cliente-nuevo/client
 import { ClienteEditarComponent } from './components/cliente/cliente-editar/cliente-editar.component';
 import { ClienteDetalleComponent } from './components/cliente/cliente-detalle/cliente-detalle.component';
 import { FormularioClienteComponent } from './components/cliente/formulario-cliente/formulario-cliente.component';
+import { ClienteInfoComplementoComponent } from './components/cliente/cliente-info-complemento/cliente-info-complemento.component';
 // Venta
 import { VentaComponent } from './components/venta/venta.component';
 import { VentaInfoComponent } from './components/venta/venta-info/venta-info.component';
@@ -69,8 +72,6 @@ import { VentaEliminarComponent } from './components/venta/venta-eliminar/venta-
 // Stocks
 import { StockComponent } from './components/stock/stock.component';
 
-
-import { ClienteInfoComplementoComponent } from './components/cliente/cliente-info-complemento/cliente-info-complemento.component';
 
 @NgModule({
   declarations: [
@@ -100,6 +101,7 @@ import { ClienteInfoComplementoComponent } from './components/cliente/cliente-in
     ClienteEditarComponent,
     ClienteDetalleComponent,
     FormularioClienteComponent,
+    ClienteInfoComplementoComponent,
     // Venta
     VentaComponent,
     VentaInfoComponent,
@@ -122,9 +124,7 @@ import { ClienteInfoComplementoComponent } from './components/cliente/cliente-in
     StockComponent,
     // Pipes
     BooleanPipe,
-    NotNullPipe,
-    // Test
-    ClienteInfoComplementoComponent,
+    NotNullPipe
   ],
   imports: [
     BrowserModule,
@@ -135,6 +135,8 @@ import { ClienteInfoComplementoComponent } from './components/cliente/cliente-in
     NgQrScannerModule,
     MaterialModule,
     OlMapsModule,
+    NgxChartsModule,
+    ToastrModule.forRoot(),
     APP_ROUTING
   ],
   providers: [

@@ -167,4 +167,11 @@ export class FormularioClienteComponent implements OnInit {
     this.cliente.razon_social = null;
   }
 
+  /**
+   * Función para volver a detalle
+   */
+  recargar(): void {
+    this.estadoPeticion.recargar(['cliente', 'detalle']);
+  }
+
 }

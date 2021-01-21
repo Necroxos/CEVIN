@@ -14,6 +14,7 @@ import { CilindroService } from '../../../services/cilindro.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
 import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 // Modelos
 import { CilindroModel } from 'src/app/models/cilindro.model';
 
@@ -28,7 +29,7 @@ export class ActivoDetalleComponent implements OnInit {
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
 
-  displayedColumns: string[] = ['cilindro_id', 'codigo_activo', 'fecha_mantencion', 'tipo_gas', 'propietario', 'stock', 'cargado', 'activo', 'opciones'];
+  displayedColumns: string[] = ['correlativo', 'codigo_activo', 'fecha_mantencion', 'tipo_gas', 'metros_cubicos', 'propietario', 'stock', 'cargado', 'activo', 'opciones'];
 
   dataSource: MatTableDataSource<CilindroModel>;
   isAdmin = false;
@@ -55,11 +56,16 @@ export class ActivoDetalleComponent implements OnInit {
    * Inicializa módulos y servicios
    * @param auth Servicio de autenticación
    * @param router Módulo que enruta y redirecciona
+   * @param toastr Servicio con funciones de mensajes
    * @param cilindroServ Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-  constructor(private cilindroServ: CilindroService, private router: Router,
-              private auth: AuthService, private estadoPeticion: PeticionesService) { }
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+    private toastr: ToastrService,
+    private cilindroServ: CilindroService,
+    private estadoPeticion: PeticionesService) { }
 
   /**
    * Escucha el tamaño de escala de la ventana
@@ -134,14 +140,21 @@ export class ActivoDetalleComponent implements OnInit {
    * Función que cambia el estado de un cilindro a desactivado en la base de datos
    */
   cambiarEstado(evento: CilindroModel): void {
-    this.estadoPeticion.loading();
-    evento.activo = !evento.activo;
-    this.cilindroServ.cambiarEstado(evento).subscribe((res: any) => {
-      Swal.close();
-      this.estadoPeticion.success(res.message, [], 700);
-    }, (err: any) => {
-      this.estadoPeticion.error(err);
-    });
+    if (evento.stock || !evento.activo) {
+      this.estadoPeticion.loading();
+      evento.activo = !evento.activo;
+      this.cilindroServ.cambiarEstado(evento).subscribe((res: any) => {
+        Swal.close();
+        this.estadoPeticion.success(res.message, ['activo', 'detalle'], 700);
+      }, (err: any) => {
+        this.estadoPeticion.error(err);
+      });
+    } else {
+      this.toastr.error('El cilindro no está en Stock', 'Acción no permitida', {
+        timeOut: 3000,
+        positionClass: 'toast-bottom-right'
+      });
+    }
   }
 
 }
