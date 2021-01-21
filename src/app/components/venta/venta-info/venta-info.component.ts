@@ -12,6 +12,7 @@ import { VentaService } from '../../../services/venta.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
 import Swal from 'sweetalert2';
+import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 // Modelos
 import { VentaModel } from '../../../models/venta.model';
@@ -100,6 +101,7 @@ export class VentaInfoComponent implements OnInit {
     this.ventaServ.obtenerUno(this.venta).subscribe((res: any) => {
       Swal.close();
       this.venta = { ...res.response };
+      this.venta.entrega = moment(this.venta.fecha_entrega, 'DD/MM/YYYY');
       this.cilindrosDeVenta(this.venta);
     }, (err: any) => {
       this.estadoPeticion.error(err);
@@ -107,8 +109,9 @@ export class VentaInfoComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param venta 
+   * Función que se encarga de buscar los cilindros de una venta, mediante el servicio de VentaService
+   * Y luego carga la información en el mat-table
+   * @param venta Recibe un modelo de venta
    */
   cilindrosDeVenta(venta: VentaModel): void {
     this.ventaServ.obtenerCilindrosDeVenta(venta).subscribe((res: any) => {
@@ -139,19 +142,30 @@ export class VentaInfoComponent implements OnInit {
    *                                                  FUNCIONES DEL COMPONENTE                                                      *
    **********************************************************************************************************************************/
 
+  /**
+   * Función que se encarga de abrir el sub-componente
+   * con el formulario para la devolución
+   * @param cilindro Recibe el modelo de cilindro
+   */
   devolver(cilindro: CilindroModel): void {
     this.dialog.open(FechaRetornoComponent, {
       width: '40vh',
       data: {
-        titulo: 'Confirmar fecha de devolución',
-        cilindro_id: cilindro.cilindro_id,
-        venta_id: this.venta.venta_id,
+        estado: true,
         codigo: this.venta.codigo,
-        estado: true
+        entrega: this.venta.entrega,
+        venta_id: this.venta.venta_id,
+        cilindro_id: cilindro.cilindro_id,
+        titulo: 'Confirmar fecha de devolución'
       }
     });
   }
 
+  /**
+   * Función que se encarga de hacer la petición al servicio
+   * Para cancelar una devolución
+   * @param cilindro Recibe el modelo de cilindro
+   */
   cancelar(cilindro: CilindroModel): void {
     this.estadoPeticion.loading();
     this.venta.cilindro_id = cilindro.cilindro_id;
@@ -166,11 +180,20 @@ export class VentaInfoComponent implements OnInit {
     });
   }
 
+  /**
+   * Función ligada al HTML, escucha el botón 'Toggle'
+   * Según el estado de 'Stock' llama a una función u otra
+   * @param cilindro Recibe el modelo de cilindro
+   */
   checkEstado(cilindro: CilindroModel): void {
     if (cilindro.stock) { this.devolver(cilindro); }
     else { this.cancelar(cilindro); }
   }
 
+  /**
+   * Función que se encarga de revisar que todos los cilindros
+   * Asociados a una venta posean asignado un precio
+   */
   checkPrecios(): boolean {
     let seguir = false;
     if (this.cilindros.length > 0) {
@@ -182,6 +205,11 @@ export class VentaInfoComponent implements OnInit {
     return seguir;
   }
 
+  /**
+   * Función que se encarga de escuchar cambios en el input del precio
+   * Para obligar a recalcular el monto total de la venta
+   * Esto emitiendo una señal al componente padre
+   */
   checkPrecio(): void {
     this.cambioPrecio.emit();
   }

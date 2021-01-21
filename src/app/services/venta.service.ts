@@ -46,6 +46,14 @@ export class VentaService {
   }
 
   /**
+   * Se realiza una petición a la API para obtener todos los tipos de atrasos
+   */
+  obtenerDemoras(): any {
+    const headers = this.auth.headers();
+    return this.http.get(`${this.url}/demoras`, { headers });
+  }
+
+  /**
    * Se realiza una petición a la API para obtener todos los activos de tipo [cilindro]
    * Relacionados a una [Venta]
    */

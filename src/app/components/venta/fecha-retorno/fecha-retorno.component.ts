@@ -7,11 +7,13 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // Modelos
 import { VentaModel } from '../../../models/venta.model';
+import { EstandarModel } from '../../../models/estandar.model';
 // Componentes
 import { VentaInfoComponent } from '../venta-info/venta-info.component';
 // Módulos
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 // Servicios
 import { VentaService } from '../../../services/venta.service';
 import { PeticionesService } from '../../../services/peticiones.service';
@@ -22,6 +24,7 @@ export interface DialogData {
   estado: boolean;
   venta_id: number;
   cilindro_id: number;
+  entrega: moment.Moment;
 }
 
 @Component({
@@ -35,9 +38,12 @@ export class FechaRetornoComponent implements OnInit {
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
 
+  demoras = new Array<EstandarModel>();
+  minDate = this.data.entrega;
   venta = new VentaModel();
   maxDate = new Date();
-  fechaOk = false;
+  demoraOK = true;
+  dias = 0;
 
   /**********************************************************************************************************************************
    *                                                    EJECUCIÓN AL INICIAR                                                        *
@@ -47,14 +53,49 @@ export class FechaRetornoComponent implements OnInit {
     public dialogRef: MatDialogRef<VentaInfoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private servicio: VentaService,
-    private estadoPeticion: PeticionesService) { }
+    private estadoPeticion: PeticionesService) {
+      dialogRef.disableClose = true;
+    }
 
   ngOnInit(): void {
+    this.cargarVenta();
+    this.cargarDias();
+    this.cargarTiposAtrasos();
+  }
+
+  /**
+   * Pasa la información entregada por el componente padre
+   * A un nuevo modelo de venta
+   */
+  cargarVenta(): void {
     this.venta.retorno = moment();
+    this.venta.entrega = this.data.entrega;
     this.venta.venta_id = this.data.venta_id;
     this.venta.cilindro_id = this.data.cilindro_id;
     this.venta.finalizado = this.data.estado;
     this.venta.codigo = this.data.codigo;
+  }
+
+  /**
+   * Se encarga de calcular los días transcurridos desde la entrega
+   * hasta la fecha ingresada en el componente como 'retorno'
+   */
+  cargarDias(): void {
+    const inicio = moment(this.venta.entrega);
+    const final = moment(this.venta.retorno);
+    this.dias = final.diff(inicio, 'days');
+  }
+
+  /**
+   * Hace la petición a la base de datos para obtener los tipos de atrasos
+   */
+  cargarTiposAtrasos(): void {
+    this.servicio.obtenerDemoras().subscribe((res: any) => {
+      this.demoras = [...res.response];
+    }, (err: any) => {
+      console.log(err);
+      this.estadoPeticion.error(err);
+    });
   }
 
   /**********************************************************************************************************************************
@@ -64,27 +105,58 @@ export class FechaRetornoComponent implements OnInit {
   /**
    * Función que se encarga de transforma la Fecha en un String con formato 'dd/mm/yyyy'
    */
-  transformarDatos(): void {
+  transformarFecha(): boolean {
     if (this.venta.retorno && this.venta.retorno.isValid()) {
       this.venta.fecha_retorno = moment(this.venta.retorno).format('DD/MM/YYYY').toString();
-      this.fechaOk = true;
+      return true;
     } else {
       this.venta.fecha_retorno = null;
-      this.fechaOk = false;
+      Swal.fire({
+        icon: 'error',
+        title: 'Datos incorrectos',
+        text: 'No se pudo transformar la fecha'
+      });
+      return false;
     }
   }
 
+  /**
+   * Función que se encarga de confirmar que exista
+   * Un tipo de atraso seleccionado
+   */
+  verificarDemora(): void {
+    if (this.venta.demora_id) { this.demoraOK = true; }
+    else { this.demoraOK = false; }
+  }
+
+  /**
+   * Función que se ejecuta al cambiar la fecha en el datepicker
+   * @param event Recibe la fecha del datepicker
+   */
+  cambioDias(event: MatDatepickerInputEvent<Date>): void {
+    this.venta.retorno = moment(event.value);
+    this.cargarDias();
+  }
+
+  /**
+   * Se encarga de cancelar el proceso de devolución de activo
+   */
   onNoClick(): void {
     this.servicio.guardarVenta(this.venta);
     this.estadoPeticion.recargar(['venta', 'info']);
     this.dialogRef.close();
   }
 
+  /**
+   * Proceso de registro para el retorno de un activo
+   * Posee una doble validación para la fecha entregada
+   */
   registrar(): void {
-    this.estadoPeticion.loading();
-    this.transformarDatos();
+    this.verificarDemora();
+    const fechaOk = this.transformarFecha();
 
-    if (this.fechaOk) {
+    if (fechaOk && this.demoraOK) {
+      this.estadoPeticion.loading();
       this.servicio.devolverCilindro(this.venta).subscribe(() => {
         Swal.close();
         this.dialogRef.close();
@@ -93,12 +165,6 @@ export class FechaRetornoComponent implements OnInit {
       }, (err: any) => {
         console.log(err);
         this.estadoPeticion.error(err);
-      });
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Fecha incorrecta',
-        text: 'No se pudo transformar la fecha'
       });
     }
   }

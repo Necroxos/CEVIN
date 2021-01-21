@@ -1,9 +1,20 @@
 <h1 mat-dialog-title class="text-center">{{ data.titulo }}</h1>
 <div mat-dialog-content>
     <div align="center">
-        <input class="form-control datepicker" [(ngModel)]="venta.retorno" name="retorno" [max]="maxDate" [matDatepicker]="retorno" placeholder="Devolución" disabled>
+        <input class="form-control datepicker" [(ngModel)]="venta.retorno" name="retorno" [max]="maxDate" [min]="minDate" [matDatepicker]="retorno" placeholder="Devolución" (dateChange)="cambioDias($event)" disabled>
         <mat-datepicker-toggle matSuffix [for]="retorno" matTooltip="Escoger fecha"></mat-datepicker-toggle>
         <mat-datepicker #retorno disabled="false"></mat-datepicker>
+    </div><br>
+    <div class="form-group" align="center">
+        <label for="demora_id">
+            <b>Seleccione la demora</b>
+            <small class="text-muted"> ( días transcurridos: {{ dias }} ) </small>
+        </label>
+        <select class="form-control" [(ngModel)]="venta.demora_id" name="demora_id" required>
+            <option value="undefined" disabled>Seleccione un tipo de atraso</option>
+            <option *ngFor="let demora of demoras" value="{{demora.id}}"> {{ demora.descripcion }} </option>
+        </select>
+        <small class="text-danger animated fadeIn" *ngIf="!demoraOK">Campo obligatorio</small>
     </div>
 </div>
 <div mat-dialog-actions align="center">

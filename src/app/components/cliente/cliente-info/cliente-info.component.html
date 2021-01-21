@@ -24,4 +24,6 @@
             <p class="card-text" *ngFor="let direccion of direcciones"> {{ direccion.calle }} #{{ direccion.numero }}, {{ direccion.zona }} - {{ direccion.comuna }}</p>
         </div>
     </div>
+
+    <app-cliente-info-complemento [direcciones]="direcciones"></app-cliente-info-complemento>
 </div>

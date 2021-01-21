@@ -14,9 +14,9 @@ export class VentaModel {
     fecha_entrega: string;
     fecha_retorno: string;
     activo: boolean;
-    cilindro_activo: boolean;
     cilindro_id: number;
     cilindros: number[];
     cobros: CilindroModel[];
-    monto = 0;
+    monto: number;
+    demora_id: number;
 }

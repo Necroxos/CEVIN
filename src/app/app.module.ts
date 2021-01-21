@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { QRCodeModule } from 'angularx-qrcode';
 import { NgQrScannerModule } from 'angular2-qrscanner';
 import { MaterialModule } from './modules/material.module';
+import { OlMapsModule } from './components/shared/ol-maps/ol-maps.module';
 // Rutas
 import { APP_ROUTING } from './app.routes';
 // Servicios
@@ -68,6 +69,9 @@ import { VentaEliminarComponent } from './components/venta/venta-eliminar/venta-
 // Stocks
 import { StockComponent } from './components/stock/stock.component';
 
+
+import { ClienteInfoComplementoComponent } from './components/cliente/cliente-info-complemento/cliente-info-complemento.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -118,7 +122,9 @@ import { StockComponent } from './components/stock/stock.component';
     StockComponent,
     // Pipes
     BooleanPipe,
-    NotNullPipe
+    NotNullPipe,
+    // Test
+    ClienteInfoComplementoComponent,
   ],
   imports: [
     BrowserModule,
@@ -128,6 +134,7 @@ import { StockComponent } from './components/stock/stock.component';
     QRCodeModule,
     NgQrScannerModule,
     MaterialModule,
+    OlMapsModule,
     APP_ROUTING
   ],
   providers: [
