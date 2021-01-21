@@ -113,6 +113,16 @@ export class VentaDetalleComponent implements OnInit {
     }
   }
 
+  mostrarBtn(venta: any): boolean {
+    let ok = false;
+    if (venta.activo && !venta.finalizado) { ok = true; }
+    else { ok = false; }
+
+    if (venta.restoCilindros !== 0) { ok = false; }
+
+    return ok;
+  }
+
   /**********************************************************************************************************************************
    *                                                  FUNCIONES DEL COMPONENTE                                                      *
    **********************************************************************************************************************************/

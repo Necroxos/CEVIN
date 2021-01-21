@@ -2,7 +2,7 @@
  *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
  ************************************************************************************************************************************/
 // Angular
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 // Angular Material
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -49,6 +49,9 @@ export class VentaInfoComponent implements OnInit {
   @Input() cilindrosElegidos: CilindroModel[];
   ventaLocal = this.ventaServ.leerVenta();
 
+  // Variables enviadas a componentes hijos
+  @Output() cambioPrecio: EventEmitter<void>;
+
   /**********************************************************************************************************************************
    *                                                    EJECUCIÓN AL INICIAR                                                        *
    **********************************************************************************************************************************/
@@ -59,7 +62,7 @@ export class VentaInfoComponent implements OnInit {
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
   constructor(private estadoPeticion: PeticionesService, private ventaServ: VentaService,
-              private router: Router, public dialog: MatDialog) { }
+              private router: Router, public dialog: MatDialog) { this.cambioPrecio = new EventEmitter(); }
 
   /**
    * Leemos el [rut] del locaStorage y buscamos el cliente en la BD para poder editarlo
@@ -103,6 +106,10 @@ export class VentaInfoComponent implements OnInit {
     });
   }
 
+  /**
+   * 
+   * @param venta 
+   */
   cilindrosDeVenta(venta: VentaModel): void {
     this.ventaServ.obtenerCilindrosDeVenta(venta).subscribe((res: any) => {
       this.dataSource = new MatTableDataSource(res.response);
@@ -172,8 +179,11 @@ export class VentaInfoComponent implements OnInit {
         else { seguir = false; }
       });
     }
-
     return seguir;
+  }
+
+  checkPrecio(): void {
+    this.cambioPrecio.emit();
   }
 
 }

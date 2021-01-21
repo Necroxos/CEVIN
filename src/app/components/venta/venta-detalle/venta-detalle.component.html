@@ -56,10 +56,10 @@
                         <button mat-icon-button matTooltip="Ver información" (click)="info(row)">
                             <mat-icon>description</mat-icon>
                         </button>
-                        <button mat-icon-button *ngIf="row.activo && !row.finalizado" color="accent" matTooltip="Editar venta" (click)="editar(row)">
+                        <button mat-icon-button *ngIf="mostrarBtn(row)" color="accent" matTooltip="Editar venta" (click)="editar(row)">
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-icon-button *ngIf="isAdmin && row.activo" color="warn" matTooltip="Eliminar venta" (click)="confirmarAccion(row)">
+                        <button mat-icon-button *ngIf="isAdmin && mostrarBtn(row)" color="warn" matTooltip="Eliminar venta" (click)="confirmarAccion(row)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </div>
@@ -72,11 +72,11 @@
                                 <mat-icon>description</mat-icon>
                                 <span>Ver información</span>
                             </button>
-                            <button mat-menu-item *ngIf="row.activo && !row.finalizado" (click)="editar(row)">
+                            <button mat-menu-item *ngIf="mostrarBtn(row)" (click)="editar(row)">
                               <mat-icon>edit</mat-icon>
                               <span>Editar venta</span>
                             </button>
-                            <button mat-menu-item *ngIf="isAdmin && row.activo" (click)="confirmarAccion(row)">
+                            <button mat-menu-item *ngIf="isAdmin && mostrarBtn(row)" (click)="confirmarAccion(row)">
                               <mat-icon>delete</mat-icon>
                               <span>Eliminar venta</span>
                             </button>

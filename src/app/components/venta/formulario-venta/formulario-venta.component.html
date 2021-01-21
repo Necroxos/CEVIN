@@ -81,7 +81,7 @@
         <!-- Paso 3 -->
         <mat-step>
             <ng-template matStepLabel>Finalizar</ng-template>
-            <app-venta-info [ventaCard]="venta" [cilindrosElegidos]="cilindrosCard" #ventainfo></app-venta-info>
+            <app-venta-info [ventaCard]="venta" [cilindrosElegidos]="cilindrosCard" (cambioPrecio)="cambiarBtn()" #ventainfo></app-venta-info>
 
             <div>
                 <p *ngIf="f.submitted && f.controls['codigo'].errors" class="text-danger animated fadeIn">Falta el campo de código de venta/factura</p>
@@ -91,10 +91,10 @@
             </div>
 
             <div>
-                <button type="button" class="btn btn-outline-success btn-block" (click)="calcularMonto(ventainfo)" *ngIf="confirmarPrecios"><mat-icon>save</mat-icon> Guardar precios</button>
-                <br>
                 <button class="btn btn-outline-danger btn-block" (click)="stepper.reset(); limpiarTodo();">Borrar</button>
                 <br>
+                <button type="button" class="btn btn-outline-success btn-block" (click)="calcularMonto(ventainfo)" *ngIf="confirmarPrecios"><mat-icon>save</mat-icon> Guardar precios</button>
+                <br *ngIf="confirmarPrecios">
                 <button type="submit" class="btn btn-outline-primary btn-block" *ngIf="preciosOk"> {{ accionBtn }} </button>
             </div>
         </mat-step>

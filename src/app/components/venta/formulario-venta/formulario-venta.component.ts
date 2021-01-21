@@ -248,15 +248,18 @@ export class FormularioVentaComponent implements OnInit {
     this.preciosOk = false;
   }
 
+  /**
+   * Función que revisa que estén todos los precios para cada cilindro de la venta
+   * Luego calcula el monto total de la venta
+   * @param evento Recibe el componente hijo
+   */
   calcularMonto(evento: any): void {
     if (!evento.checkPrecios()) {
-      Swal.fire({
-        icon: 'info',
-        title: 'Los precios por cilindro no son correctos'
-      });
+      alert('Los precios por cilindro no son correctos');
       return;
     }
 
+    this.venta.monto = 0;
     this.venta.cobros = new Array<CilindroModel>();
     this.confirmarPrecios = false;
     this.cilindrosCard.forEach(cilindro => {
@@ -264,6 +267,16 @@ export class FormularioVentaComponent implements OnInit {
       this.venta.cobros.push(cilindro);
     });
     this.preciosOk = true;
+  }
+
+  /**
+   * Escucha la emisión del componente hijo
+   * Si cambia algun precio para un cilindro
+   * Y se actualizan los botonos mostrados en pantalla
+   */
+  cambiarBtn(): void {
+    this.confirmarPrecios = true;
+    this.preciosOk = false;
   }
 
 }

@@ -27,7 +27,7 @@
                 <!-- Input codigo -->
                 <div class="form-group">
                     <label><b>Precio:</b></label>
-                    <input class="form-control" type="number" [(ngModel)]="cilindro.cobro" name="cobro" placeholder="Precio del cilindro" required>
+                    <input class="form-control" type="number" [(ngModel)]="cilindro.cobro" name="cobro" placeholder="Precio del cilindro" (keyup)="checkPrecio()" required>
                     <span *ngIf="!cilindro.cobro" class="text-danger animated fadeIn">Campo obligatorio</span>
                 </div>
             </div>
