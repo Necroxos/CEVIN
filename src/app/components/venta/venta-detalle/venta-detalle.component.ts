@@ -12,7 +12,6 @@ import { AuthService } from '../../../services/auth.service';
 import { VentaService } from '../../../services/venta.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
-import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 // Modelos
 import { VentaModel } from '../../../models/venta.model';
@@ -21,8 +20,7 @@ import { VentaEliminarComponent } from '../venta-eliminar/venta-eliminar.compone
 
 @Component({
   selector: 'app-venta-detalle',
-  templateUrl: './venta-detalle.component.html',
-  styleUrls: ['./venta-detalle.component.css']
+  templateUrl: './venta-detalle.component.html'
 })
 export class VentaDetalleComponent implements OnInit {
 

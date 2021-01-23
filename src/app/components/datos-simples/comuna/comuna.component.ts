@@ -21,8 +21,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-comuna',
-  templateUrl: './comuna.component.html',
-  styleUrls: ['./comuna.component.css']
+  templateUrl: './comuna.component.html'
 })
 export class ComunaComponent implements OnInit {
 

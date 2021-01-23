@@ -21,8 +21,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-tipo',
-  templateUrl: './tipo.component.html',
-  styleUrls: ['./tipo.component.css']
+  templateUrl: './tipo.component.html'
 })
 export class TipoComponent implements OnInit {
 

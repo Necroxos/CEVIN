@@ -21,8 +21,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-zona',
-  templateUrl: './zona.component.html',
-  styleUrls: ['./zona.component.css']
+  templateUrl: './zona.component.html'
 })
 export class ZonaComponent implements OnInit {
 

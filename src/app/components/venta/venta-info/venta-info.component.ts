@@ -24,8 +24,7 @@ import { FechaRetornoComponent } from '../fecha-retorno/fecha-retorno.component'
 
 @Component({
   selector: 'app-venta-info',
-  templateUrl: './venta-info.component.html',
-  styleUrls: ['./venta-info.component.css']
+  templateUrl: './venta-info.component.html'
 })
 export class VentaInfoComponent implements OnInit {
 
@@ -121,6 +120,8 @@ export class VentaInfoComponent implements OnInit {
       this.isLoadingResults = false;
       this.isRateLimitReached = false;
     }, (err: any) => {
+      this.isRateLimitReached = true;
+      this.isLoadingResults = false;
       this.estadoPeticion.error(err);
     });
   }

@@ -15,14 +15,12 @@ import { VentaModel } from '../../../models/venta.model';
 import { ClienteModel } from '../../../models/cliente.model';
 import { CilindroModel } from 'src/app/models/cilindro.model';
 import { MatTableDataSource } from '@angular/material/table';
-//
+// Material
 import { MatSort } from '@angular/material/sort';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formulario-venta',
-  templateUrl: './formulario-venta.component.html',
-  styleUrls: ['./formulario-venta.component.css']
+  templateUrl: './formulario-venta.component.html'
 })
 export class FormularioVentaComponent implements OnInit {
 
@@ -47,6 +45,8 @@ export class FormularioVentaComponent implements OnInit {
   // Variables enviadas a componentes hijos
   @Output() registrarVenta: EventEmitter<VentaModel>;
   // Variables para la tabla de cilindros
+  isLoadingResults = true;
+  isRateLimitReached = false;
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns: string[] = ['num', 'codigo', 'opciones'];
   dataSource: MatTableDataSource<CilindroModel>;
@@ -101,6 +101,8 @@ export class FormularioVentaComponent implements OnInit {
       this.cilindros = res.response;
       if (this.CilindrosEdit) { this.cilindrosParaEditar(this.cilindros); }
       this.dataSource = new MatTableDataSource(this.cilindros);
+      this.isLoadingResults = false;
+      this.isRateLimitReached = false;
     }, (err: any) => {
       console.log(err);
       this.estadoPeticion.error(err);

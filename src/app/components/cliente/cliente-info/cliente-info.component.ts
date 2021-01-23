@@ -99,4 +99,11 @@ export class ClienteInfoComponent implements OnInit {
     });
   }
 
+  /**
+   * Función para volver a detalle
+   */
+  recargar(): void {
+    this.estadoPeticion.recargar(['cliente', 'detalle']);
+  }
+
 }

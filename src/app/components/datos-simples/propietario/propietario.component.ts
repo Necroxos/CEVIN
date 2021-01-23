@@ -21,8 +21,7 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-propietario',
-  templateUrl: './propietario.component.html',
-  styleUrls: ['./propietario.component.css']
+  templateUrl: './propietario.component.html'
 })
 export class PropietarioComponent implements OnInit {
 

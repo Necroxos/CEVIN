@@ -19,8 +19,7 @@ import { UsuarioModel } from '../../../models/usuario.model';
 
 @Component({
   selector: 'app-usuario-detalle',
-  templateUrl: './usuario-detalle.component.html',
-  styleUrls: ['./usuario-detalle.component.css']
+  templateUrl: './usuario-detalle.component.html'
 })
 export class UsuarioDetalleComponent implements OnInit {
 

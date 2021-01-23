@@ -16,7 +16,7 @@ export class StockComponent implements OnInit {
   listadoRutas = [
     { id: 0, ruta: ['stock', 'completos'] },
     { id: 1, ruta: ['stock', 'vacios'] },
-    { id: 2, ruta: ['stock', 'vendidos'] }
+    { id: 2, ruta: ['stock', 'arrendados'] }
   ];
   currTab: number;
 

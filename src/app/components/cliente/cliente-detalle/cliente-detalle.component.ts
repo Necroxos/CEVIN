@@ -19,8 +19,7 @@ import { ClienteModel } from '../../../models/cliente.model';
 
 @Component({
   selector: 'app-cliente-detalle',
-  templateUrl: './cliente-detalle.component.html',
-  styleUrls: ['./cliente-detalle.component.css']
+  templateUrl: './cliente-detalle.component.html'
 })
 export class ClienteDetalleComponent implements OnInit {
   /**********************************************************************************************************************************

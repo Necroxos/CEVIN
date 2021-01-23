@@ -9,19 +9,18 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 // Servicios
-import { AuthService } from '../../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { PdfmakerService } from '../../../services/pdfmaker.service';
 import { CilindroService } from '../../../services/cilindro.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
 import Swal from 'sweetalert2';
-import { ToastrService } from 'ngx-toastr';
 // Modelos
 import { CilindroModel } from 'src/app/models/cilindro.model';
 
 @Component({
   selector: 'app-activo-detalle',
-  templateUrl: './activo-detalle.component.html',
-  styleUrls: ['./activo-detalle.component.css']
+  templateUrl: './activo-detalle.component.html'
 })
 export class ActivoDetalleComponent implements OnInit {
 
@@ -29,10 +28,9 @@ export class ActivoDetalleComponent implements OnInit {
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
 
-  displayedColumns: string[] = ['correlativo', 'codigo_activo', 'fecha_mantencion', 'tipo_gas', 'metros_cubicos', 'propietario', 'stock', 'cargado', 'activo', 'opciones'];
+  displayedColumns: string[] = ['correlativo', 'codigo_activo', 'fecha_mantencion', 'tipo_gas', 'metros_cubicos', 'propietario', 'activo', 'opciones'];
 
   dataSource: MatTableDataSource<CilindroModel>;
-  isAdmin = false;
   tableSmall = false;
   panelOpenState = false;
   isLoadingResults = true;
@@ -54,7 +52,6 @@ export class ActivoDetalleComponent implements OnInit {
 
   /**
    * Inicializa módulos y servicios
-   * @param auth Servicio de autenticación
    * @param router Módulo que enruta y redirecciona
    * @param toastr Servicio con funciones de mensajes
    * @param cilindroServ Servicio con peticiones HTTP al Back End
@@ -62,8 +59,8 @@ export class ActivoDetalleComponent implements OnInit {
    */
   constructor(
     private router: Router,
-    private auth: AuthService,
     private toastr: ToastrService,
+    private pdfmaker: PdfmakerService,
     private cilindroServ: CilindroService,
     private estadoPeticion: PeticionesService) { }
 
@@ -85,21 +82,12 @@ export class ActivoDetalleComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.isLoadingResults = false;
       this.isRateLimitReached = false;
-      this.isAdmin = this.esAdmin();
     }, (err: any) => {
       console.log(err);
       this.isRateLimitReached = true;
       this.isLoadingResults = false;
       this.estadoPeticion.error(err);
     });
-  }
-
-  /**
-   * Función que revisa que el usuario autenticado tenga permisos de administrador administrador
-   * Regresa un true o false para habilitar funciones en la vista
-   */
-  esAdmin(): boolean {
-    return this.auth.esAdmin;
   }
 
   /**
@@ -124,7 +112,7 @@ export class ActivoDetalleComponent implements OnInit {
    * @param evento Recibe el objeto Cilindro de la fila
    */
   imprimir(evento: CilindroModel): void {
-    console.log(evento);
+    this.pdfmaker.imprimirPDF(evento.codigo_activo);
   }
 
   /**

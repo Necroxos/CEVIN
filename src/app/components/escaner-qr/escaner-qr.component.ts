@@ -5,8 +5,7 @@ import { QrScannerComponent } from 'angular2-qrscanner';
 
 @Component({
   selector: 'app-escaner-qr',
-  templateUrl: './escaner-qr.component.html',
-  styleUrls: ['./escaner-qr.component.css']
+  templateUrl: './escaner-qr.component.html'
 })
 export class EscanerQrComponent {
 

@@ -71,6 +71,9 @@ import { FormularioZonaComponent } from './components/datos-simples/zona/formula
 import { VentaEliminarComponent } from './components/venta/venta-eliminar/venta-eliminar.component';
 // Stocks
 import { StockComponent } from './components/stock/stock.component';
+import { LlenosComponent } from './components/stock/llenos/llenos.component';
+import { VaciosComponent } from './components/stock/vacios/vacios.component';
+import { ArrendadosComponent } from './components/stock/arrendados/arrendados.component';
 
 
 @NgModule({
@@ -122,6 +125,9 @@ import { StockComponent } from './components/stock/stock.component';
     FormularioZonaComponent,
     // Stock
     StockComponent,
+    LlenosComponent,
+    VaciosComponent,
+    ArrendadosComponent,
     // Pipes
     BooleanPipe,
     NotNullPipe

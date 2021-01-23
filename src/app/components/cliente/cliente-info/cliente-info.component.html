@@ -2,7 +2,12 @@
     <!-- Una Tarjeta para mostrar la información -->
     <div class="card bg-light mb-3 animated fadeIn">
         <div class="card-header">
-            <h5 class="card-title">Cliente</h5>
+            <h5 class="card-title">
+                Cliente
+                <button class="btn btn-outline-dark float-right" (click)="recargar()">
+                    <mat-icon class="center-icons">navigate_before</mat-icon> Regresar
+                </button>
+            </h5>
         </div>
         <!-- Información medular, se pueden usar pipes para transformar visualmente la data -->
         <div class="card-body">

@@ -11,15 +11,13 @@ import { VentaModel } from '../../../models/venta.model';
 import { VentaInfoComponent } from '../venta-info/venta-info.component';
 // Módulos
 import Swal from 'sweetalert2';
-import * as moment from 'moment';
 // Servicios
 import { VentaService } from '../../../services/venta.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 
 @Component({
   selector: 'app-venta-eliminar',
-  templateUrl: './venta-eliminar.component.html',
-  styleUrls: ['./venta-eliminar.component.css']
+  templateUrl: './venta-eliminar.component.html'
 })
 export class VentaEliminarComponent implements OnInit {
 

@@ -1,0 +1,71 @@
+<h1 class="mt-5">Stock de cilindros llenos</h1>
+<hr><br>
+
+<div class="input-group mb-3">
+    <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+    <input type="text" class="form-control" (keyup)="applyFilter($event)" placeholder="filtro" #input>
+</div>
+
+<div class="example-container mat-elevation-z8 animated fadeIn fast">
+    <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        <div class="rate-limit-reached" *ngIf="isRateLimitReached">
+            Error al obtener la información...
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <!-- Columna de correlativo -->
+            <ng-container matColumnDef="sel">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sel. </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-checkbox color="primary" (change)="cilindroVenta(element, $event.checked)" [checked]="element.escogido"></mat-checkbox>
+                </td>
+            </ng-container>
+
+            <!-- Columna del número de serie del activo -->
+            <ng-container matColumnDef="codigo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nº Serie </th>
+                <td mat-cell *matCellDef="let row"> {{ row.codigo_activo | slice:13 }} </td>
+            </ng-container>
+
+            <!-- Columna del tipo de gas -->
+            <ng-container matColumnDef="tipo_gas">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gas </th>
+                <td mat-cell *matCellDef="let row"> {{row.tipo_gas}} </td>
+            </ng-container>
+
+            <!-- Columna de los metros cúbicos -->
+            <ng-container matColumnDef="metros_cubicos">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Capacidad </th>
+                <td mat-cell *matCellDef="let row"> {{ row.metros_cubicos }} m<sup>3</sup> </td>
+            </ng-container>
+
+            <!-- Columna del propietario -->
+            <ng-container matColumnDef="propietario">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Propietario </th>
+                <td mat-cell *matCellDef="let row"> {{row.propietario}} </td>
+            </ng-container>
+
+            <!-- Columna de estado -->
+            <ng-container matColumnDef="activo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Activo </th>
+                <td mat-cell *matCellDef="let row" [ngClass]="{ 'activo': row.activo, 'inactivo': !row.activo }">
+                    <mat-icon>{{row.activo | boolean}}</mat-icon>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- Se muestra si no se encuantra información con el valor filtrado. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell text-danger" colspan="4">Sin resultados para "{{input.value}}"</td>
+            </tr>
+        </table>
+
+    </div>
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]"></mat-paginator>
+</div>
