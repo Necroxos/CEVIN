@@ -58,6 +58,7 @@ import { VentaNuevoComponent } from './components/venta/venta-nuevo/venta-nuevo.
 import { VentaEditarComponent } from './components/venta/venta-editar/venta-editar.component';
 import { VentaDetalleComponent } from './components/venta/venta-detalle/venta-detalle.component';
 import { FechaRetornoComponent } from './components/venta/fecha-retorno/fecha-retorno.component';
+import { VentaEliminarComponent } from './components/venta/venta-eliminar/venta-eliminar.component';
 import { FormularioVentaComponent } from './components/venta/formulario-venta/formulario-venta.component';
 // Datos Simples
 import { TipoComponent } from './components/datos-simples/tipo/tipo.component';
@@ -68,7 +69,6 @@ import { ComunaComponent } from './components/datos-simples/comuna/comuna.compon
 import { FormularioComunaComponent } from './components/datos-simples/comuna/formulario-comuna/formulario-comuna.component';
 import { ZonaComponent } from './components/datos-simples/zona/zona.component';
 import { FormularioZonaComponent } from './components/datos-simples/zona/formulario-zona/formulario-zona.component';
-import { VentaEliminarComponent } from './components/venta/venta-eliminar/venta-eliminar.component';
 // Stocks
 import { StockComponent } from './components/stock/stock.component';
 import { LlenosComponent } from './components/stock/llenos/llenos.component';
@@ -113,9 +113,9 @@ import { InfoContactoComponent } from './components/stock/info-contacto/info-con
     VentaNuevoComponent,
     VentaEditarComponent,
     VentaDetalleComponent,
-    FormularioVentaComponent,
-    VentaEliminarComponent,
     FechaRetornoComponent,
+    VentaEliminarComponent,
+    FormularioVentaComponent,
     // Otros
     TipoComponent,
     FormularioTipoComponent,

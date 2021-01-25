@@ -8,6 +8,8 @@ import jwt_decode from 'jwt-decode';
 import { LoginModel } from '../models/login.model';
 // Operadores para mapear la infrormación de las respuestas
 import { map } from 'rxjs/operators';
+// ENV URL
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
 
   // URL donde corre la API
-  readonly url = 'http://192.168.0.12:3000';
+  readonly url = environment.API_URL;
 
   // Guardamos el token del usuario
   userToken: string;
