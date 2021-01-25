@@ -114,4 +114,13 @@ export class AuthService {
     return false;
   }
 
+  /**
+   * Obtener el token como objeto para sacar la información del usuario
+   */
+  obtenerUsuario(): any {
+    this.leerToken();
+    const token = jwt_decode(this.userToken);
+    return token;
+  }
+
 }

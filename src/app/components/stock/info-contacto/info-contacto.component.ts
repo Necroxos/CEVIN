@@ -4,14 +4,16 @@
 // Angular
 import { Component, Inject, OnInit } from '@angular/core';
 // Angular Material
-import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // Componente padre
 import { ArrendadosComponent } from '../arrendados/arrendados.component';
 // Enrutador
 import { Router } from '@angular/router';
 
 export interface DialogData {
+  fecha_entrega: string;
   telefono: string;
+  codigo: string;
   email: string;
   rut: string;
 }
@@ -34,6 +36,12 @@ export class InfoContactoComponent implements OnInit {
     localStorage.setItem('cliente', this.data.rut);
     this.dialogRef.close();
     this.router.navigate(['cliente', 'info']);
+  }
+
+  verVenta(): void {
+    localStorage.setItem('venta', this.data.codigo);
+    this.dialogRef.close();
+    this.router.navigate(['venta', 'info']);
   }
 
 }

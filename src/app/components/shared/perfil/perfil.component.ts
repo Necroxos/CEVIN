@@ -2,52 +2,52 @@
  *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
  ************************************************************************************************************************************/
 // Angular
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 // Servicios
+import { RutService } from '../../../services/rut.service';
+import { AuthService } from '../../../services/auth.service';
 import { UsuarioService } from '../../../services/usuario.service';
 import { PeticionesService } from '../../../services/peticiones.service';
-// Módulos
-import Swal from 'sweetalert2';
 // Modelos
 import { UsuarioModel } from '../../../models/usuario.model';
+// Módulos
+import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+// Componente
+import { PasswordComponent } from './password/password.component';
 
 @Component({
-  selector: 'app-usuario-editar',
-  templateUrl: './usuario-editar.component.html',
-  styleUrls: []
+  selector: 'app-perfil',
+  templateUrl: './perfil.component.html'
 })
-export class UsuarioEditarComponent {
+export class PerfilComponent implements OnInit {
 
   /**********************************************************************************************************************************
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
 
-  mostrar = false;
-  accionBtn = 'Editar';
-  usuario = new UsuarioModel();
-  usuarioLocal = this.usuarioServ.leerUsuario();
+  usuario: UsuarioModel = new UsuarioModel();
 
   /**********************************************************************************************************************************
    *                                                    EJECUCIÓN AL INICIAR                                                        *
    **********************************************************************************************************************************/
 
   /**
-   * Inicializa servicios
-   * @param usuarioServ Servicio con peticiones HTTP al Back End
+   * Inicializa módulos y servicios
+   * @param auth Servicio de autenticación
+   * @param rutServ Servicio que verifica validéz del rut
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-  constructor(private estadoPeticion: PeticionesService, private usuarioServ: UsuarioService) { }
+  constructor(
+    public dialog: MatDialog,
+    private auth: AuthService,
+    private rutServ: RutService,
+    private usuarioServ: UsuarioService,
+    private estadoPeticion: PeticionesService) { }
 
-  /**
-   * Leemos el [codigo_activo] del locaStorage y buscamos el usuario en la BD para poder editarlo
-   */
-  ngAfterContentInit(): void {
-    if (this.usuarioLocal) {
-      this.usuario.rut = this.usuarioLocal;
-      this.cargarInfo();
-    } else {
-      this.estadoPeticion.recargar(['usuario', 'detalle']);
-    }
+  ngOnInit(): void {
+    this.cargarInfo();
   }
 
   /**
@@ -55,12 +55,13 @@ export class UsuarioEditarComponent {
    * @param res Recibe la respuesta de la subscripción
    */
   cargarInfo(): void {
+    let usuario = this.auth.obtenerUsuario();
+    usuario = usuario.usuario;
+    usuario.rut = usuario.dni + '-' + usuario.dv;
     this.estadoPeticion.loading();
-    this.usuarioServ.obtenerUno(this.usuario).subscribe((res: any) => {
+    this.usuarioServ.obtenerUno(usuario).subscribe((res: any) => {
       Swal.close();
-      this.estadoPeticion.success(res.message, [], 650);
       this.usuario = { ...res.response };
-      this.mostrar = true;
     }, (err: any) => {
       this.estadoPeticion.error(err);
     });
@@ -69,6 +70,27 @@ export class UsuarioEditarComponent {
   /**********************************************************************************************************************************
    *                                                  FUNCIONES DEL COMPONENTE                                                      *
    **********************************************************************************************************************************/
+
+  /**
+   * Angular From tiene la facultad de actualizar la información automáticamente
+   * En este caso, la función se encarga de enviar la información que se guarda en el modelo de Usuario
+   * @param form Escucha al formulario de Angular
+   */
+  registrar(form: NgForm): void {
+    if (form.invalid) { return; }
+
+    this.rutServ.CheckRUT(this.usuario.rut).then((res) => {
+      if (res) {
+        const rut = String(this.rutServ.quitarFormato(this.usuario.rut));
+        const len = rut.length;
+        this.usuario.dni = rut.substring(0, len - 1);
+        this.usuario.dv = rut.substring(len - 1);
+        this.actualizar(this.usuario);
+      } else {
+        this.rutServ.rutInvalido();
+      }
+    });
+  }
 
   /**
    * Esta función recibe el usuario enviado por el componente [formulario-usuario]
@@ -81,9 +103,19 @@ export class UsuarioEditarComponent {
 
     this.usuarioServ.actualizar(usuario).subscribe((res) => {
       Swal.close();
-      this.estadoPeticion.success('Usuario actualizado con éxito!', ['usuario', 'detalle'], 1000);
+      this.estadoPeticion.success('Usuario actualizado con éxito!', ['perfil'], 1000);
     }, (err: any) => {
       this.estadoPeticion.error(err);
+    });
+  }
+
+  /**
+   * Enviar al formulario de cambiar contraseña
+   */
+  cambiarPass(): void {
+    this.dialog.open(PasswordComponent, {
+      width: '40vh',
+      data: { id: this.usuario.usuario_id }
     });
   }
 

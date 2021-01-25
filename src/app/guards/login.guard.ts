@@ -21,7 +21,7 @@ export class LoginGuard implements CanActivate {
   canActivate(): boolean  {
     if ( !this.auth.esAuth ) { return true; }
     else {
-      this.router.navigateByUrl('/home');
+      this.router.navigate(['stock', 'llenos']);
       return false;
     }
   }

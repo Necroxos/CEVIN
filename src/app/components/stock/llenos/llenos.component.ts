@@ -101,6 +101,9 @@ export class LlenosComponent implements OnInit {
     }
   }
 
+  /**
+   * Función de redirección al componente de escaner
+   */
   escaner(): void {
     this.router.navigate(['activo', 'escaner']);
   }

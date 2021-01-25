@@ -1,0 +1,29 @@
+<form class="validate-form m-1" (ngSubmit)="registrar( f )" #f="ngForm">
+    <!-- Input rut -->
+    <div class="form-group">
+        <label><b>Rut:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="usuario.rut" name="rut" placeholder="Rut del usuario" required>
+        <span *ngIf="f.submitted && f.controls['rut'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input nombres -->
+    <div class="form-group">
+        <label><b>Nombres:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="usuario.nombres" name="nombres" placeholder="Nombres del usuario" required>
+        <span *ngIf="f.submitted && f.controls['nombres'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input apellidos -->
+    <div class="form-group">
+        <label><b>Apellidos:</b></label>
+        <input class="form-control" type="text" [(ngModel)]="usuario.apellidos" name="apellidos" placeholder="Apellidos del usuario" required>
+        <span *ngIf="f.submitted && f.controls['apellidos'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Input correo -->
+    <div class="form-group">
+        <label><b>Correo:</b></label>
+        <input class="form-control email" type="text" [(ngModel)]="usuario.email" name="email" placeholder="Correo del usuario" required>
+        <span *ngIf="f.submitted && f.controls['email'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+    </div>
+    <!-- Botones -->
+    <button type="submit" class="btn btn-warning btn-block"> Editar </button>
+    <button type="button" class="btn btn-info btn-block" (click)="cambiarPass()"> Cambiar Contraseña </button>
+</form>

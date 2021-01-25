@@ -39,6 +39,7 @@ import { ActivoDetalleComponent } from './components/activo/activo-detalle/activ
 import { FormularioCilindroComponent } from './components/activo/formulario-cilindro/formulario-cilindro.component';
 // Usuario
 import { UsuarioComponent } from './components/usuario/usuario.component';
+import { PerfilComponent } from './components/shared/perfil/perfil.component';
 import { UsuarioNuevoComponent } from './components/usuario/usuario-nuevo/usuario-nuevo.component';
 import { UsuarioEditarComponent } from './components/usuario/usuario-editar/usuario-editar.component';
 import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle/usuario-detalle.component';
@@ -76,6 +77,7 @@ import { VaciosComponent } from './components/stock/vacios/vacios.component';
 import { RotadosComponent } from './components/stock/rotados/rotados.component';
 import { ArrendadosComponent } from './components/stock/arrendados/arrendados.component';
 import { InfoContactoComponent } from './components/stock/info-contacto/info-contacto.component';
+import { PasswordComponent } from './components/shared/perfil/password/password.component';
 
 
 @NgModule({
@@ -94,10 +96,11 @@ import { InfoContactoComponent } from './components/stock/info-contacto/info-con
     ActivoQrComponent,
     FormularioCilindroComponent,
     // Usuario
+    PerfilComponent,
     UsuarioComponent,
-    UsuarioDetalleComponent,
     UsuarioNuevoComponent,
     UsuarioEditarComponent,
+    UsuarioDetalleComponent,
     FormularioUsuarioComponent,
     // Cliente
     ClienteComponent,
@@ -134,7 +137,8 @@ import { InfoContactoComponent } from './components/stock/info-contacto/info-con
     InfoContactoComponent,
     // Pipes
     BooleanPipe,
-    NotNullPipe
+    NotNullPipe,
+    PasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -31,8 +31,12 @@ export class ArrendadosComponent implements OnInit {
   cilindros: CilindroModel[];
   cilindrosMarcados: CilindroModel[];
 
+  aTiempo = true;
+  atrasoLeve = false;
+  atrasoGrave = false;
+
   // Variables para la tabla de cilindros
-  displayedColumns: string[] = ['codigo', 'propietario', 'cilindro', 'cliente', 'opcion'];
+  displayedColumns: string[] = ['codigo', 'propietario', 'cilindro', 'cliente', 'dias_transcurridos', 'opcion'];
   dataSource: MatTableDataSource<CilindroModel>;
   panelOpenState = false;
   isLoadingResults = true;
@@ -113,7 +117,9 @@ export class ArrendadosComponent implements OnInit {
     this.dialog.open(InfoContactoComponent, {
       width: '40vh',
       data: {
+        fecha_entrega: evento.fecha_entrega,
         telefono: evento.telefono,
+        codigo: evento.codigo,
         email: evento.email,
         rut: evento.rut
       }

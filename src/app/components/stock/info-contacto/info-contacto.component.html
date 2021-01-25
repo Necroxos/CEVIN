@@ -3,7 +3,11 @@
 
 <p><b>Teléfono: </b> {{ data.telefono }} </p>
 <p><b>Correo: </b> {{ data.email }} </p>
+<p><b>Fecha Entrega: </b> {{ data.fecha_entrega }} </p>
 
 <button mat-raised-button color="primary" (click)="verCliente()" class="btn-block">
     <mat-icon>description</mat-icon>Ver cliente
+</button>
+<button mat-raised-button color="accent" (click)="verVenta()" class="btn-block">
+    <mat-icon>description</mat-icon>Ver venta
 </button>
