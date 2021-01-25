@@ -15,6 +15,10 @@
     min-width: 320px;
 }
 
+.stock-btn-width {
+    width: 200px;
+}
+
 
 /* Boolean Pipe */
 
@@ -139,8 +143,14 @@ table {
 
 /* Column Widths */
 
-.mat-header-cell,
+.mat-sort-header-container,
+.mat-header-cell {
+    justify-content: center;
+    margin: 15px;
+}
+
 .mat-cell {
+    text-align: center !important;
     padding: 15px;
 }
 

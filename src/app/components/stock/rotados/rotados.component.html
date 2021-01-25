@@ -1,4 +1,4 @@
-<h1 class="mt-5">Stock de cilindros vacíos</h1>
+<h1 class="mt-5">Stock de cilindros en rotación</h1>
 <hr><br>
 
 <div class="row">
@@ -7,14 +7,14 @@
         <input type="text" class="form-control" (keyup)="applyFilter($event)" placeholder="filtro" #input>
     </div>
     <div class="col text-right">
-        <button mat-raised-button color="warn" (click)="rotarCilindros()" [ngClass]="{'btn-block': smallDevice}">
-            <mat-icon>remove</mat-icon>Rotar seleccionados
+        <button mat-raised-button color="primary" (click)="rotarCilindros()" [ngClass]="{'btn-block': smallDevice}">
+            <mat-icon>add</mat-icon>Rotar seleccionados
         </button>
     </div>
 </div>
 <br *ngIf="smallDevice">
 
-<div class="example-container mat-elevation-z8 animated fadeIn fast" [ngClass]="{'text-center': smallDevice}">
+<div class="example-container mat-elevation-z8 animated fadeIn fast">
     <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
         <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
         <div class="rate-limit-reached" *ngIf="isRateLimitReached">

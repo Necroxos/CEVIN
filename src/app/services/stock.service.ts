@@ -44,4 +44,22 @@ export class StockService {
     return this.http.get(`${this.url}/stock/arrendados`, { headers });
   }
 
+  /**
+   * Se realiza una petición a la API para obtener los cilindros que estén en Santiago
+   * (En posesión de Air Liquide)
+   */
+  obtenerCilindrosRotados(): any {
+    const headers = this.auth.headers();
+    return this.http.get(`${this.url}/stock/rotados`, { headers });
+  }
+
+  /**
+   * Se realiza una petición a la API para cambiar el estado de los cilindros
+   * Para realizar su rotación a Santiago
+   */
+  rotarCilindros(cilindros: CilindroModel[]): any {
+    const headers = this.auth.headers();
+    return this.http.post(`${this.url}/rotacion/cilindros`, cilindros, { headers });
+  }
+
 }

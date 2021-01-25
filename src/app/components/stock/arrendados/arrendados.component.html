@@ -1,14 +1,9 @@
 <h1 class="mt-5">Cilindros arrendados</h1>
 <hr><br>
 
-<div class="row">
-    <div class="input-group mb-3 col-md-9">
-        <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
-        <input type="text" class="form-control" (keyup)="applyFilter($event)" placeholder="filtro" #input>
-    </div>
-    <div class="col text-right">
-        <button mat-raised-button color="primary" (click)="rotarCilindros()"><mat-icon>add</mat-icon>Marcar devolución</button>
-    </div>
+<div class="input-group mb-3">
+    <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+    <input type="text" class="form-control" (keyup)="applyFilter($event)" placeholder="filtro" #input>
 </div>
 
 <div class="example-container mat-elevation-z8 animated fadeIn fast">
@@ -22,14 +17,6 @@
     <div class="table-container">
         <table mat-table [dataSource]="dataSource" matSort>
 
-            <!-- Columna de correlativo -->
-            <ng-container matColumnDef="sel">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sel. </th>
-                <td mat-cell *matCellDef="let element">
-                    <mat-checkbox color="primary" (change)="marcarCilindro(element, $event.checked)" [checked]="element.escogido"></mat-checkbox>
-                </td>
-            </ng-container>
-
             <!-- Columna del número de serie del activo -->
             <ng-container matColumnDef="codigo">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Nº Serie </th>
@@ -37,28 +24,30 @@
             </ng-container>
 
             <!-- Columna del tipo de gas -->
-            <ng-container matColumnDef="tipo_gas">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gas </th>
-                <td mat-cell *matCellDef="let row"> {{row.tipo_gas}} </td>
-            </ng-container>
-
-            <!-- Columna de los metros cúbicos -->
-            <ng-container matColumnDef="metros_cubicos">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Capacidad </th>
-                <td mat-cell *matCellDef="let row"> {{ row.metros_cubicos }} m<sup>3</sup> </td>
+            <ng-container matColumnDef="cilindro" style="min-width: 200px;">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> cilindro </th>
+                <td mat-cell *matCellDef="let row"> {{ row.tipo_gas }} ({{ row.metros_cubicos }} m<sup>3</sup>) </td>
             </ng-container>
 
             <!-- Columna del propietario -->
             <ng-container matColumnDef="propietario">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Propietario </th>
-                <td mat-cell *matCellDef="let row"> {{row.propietario}} </td>
+                <td mat-cell *matCellDef="let row"> {{ row.propietario }} </td>
             </ng-container>
 
-            <!-- Columna de estado -->
-            <ng-container matColumnDef="activo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Activo </th>
-                <td mat-cell *matCellDef="let row" [ngClass]="{ 'activo': row.activo, 'inactivo': !row.activo }">
-                    <mat-icon>{{row.activo | boolean}}</mat-icon>
+            <!-- Columna del cliente -->
+            <ng-container matColumnDef="cliente">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 200px;"> Cliente </th>
+                <td mat-cell *matCellDef="let row"> {{ row.nombre_completo }} ({{ row.rut }}) </td>
+            </ng-container>
+
+            <!-- Columna de correlativo -->
+            <ng-container matColumnDef="opcion" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Op. </th>
+                <td mat-cell *matCellDef="let row">
+                    <button mat-icon-button matTooltip="Ver información de contacto" (click)="verInfo(row)">
+                        <mat-icon>description</mat-icon>
+                    </button>
                 </td>
             </ng-container>
 

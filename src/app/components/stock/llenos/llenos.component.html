@@ -1,10 +1,18 @@
 <h1 class="mt-5">Stock de cilindros llenos</h1>
 <hr><br>
 
-<div class="input-group mb-3">
-    <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
-    <input type="text" class="form-control" (keyup)="applyFilter($event)" placeholder="filtro" #input>
+<div class="row">
+    <div class="input-group mb-3" [ngClass]="{'col-md-9': !smallDevice}">
+        <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+        <input type="text" class="form-control" (keyup)="applyFilter($event)" placeholder="filtro" #input>
+    </div>
+    <div class="col text-right">
+        <button mat-raised-button color="primary" (click)="escaner()" [ngClass]="{'btn-block': smallDevice, 'stock-btn-width': !smallDevice}">
+            <mat-icon>qr_code_scanner</mat-icon>Escanner
+        </button>
+    </div>
 </div>
+<br *ngIf="smallDevice">
 
 <div class="example-container mat-elevation-z8 animated fadeIn fast">
     <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
@@ -16,14 +24,6 @@
 
     <div class="table-container">
         <table mat-table [dataSource]="dataSource" matSort>
-
-            <!-- Columna de correlativo -->
-            <ng-container matColumnDef="sel">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sel. </th>
-                <td mat-cell *matCellDef="let element">
-                    <mat-checkbox color="primary" (change)="cilindroVenta(element, $event.checked)" [checked]="element.escogido"></mat-checkbox>
-                </td>
-            </ng-container>
 
             <!-- Columna del número de serie del activo -->
             <ng-container matColumnDef="codigo">
@@ -47,14 +47,6 @@
             <ng-container matColumnDef="propietario">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Propietario </th>
                 <td mat-cell *matCellDef="let row"> {{row.propietario}} </td>
-            </ng-container>
-
-            <!-- Columna de estado -->
-            <ng-container matColumnDef="activo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Activo </th>
-                <td mat-cell *matCellDef="let row" [ngClass]="{ 'activo': row.activo, 'inactivo': !row.activo }">
-                    <mat-icon>{{row.activo | boolean}}</mat-icon>
-                </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

@@ -29,25 +29,25 @@
 
             <!-- Columna de los contacto -->
             <ng-container matColumnDef="contacto">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Contacto </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 150;"> Contacto </th>
                 <td mat-cell *matCellDef="let row"> {{ row.nombre_completo }} </td>
             </ng-container>
 
             <!-- Columna del email -->
             <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 150;"> Correo </th>
                 <td mat-cell *matCellDef="let row"> {{ row.email | notNull }} </td>
             </ng-container>
 
             <!-- Columna del telefono -->
             <ng-container matColumnDef="telefono">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 100px;"> Teléfono </th>
                 <td mat-cell *matCellDef="let row"> {{ row.telefono | notNull }} </td>
             </ng-container>
 
             <!-- Columna del razon social -->
             <ng-container matColumnDef="razon_social">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Razón social </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 150;"> Razón social </th>
                 <td mat-cell *matCellDef="let row" style="min-width: 200px;"> {{ row.razon_social | notNull }} </td>
             </ng-container>
 

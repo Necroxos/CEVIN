@@ -73,7 +73,9 @@ import { VentaEliminarComponent } from './components/venta/venta-eliminar/venta-
 import { StockComponent } from './components/stock/stock.component';
 import { LlenosComponent } from './components/stock/llenos/llenos.component';
 import { VaciosComponent } from './components/stock/vacios/vacios.component';
+import { RotadosComponent } from './components/stock/rotados/rotados.component';
 import { ArrendadosComponent } from './components/stock/arrendados/arrendados.component';
+import { InfoContactoComponent } from './components/stock/info-contacto/info-contacto.component';
 
 
 @NgModule({
@@ -127,7 +129,9 @@ import { ArrendadosComponent } from './components/stock/arrendados/arrendados.co
     StockComponent,
     LlenosComponent,
     VaciosComponent,
+    RotadosComponent,
     ArrendadosComponent,
+    InfoContactoComponent,
     // Pipes
     BooleanPipe,
     NotNullPipe

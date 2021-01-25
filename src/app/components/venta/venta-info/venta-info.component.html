@@ -2,7 +2,11 @@
     <!-- Una Tarjeta para mostrar la información -->
     <div class="card bg-light mb-3 animated fadeIn">
         <div class="card-header ">
-            <h5 class="card-title">Venta</h5>
+            <h5 class="card-title"> Venta
+                <button class="btn btn-outline-dark float-right" (click)="recargar()">
+                    <mat-icon class="center-icons">navigate_before</mat-icon> Regresar
+                </button>
+            </h5>
         </div>
         <!-- Información medular, se pueden usar pipes para transformar visualmente la data -->
         <div class="card-body">
@@ -57,10 +61,10 @@
                     <td mat-cell *matCellDef="let row"> {{ row.correlativo }} </td>
                 </ng-container>
 
-                <!-- Columna de los metros cúbicos -->
-                <ng-container matColumnDef="metros_cubicos">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Capacidad </th>
-                    <td mat-cell *matCellDef="let row"> {{ row.metros_cubicos }} m<sup>3</sup> </td>
+                <!-- Columna del tipo de gas -->
+                <ng-container matColumnDef="cilindro" style="min-width: 200px;">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> cilindro </th>
+                    <td mat-cell *matCellDef="let row"> {{ row.tipo_gas }} ({{ row.metros_cubicos }} m<sup>3</sup>) </td>
                 </ng-container>
 
                 <!-- Columna del codigo_activo -->

@@ -2,18 +2,18 @@
  *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
  ************************************************************************************************************************************/
 // Angular
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 // Servicios
 import { StockService } from '../../../services/stock.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Modelos
 import { CilindroModel } from 'src/app/models/cilindro.model';
-// Módulos
-import Swal from 'sweetalert2';
 // Material
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+// Enrutador
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-llenos',
@@ -30,8 +30,10 @@ export class LlenosComponent implements OnInit {
   cilindros: CilindroModel[];
   cilindrosMarcados: CilindroModel[];
 
+  smallDevice = false;
+
   // Variables para la tabla de cilindros
-  displayedColumns: string[] = ['sel', 'codigo', 'propietario', 'tipo_gas'];
+  displayedColumns: string[] = ['codigo', 'propietario', 'tipo_gas', 'metros_cubicos'];
   dataSource: MatTableDataSource<CilindroModel>;
   panelOpenState = false;
   isLoadingResults = true;
@@ -43,6 +45,12 @@ export class LlenosComponent implements OnInit {
   /**********************************************************************************************************************************
    *                                                    EJECUCIÓN AL INICIAR                                                        *
    **********************************************************************************************************************************/
+  @HostListener('window:resize', ['$event']) onResize(event: any): void {
+    // guard against resize before view is rendered
+    const tmpWidth = window.innerWidth;
+    if (tmpWidth < 992) { this.smallDevice = true; }
+    else { this.smallDevice = false; }
+  }
 
   /**
    * Inicializa servicios
@@ -51,11 +59,13 @@ export class LlenosComponent implements OnInit {
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
   constructor(
+    private router: Router,
     private servicio: StockService,
     private estadoPeticion: PeticionesService
     ) { }
 
   ngOnInit(): void {
+    this.onResize(0);
     this.obtenerCilindros();
   }
 
@@ -91,34 +101,8 @@ export class LlenosComponent implements OnInit {
     }
   }
 
-  /**********************************************************************************************************************************
-   *                                                  FUNCIONES DEL COMPONENTE                                                      *
-   **********************************************************************************************************************************/
-
-  /**
-   * Función que se encarga de marcar como "Cilindro escogido" para la venta
-   * @param cilindo Obtiene el objeto cilindro de la tabla
-   * @param evento Obtiene el check o uncheck (boolean)
-   */
-  cilindroVenta(cilindro: CilindroModel, evento: boolean): void {
-    cilindro.escogido = evento;
-  }
-
-  /**
-   * Función que revisa que a lo menos vaya un cilindro en la venta
-   */
-  checkCilindros(): boolean {
-    this.cilindrosMarcados = new Array<CilindroModel>();
-    this.cilindros.forEach(cilindro => {
-      if (cilindro.escogido) { this.cilindrosMarcados.push(cilindro); }
-    });
-    if (this.cilindrosMarcados.length > 0) { return true; }
-    return false;
-  }
-
-  rotarCilindros(): void {
-    const checkLista = this.checkCilindros();
-    console.log('Lista vacia', !checkLista);
+  escaner(): void {
+    this.router.navigate(['activo', 'escaner']);
   }
 
 }

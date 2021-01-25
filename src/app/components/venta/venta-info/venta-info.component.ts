@@ -40,7 +40,7 @@ export class VentaInfoComponent implements OnInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   dataSource: MatTableDataSource<CilindroModel>;
-  displayedColumns: string[] = ['correlativo', 'codigo_activo', 'metros_cubicos', 'cobros', 'fecha_retorno', 'opciones'];
+  displayedColumns: string[] = ['correlativo', 'codigo_activo', 'cilindro', 'cobros', 'fecha_retorno', 'opciones'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -58,11 +58,15 @@ export class VentaInfoComponent implements OnInit {
 
   /**
    * Inicializa servicios
-   * @param clienteServ Servicio con peticiones HTTP al Back End
+   * @param router Módulo que enruta y redirecciona
+   * @param ventaServ Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-  constructor(private estadoPeticion: PeticionesService, private ventaServ: VentaService,
-              private router: Router, public dialog: MatDialog) { this.cambioPrecio = new EventEmitter(); }
+  constructor(
+    private router: Router,
+    private ventaServ: VentaService,
+    private estadoPeticion: PeticionesService,
+    public dialog: MatDialog) { this.cambioPrecio = new EventEmitter(); }
 
   /**
    * Leemos el [rut] del locaStorage y buscamos el cliente en la BD para poder editarlo
@@ -214,5 +218,13 @@ export class VentaInfoComponent implements OnInit {
   checkPrecio(): void {
     this.cambioPrecio.emit();
   }
+
+  /**
+   * Función para volver a detalle
+   */
+  recargar(): void {
+    this.estadoPeticion.recargar(['venta', 'detalle']);
+  }
+
 
 }

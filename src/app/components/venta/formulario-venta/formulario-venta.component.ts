@@ -17,6 +17,7 @@ import { CilindroModel } from 'src/app/models/cilindro.model';
 import { MatTableDataSource } from '@angular/material/table';
 // Material
 import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-formulario-venta',
@@ -28,6 +29,7 @@ export class FormularioVentaComponent implements OnInit {
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
 
+  maxDate = new Date();
   venta = new VentaModel();
   clientes: ClienteModel[];
   cilindros: CilindroModel[];
@@ -48,6 +50,7 @@ export class FormularioVentaComponent implements OnInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   displayedColumns: string[] = ['num', 'codigo', 'opciones'];
   dataSource: MatTableDataSource<CilindroModel>;
   // Variable para el stepper
@@ -101,6 +104,8 @@ export class FormularioVentaComponent implements OnInit {
       this.cilindros = res.response;
       if (this.CilindrosEdit) { this.cilindrosParaEditar(this.cilindros); }
       this.dataSource = new MatTableDataSource(this.cilindros);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       this.isLoadingResults = false;
       this.isRateLimitReached = false;
     }, (err: any) => {
