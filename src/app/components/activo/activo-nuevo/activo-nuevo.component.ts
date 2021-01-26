@@ -21,10 +21,11 @@ export class ActivoNuevoComponent {
 
   /**
    * Inicializa servicios
+   * @param pdfmaker Servicio con funciones de impresión
    * @param cilindroServ Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-   constructor(     
+   constructor(
      private pdfmaker: PdfmakerService,
      private cilindroServ: CilindroService,
      private estadoPeticion: PeticionesService) { }

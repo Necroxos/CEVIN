@@ -54,6 +54,7 @@ export class ActivoDetalleComponent implements OnInit {
    * Inicializa módulos y servicios
    * @param router Módulo que enruta y redirecciona
    * @param toastr Servicio con funciones de mensajes
+   * @param pdfmaker Servicio con funciones de impresión
    * @param cilindroServ Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
