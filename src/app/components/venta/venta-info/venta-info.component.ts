@@ -8,6 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 // Servicios
+import { AuthService } from '../../../services/auth.service';
 import { VentaService } from '../../../services/venta.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
@@ -32,6 +33,8 @@ export class VentaInfoComponent implements OnInit {
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
   mostrar = false;
+  ventaFinalizada = false;
+  cilindroDevuelto = true;
 
   venta = new VentaModel();
   cilindros = new Array<CilindroModel>();
@@ -58,12 +61,14 @@ export class VentaInfoComponent implements OnInit {
 
   /**
    * Inicializa servicios
+   * @param auth Servicio de autenticación
    * @param router Módulo que enruta y redirecciona
    * @param ventaServ Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
   constructor(
     private router: Router,
+    private auth: AuthService,
     private ventaServ: VentaService,
     private estadoPeticion: PeticionesService,
     public dialog: MatDialog) { this.cambioPrecio = new EventEmitter(); }
@@ -104,6 +109,8 @@ export class VentaInfoComponent implements OnInit {
     this.ventaServ.obtenerUno(this.venta).subscribe((res: any) => {
       Swal.close();
       this.venta = { ...res.response };
+      this.ventaFinalizada = this.venta.finalizado;
+      this.cilindroDevuelto = !this.venta.finalizado;
       this.venta.entrega = moment(this.venta.fecha_entrega, 'DD/MM/YYYY');
       this.cilindrosDeVenta(this.venta);
     }, (err: any) => {
@@ -118,7 +125,9 @@ export class VentaInfoComponent implements OnInit {
    */
   cilindrosDeVenta(venta: VentaModel): void {
     this.ventaServ.obtenerCilindrosDeVenta(venta).subscribe((res: any) => {
-      this.dataSource = new MatTableDataSource(res.response);
+      this.cilindros = [...res.response];
+      this.cilindros.forEach(element => element.activo = !element.activo );
+      this.dataSource = new MatTableDataSource(this.cilindros);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.isLoadingResults = false;
@@ -224,6 +233,14 @@ export class VentaInfoComponent implements OnInit {
    */
   recargar(): void {
     this.estadoPeticion.recargar(['venta', 'detalle']);
+  }
+
+  /**
+   * Función que revisa que el usuario autenticado tenga permisos de administrador administrador
+   * Regresa un true o false para habilitar funciones en la vista
+   */
+  esAdmin(): boolean {
+    return this.auth.esAdmin;
   }
 
 

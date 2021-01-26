@@ -90,7 +90,10 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Opciones </th>
                     <td mat-cell *matCellDef="let row">
                         <section class="example-section">
-                            <mat-slide-toggle color="primary" [checked]="row.stock" [(ngModel)]="row.stock" (change)="checkEstado(row)"></mat-slide-toggle>
+                            <mat-icon *ngIf="ventaFinalizada || row.activo" matTooltip="Cilindro devuelto" class="inactivo mr-2">app_blocking</mat-icon>
+                            <mat-checkbox *ngIf="esAdmin() && venta.finalizado" color="warn" matTooltip="Modificación bloqueada" [(ngModel)]="ventaFinalizada" class="mr-2"></mat-checkbox>
+                            <mat-checkbox *ngIf="esAdmin() && row.activo && !venta.finalizado" color="warn" matTooltip="Modificación bloqueada" [(ngModel)]="cilindroDevuelto" class="mr-2"></mat-checkbox>
+                            <mat-slide-toggle *ngIf="!ventaFinalizada && (!row.activo || !cilindroDevuelto)" color="primary" [(ngModel)]="row.activo" (change)="checkEstado(row)"></mat-slide-toggle>
                         </section>
                     </td>
                 </ng-container>
