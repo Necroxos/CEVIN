@@ -1,6 +1,7 @@
 // Angular
 import { Component } from '@angular/core';
 // Servicios
+import { PdfmakerService } from '../../../services/pdfmaker.service';
 import { CilindroService } from '../../../services/cilindro.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
@@ -23,7 +24,10 @@ export class ActivoNuevoComponent {
    * @param cilindroServ Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-   constructor(private cilindroServ: CilindroService, private estadoPeticion: PeticionesService) { }
+   constructor(     
+     private pdfmaker: PdfmakerService,
+     private cilindroServ: CilindroService,
+     private estadoPeticion: PeticionesService) { }
 
   /**
    * Esta función recibe el cilindro enviado por el componente [formulario-cilindro]
@@ -37,6 +41,7 @@ export class ActivoNuevoComponent {
 
     this.cilindroServ.registrar(cilindro).subscribe(() => {
       Swal.close();
+      this.pdfmaker.imprimirPDF(cilindro.codigo_activo);
       this.estadoPeticion.success('Nuevo activo ingresado con éxito!', ['activo', 'nuevo'], 1000);
     }, (err: any) => {
       cilindro.codigo_activo = cilindro.codigo_activo.replace(this.estadoPeticion.prefijoCodigo, '');
