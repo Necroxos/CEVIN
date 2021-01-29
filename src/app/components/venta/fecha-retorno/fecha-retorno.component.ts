@@ -44,6 +44,7 @@ export class FechaRetornoComponent implements OnInit {
   maxDate = new Date();
   demoraOK = true;
   dias = 0;
+  costo = 0;
 
   /**********************************************************************************************************************************
    *                                                    EJECUCIÓN AL INICIAR                                                        *
@@ -84,6 +85,7 @@ export class FechaRetornoComponent implements OnInit {
     const inicio = moment(this.venta.entrega);
     const final = moment(this.venta.retorno);
     this.dias = final.diff(inicio, 'days');
+    this.costo = this.dias * 200;
   }
 
   /**

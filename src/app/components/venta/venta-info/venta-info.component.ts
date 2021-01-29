@@ -162,6 +162,7 @@ export class VentaInfoComponent implements OnInit {
    * @param cilindro Recibe el modelo de cilindro
    */
   devolver(cilindro: CilindroModel): void {
+
     this.dialog.open(FechaRetornoComponent, {
       width: '40vh',
       data: {
@@ -196,11 +197,11 @@ export class VentaInfoComponent implements OnInit {
 
   /**
    * Función ligada al HTML, escucha el botón 'Toggle'
-   * Según el estado de 'Stock' llama a una función u otra
+   * Según el estado de 'Activo' llama a una función u otra
    * @param cilindro Recibe el modelo de cilindro
    */
   checkEstado(cilindro: CilindroModel): void {
-    if (cilindro.stock) { this.devolver(cilindro); }
+    if (cilindro.activo) { this.devolver(cilindro); }
     else { this.cancelar(cilindro); }
   }
 

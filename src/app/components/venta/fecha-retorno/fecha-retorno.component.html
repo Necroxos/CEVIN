@@ -14,6 +14,8 @@
             <option value="undefined" disabled>Seleccione un tipo de atraso</option>
             <option *ngFor="let demora of demoras" value="{{demora.id}}"> {{ demora.descripcion }} </option>
         </select>
+        <small class="text-muted"> Costo de arriendo: {{ costo | currency:'CAD':'symbol-narrow':'.0-0' }} </small>
+        <br>
         <small class="text-danger animated fadeIn" *ngIf="!demoraOK">Campo obligatorio</small>
     </div>
 </div>

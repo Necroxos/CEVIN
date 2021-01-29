@@ -40,6 +40,7 @@ import { FormularioCilindroComponent } from './components/activo/formulario-cili
 // Usuario
 import { UsuarioComponent } from './components/usuario/usuario.component';
 import { PerfilComponent } from './components/shared/perfil/perfil.component';
+import { PasswordComponent } from './components/shared/perfil/password/password.component';
 import { UsuarioNuevoComponent } from './components/usuario/usuario-nuevo/usuario-nuevo.component';
 import { UsuarioEditarComponent } from './components/usuario/usuario-editar/usuario-editar.component';
 import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle/usuario-detalle.component';
@@ -77,7 +78,6 @@ import { VaciosComponent } from './components/stock/vacios/vacios.component';
 import { RotadosComponent } from './components/stock/rotados/rotados.component';
 import { ArrendadosComponent } from './components/stock/arrendados/arrendados.component';
 import { InfoContactoComponent } from './components/stock/info-contacto/info-contacto.component';
-import { PasswordComponent } from './components/shared/perfil/password/password.component';
 
 
 @NgModule({
@@ -98,6 +98,7 @@ import { PasswordComponent } from './components/shared/perfil/password/password.
     // Usuario
     PerfilComponent,
     UsuarioComponent,
+    PasswordComponent,
     UsuarioNuevoComponent,
     UsuarioEditarComponent,
     UsuarioDetalleComponent,
@@ -137,8 +138,7 @@ import { PasswordComponent } from './components/shared/perfil/password/password.
     InfoContactoComponent,
     // Pipes
     BooleanPipe,
-    NotNullPipe,
-    PasswordComponent
+    NotNullPipe
   ],
   imports: [
     BrowserModule,
