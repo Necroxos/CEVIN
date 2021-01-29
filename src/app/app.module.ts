@@ -11,7 +11,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { NgQrScannerModule } from 'angular2-qrscanner';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MaterialModule } from './modules/material.module';
-import { OlMapsModule } from './components/shared/ol-maps/ol-maps.module';
+import { MapboxComponent } from './components/shared/mapbox/mapbox.component';
 // Rutas
 import { APP_ROUTING } from './app.routes';
 // Servicios
@@ -136,6 +136,8 @@ import { InfoContactoComponent } from './components/stock/info-contacto/info-con
     RotadosComponent,
     ArrendadosComponent,
     InfoContactoComponent,
+    // Mapa
+    MapboxComponent,
     // Pipes
     BooleanPipe,
     NotNullPipe
@@ -148,7 +150,6 @@ import { InfoContactoComponent } from './components/stock/info-contacto/info-con
     QRCodeModule,
     NgQrScannerModule,
     MaterialModule,
-    OlMapsModule,
     NgxChartsModule,
     ToastrModule.forRoot(),
     APP_ROUTING

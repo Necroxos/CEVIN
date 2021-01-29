@@ -1,0 +1,25 @@
+.mapbox-container {
+    width: 100%;
+    height: 40vh;
+}
+
+#mapbox {
+    width: 100%;
+    height: 100%;
+    background-color: blue;
+}
+
+.coordinates {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    position: absolute;
+    width: 55vh;
+    left: 15px;
+    padding: 5px 10px;
+    margin: 0;
+    font-size: 11px;
+    line-height: 18px;
+    border-radius: 3px;
+    text-align: center;
+    display: none;
+}

@@ -93,6 +93,8 @@
                     <span *ngIf="f.submitted && f.controls['zona_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
                 </div>
             </div>
+            <span *ngIf="!coordenadasOK" class="text-danger animated fadeIn">Elija una dirección</span>
+            <app-mapbox search="true" #coordinates></app-mapbox>
         </mat-step>
 
         <!-- Paso 3 -->
@@ -108,11 +110,15 @@
                 <p *ngIf="f.submitted && f.controls['calle'].errors" class="text-danger animated fadeIn">Falta la calle</p>
                 <p *ngIf="f.submitted && f.controls['numero'].errors" class="text-danger animated fadeIn">Falta el número</p>
                 <p *ngIf="f.submitted && f.controls['zona_id'].errors" class="text-danger animated fadeIn">Falta la zona</p>
+                <p *ngIf="!coordenadasOK" class="text-danger animated fadeIn">Elija una dirección en el mapa</p>
             </div>
 
             <!-- Botones -->
             <div>
-                <button type="submit" class="btn btn-outline-primary btn-block">
+                <button type="button" class="btn btn-outline-success btn-block" (click)="registrarCoordenadas(coordinates)" *ngIf="!enviarForm">
+                    <mat-icon class="center-icons">save</mat-icon>  Confirmar
+                </button>
+                <button type="submit" class="btn btn-outline-primary btn-block" *ngIf="enviarForm">
                     <mat-icon class="center-icons">save</mat-icon>  {{ accionBtn }}
                 </button>
                 <br>

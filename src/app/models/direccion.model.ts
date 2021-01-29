@@ -12,4 +12,6 @@ export class DireccionModel {
     comuna: string;
     activo: boolean;
     created_at: string;
+    latitud: number;
+    longitud: number;
 }

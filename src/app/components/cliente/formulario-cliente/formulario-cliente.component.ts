@@ -27,6 +27,8 @@ export class FormularioClienteComponent implements OnInit {
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
 
+  enviarForm = false;
+  coordenadasOK = true;
   zonas: EstandarModel[];
   comunas: EstandarModel[];
   cliente = new ClienteModel();
@@ -113,6 +115,7 @@ export class FormularioClienteComponent implements OnInit {
    */
   registrar(form: NgForm): void {
     if (form.invalid) { return; }
+    if (!this.coordenadasOK) { return; }
 
     this.rutServ.CheckRUT(this.cliente.rut).then((res) => {
       if (res) {
@@ -172,6 +175,20 @@ export class FormularioClienteComponent implements OnInit {
    */
   recargar(): void {
     this.estadoPeticion.recargar(['cliente', 'detalle']);
+  }
+
+  registrarCoordenadas(coors: any): void {
+    const latitude = String(coors.lat).split('.');
+    const longitude = String(coors.lon).split('.');
+
+    if (latitude[1].length < 8 && longitude[1].length < 7) {
+      this.direccion.latitud = coors.lat;
+      this.direccion.longitud = coors.lon;
+      this.coordenadasOK = true;
+      this.enviarForm = true;
+    } else {
+      this.coordenadasOK = false;
+    }
   }
 
 }
