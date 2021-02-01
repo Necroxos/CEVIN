@@ -1,7 +1,5 @@
 // Angular
 import { Component, OnInit } from '@angular/core';
-// Enrutador
-import { Router } from '@angular/router';
 // Servicios
 import { AuthService } from '../../services/auth.service';
 import { PeticionesService } from '../../services/peticiones.service';
@@ -11,6 +9,8 @@ import { NgForm } from '@angular/forms';
 import { LoginModel } from '../../models/login.model';
 // Módulos
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { RecuperarPassComponent } from './recuperar-pass/recuperar-pass.component';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +23,10 @@ export class LoginComponent implements OnInit {
   authUser: LoginModel = new LoginModel();
   recordarme = false;
 
-  constructor(private auth: AuthService, private estadoPeticion: PeticionesService, private router: Router) { }
+  constructor(
+    public dialog: MatDialog,
+    private auth: AuthService,
+    private estadoPeticion: PeticionesService) { }
 
   /**
    * Sacamos información guardada en las cookies locales (si existe)
@@ -59,5 +62,12 @@ export class LoginComponent implements OnInit {
       }, (err: any) => {
         this.estadoPeticion.error(err);
       });
+  }
+
+  openDialog(): void {
+    this.dialog.open(RecuperarPassComponent, {
+      width: '40vh',
+      data: { email: this.authUser.email }
+    });
   }
 }

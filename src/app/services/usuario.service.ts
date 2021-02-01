@@ -64,6 +64,15 @@ export class UsuarioService {
   }
 
   /**
+   * Manda la data a la API para restablecer la contraseña de un usuario
+   * @param usuario Recibe un modelo de usuario
+   */
+  restablecerPass(usuario: UsuarioModel): any {
+    const headers = this.auth.headers();
+    return this.http.post(`${this.url}/restablecer-password`, usuario, { headers });
+  }
+
+  /**
    * Manda la data a la API para actualizar el estado de un usuario en la base de datos
    * @param usuario Recibe un modelo de usuario
    */

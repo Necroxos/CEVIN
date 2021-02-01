@@ -1,0 +1,13 @@
+<h1 mat-dialog-title class="text-center">Restablecer contraseña</h1>
+<div mat-dialog-content>
+    <div class="row">
+        <mat-form-field class="col-md-12">
+            <mat-label>Correo</mat-label>
+            <input matInput [(ngModel)]="usuario.email">
+        </mat-form-field>
+    </div>
+</div>
+<div mat-dialog-actions align="center">
+    <button mat-raised-button color="warn" (click)="onNoClick()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="registrar()"><mat-icon>send</mat-icon>Enviar</button>
+</div>

@@ -42,6 +42,7 @@ import { UsuarioComponent } from './components/usuario/usuario.component';
 import { PerfilComponent } from './components/shared/perfil/perfil.component';
 import { PasswordComponent } from './components/shared/perfil/password/password.component';
 import { UsuarioNuevoComponent } from './components/usuario/usuario-nuevo/usuario-nuevo.component';
+import { RecuperarPassComponent } from './components/login/recuperar-pass/recuperar-pass.component';
 import { UsuarioEditarComponent } from './components/usuario/usuario-editar/usuario-editar.component';
 import { UsuarioDetalleComponent } from './components/usuario/usuario-detalle/usuario-detalle.component';
 import { FormularioUsuarioComponent } from './components/usuario/formulario-usuario/formulario-usuario.component';
@@ -102,6 +103,7 @@ import { InfoContactoComponent } from './components/stock/info-contacto/info-con
     PasswordComponent,
     UsuarioNuevoComponent,
     UsuarioEditarComponent,
+    RecuperarPassComponent,
     UsuarioDetalleComponent,
     FormularioUsuarioComponent,
     // Cliente

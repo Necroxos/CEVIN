@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   API_URL: 'http://192.168.0.12:3000',
-  mapboxKey: 'pk.eyJ1IjoibmVjcm94b3MiLCJhIjoiY2trZmlsY2h3MDYwYTJvdXNpM2xtbnB6ayJ9.pBDGOtsf8xnXCiQYWCOm_A'
+  mapboxKey: 'pk.eyJ1IjoiY2V2aW4yMDIxIiwiYSI6ImNra212MXlpZjAzaTgybnA1ZHpyaTgwMGMifQ.EbD0YvUk899q-_fqwWbIKQ'
 };
 
 /*
