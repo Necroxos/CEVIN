@@ -60,6 +60,7 @@ import { VentaNuevoComponent } from './components/venta/venta-nuevo/venta-nuevo.
 import { VentaEditarComponent } from './components/venta/venta-editar/venta-editar.component';
 import { VentaDetalleComponent } from './components/venta/venta-detalle/venta-detalle.component';
 import { FechaRetornoComponent } from './components/venta/fecha-retorno/fecha-retorno.component';
+import { VentaEscanerComponent } from './components/venta/venta-escaner/venta-escaner.component';
 import { VentaEliminarComponent } from './components/venta/venta-eliminar/venta-eliminar.component';
 import { FormularioVentaComponent } from './components/venta/formulario-venta/formulario-venta.component';
 // Datos Simples
@@ -118,6 +119,7 @@ import { InfoContactoComponent } from './components/stock/info-contacto/info-con
     VentaEditarComponent,
     VentaDetalleComponent,
     FechaRetornoComponent,
+    VentaEscanerComponent,
     VentaEliminarComponent,
     FormularioVentaComponent,
     // Otros

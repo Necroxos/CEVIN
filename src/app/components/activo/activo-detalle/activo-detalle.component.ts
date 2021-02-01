@@ -116,6 +116,11 @@ export class ActivoDetalleComponent implements OnInit {
     this.pdfmaker.imprimirPDF(evento.codigo_activo);
   }
 
+  info(evento: CilindroModel): void {
+    localStorage.setItem('cilindro', evento.codigo_activo);
+    this.estadoPeticion.recargar(['activo', 'escaner']);
+  }
+
   /**
    * Función que se encarga de redirigir a la vista de Editar
    * @param evento Recibe el objeto Cilindro de la fila
@@ -126,24 +131,32 @@ export class ActivoDetalleComponent implements OnInit {
   }
 
   /**
-   * Función que cambia el estado de un cilindro a desactivado en la base de datos
+   * Verifica que se pueda enviar al Back End
+   * Y debe estar en la empresa, además de que no esté en una venta
    */
   cambiarEstado(evento: CilindroModel): void {
     if (evento.stock || !evento.activo) {
-      this.estadoPeticion.loading();
-      evento.activo = !evento.activo;
-      this.cilindroServ.cambiarEstado(evento).subscribe((res: any) => {
-        Swal.close();
-        this.estadoPeticion.success(res.message, ['activo', 'detalle'], 700);
-      }, (err: any) => {
-        this.estadoPeticion.error(err);
-      });
+      this.enviarEstado(evento);
     } else {
       this.toastr.error('El cilindro no está en Stock', 'Acción no permitida', {
         timeOut: 3000,
         positionClass: 'toast-bottom-right'
       });
     }
+  }
+
+  /**
+   * Función que cambia el estado de un cilindro a desactivado en la base de datos
+   */
+  enviarEstado(cilindro: CilindroModel): void {
+    this.estadoPeticion.loading();
+    cilindro.activo = !cilindro.activo;
+    this.cilindroServ.cambiarEstado(cilindro).subscribe((res: any) => {
+      Swal.close();
+      this.estadoPeticion.success(res.message, ['activo', 'detalle'], 700);
+    }, (err: any) => {
+      this.estadoPeticion.error(err);
+    });
   }
 
 }

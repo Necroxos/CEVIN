@@ -48,6 +48,15 @@ export class CilindroService {
   }
 
   /**
+   * Se realiza una petición a la API para obtener un [cliente] por medio de su [cilindro_id]
+   * @param cilindro Recibe un modelo de cilindro
+   */
+  obtenerCliente(cilindro: CilindroModel): any {
+    const headers = this.auth.headers();
+    return this.http.get(`${this.url}/cilindro-cliente/${cilindro.cilindro_id}`, { headers });
+  }
+
+  /**
    * Manda la data a la API para actualizar el cilindro en la base de datos
    * @param cilindro Recibe un modelo de cilindro
    */

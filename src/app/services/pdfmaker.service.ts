@@ -31,7 +31,7 @@ export class PdfmakerService {
             { qr: this.greeting, fit: 40, alignment: 'right' }
           ]
         },
-        this.header(''),
+        this.header(codigo.slice(13)),
         { qr: this.greeting, fit: 150, alignment: 'center' },
         {
           columns: [

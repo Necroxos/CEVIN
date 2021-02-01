@@ -32,7 +32,7 @@
             <!-- Columna del dias_transcurridos -->
             <ng-container matColumnDef="dias_transcurridos">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Días </th>
-                <td mat-cell *matCellDef="let row" [ngClass]="{'activo': row.dias < 15, 'aviso': row.dias > 15 && row.dias < 30, 'inactivo': row.dias > 30}">
+                <td mat-cell *matCellDef="let row" [ngClass]="{'activo': row.dias <= 15, 'yellow': row.dias > 15 && row.dias <= 30, 'orange': row.dias > 30 && row.dias <= 60, 'inactivo': row.dias > 60}">
                     {{ row.dias }}
                     <mat-icon class="center-icons">announcement</mat-icon>
                 </td>

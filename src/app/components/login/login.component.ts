@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
         if (this.recordarme) { localStorage.setItem('email', this.authUser.email); }
         else { localStorage.removeItem('email'); }
 
-        this.estadoPeticion.success('Ingreso éxitoso!', ['home'], 800);
+        this.estadoPeticion.success('Ingreso éxitoso!', ['stock', 'llenos'], 800);
 
       }, (err: any) => {
         this.estadoPeticion.error(err);

@@ -18,8 +18,8 @@ export class EscanerQrComponent {
   choosenDev: MediaDeviceInfo;
   // Variables del escaner en el HTML
   tiempoActualizacion = 500;
-  detenerEscaner = true;
   esconder = false;
+  detenerEscaner = true;
   ancho = 640;
   alto = 480;
 

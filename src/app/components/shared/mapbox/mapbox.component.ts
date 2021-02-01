@@ -114,10 +114,8 @@ export class MapboxComponent implements OnInit {
     this.map.addControl(this.geocoder);
     this.geocoder.on('result', (e: any) => {
       const coordinates = e.result.center;
-      // Usar emiter
       this.lon = coordinates[0];
       this.lat = coordinates[1];
-      console.log(coordinates);
     });
   }
 

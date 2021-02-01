@@ -5,18 +5,12 @@
         <mat-datepicker-toggle matSuffix [for]="retorno" matTooltip="Escoger fecha"></mat-datepicker-toggle>
         <mat-datepicker #retorno disabled="false"></mat-datepicker>
     </div><br>
-    <div class="form-group" align="center">
-        <label for="demora_id">
-            <b>Seleccione la demora</b>
-            <small class="text-muted"> ( días transcurridos: {{ dias }} ) </small>
-        </label>
-        <select class="form-control" [(ngModel)]="venta.demora_id" name="demora_id" required>
-            <option value="undefined" disabled>Seleccione un tipo de atraso</option>
-            <option *ngFor="let demora of demoras" value="{{demora.id}}"> {{ demora.descripcion }} </option>
-        </select>
-        <small class="text-muted"> Costo de arriendo: {{ costo | currency:'CAD':'symbol-narrow':'.0-0' }} </small>
-        <br>
-        <small class="text-danger animated fadeIn" *ngIf="!demoraOK">Campo obligatorio</small>
+    <div class="card text-dark bg-light mb-3" align="center">
+        <div class="card-body">
+            <h5 class="card-title">Datos de devolución</h5>
+            <small class="text-muted"> Días transcurridos: {{ dias }} </small><br>
+            <small class="text-muted"> Costo de arriendo: {{ costo | currency:'CAD':'symbol-narrow':'.0-0' }} </small>
+        </div>
     </div>
 </div>
 <div mat-dialog-actions align="center">

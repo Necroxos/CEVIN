@@ -13,6 +13,7 @@ export class CilindroModel {
     tipo_gas: string;
     cilindro_id: number;
     activo: boolean;
+    cargado: boolean;
     propietario_id: number;
     propietario: string;
     stock: boolean;

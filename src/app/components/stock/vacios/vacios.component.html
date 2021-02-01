@@ -1,18 +1,19 @@
 <h1 class="mt-5">Stock de cilindros vacíos</h1>
 <hr><br>
 
-<div class="row">
-    <div class="input-group mb-3" [ngClass]="{'col-md-9': !smallDevice}">
-        <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
-        <input type="text" class="form-control" (keyup)="applyFilter($event)" placeholder="filtro" #input>
-    </div>
-    <div class="col text-right">
-        <button mat-raised-button color="warn" (click)="rotarCilindros()" [ngClass]="{'btn-block': smallDevice}">
+<div class="row mb-3">
+    <div class="col">
+        <button mat-raised-button color="warn" (click)="rotarCilindros()" class="btn-danger btn-block">
             <mat-icon>remove</mat-icon>Rotar seleccionados
         </button>
     </div>
+
+    <div class="col">
+        <button mat-raised-button (click)="escaner()" class="btn-primary btn-block">
+            <mat-icon>qr_code_scanner</mat-icon>Escanner
+        </button>
+    </div>
 </div>
-<br *ngIf="smallDevice">
 
 <div class="example-container mat-elevation-z8 animated fadeIn fast" [ngClass]="{'text-center': smallDevice}">
     <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">

@@ -18,6 +18,8 @@ import { MatTableDataSource } from '@angular/material/table';
 // Material
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { VentaEscanerComponent } from '../venta-escaner/venta-escaner.component';
 
 @Component({
   selector: 'app-formulario-venta',
@@ -35,6 +37,7 @@ export class FormularioVentaComponent implements OnInit {
   cilindros: CilindroModel[];
   cilindrosCard = new Array<CilindroModel>();
 
+  escanear = false;
   fechaOk = true;
   preciosOk = false;
   cilindrosOk = true;
@@ -66,8 +69,11 @@ export class FormularioVentaComponent implements OnInit {
    * @param clienteServ Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-  constructor(private clienteServ: ClienteService, private estadoPeticion: PeticionesService,
-              private ventaServ: VentaService) {
+  constructor(
+    private clienteServ: ClienteService,
+    private estadoPeticion: PeticionesService,
+    private ventaServ: VentaService,
+    public dialog: MatDialog) {
     this.registrarVenta = new EventEmitter();
   }
 
@@ -200,6 +206,30 @@ export class FormularioVentaComponent implements OnInit {
   cilindroVenta(cilindro: CilindroModel, evento: boolean): void {
     cilindro.escogido = evento;
     this.cilindrosEscogidos(cilindro);
+  }
+
+  /**
+   * Abre un 'modal' con el escaner de QR activo
+   * el cual emite el código leído
+   */
+  openDialog(): void {
+    const dialogRef = this.dialog.open(VentaEscanerComponent, {
+      width: '60vh'
+    });
+
+    dialogRef.componentInstance.onScann.subscribe((codigo: string) => {
+      console.log(codigo);
+      let existe = false;
+      this.cilindros.forEach(cilindro => {
+        if (cilindro.codigo_activo === codigo) {
+          this.cilindroVenta(cilindro, true);
+          existe = true;
+        }
+      });
+      if (!existe) {
+        alert('El cilindro escaneado no está en el listado');
+      }
+    });
   }
 
   /**

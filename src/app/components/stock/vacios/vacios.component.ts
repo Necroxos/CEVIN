@@ -2,7 +2,7 @@
  *                                              IMPORTACIONES Y DECORADOR COMPONENT                                                 *
  ************************************************************************************************************************************/
 // Angular
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 // Servicios
 import { StockService } from '../../../services/stock.service';
 import { PeticionesService } from '../../../services/peticiones.service';
@@ -46,12 +46,6 @@ export class VaciosComponent implements OnInit {
   /**********************************************************************************************************************************
    *                                                    EJECUCIÓN AL INICIAR                                                        *
    **********************************************************************************************************************************/
-  @HostListener('window:resize', ['$event']) onResize(event: any): void {
-    // guard against resize before view is rendered
-    const tmpWidth = window.innerWidth;
-    if (tmpWidth < 992) { this.smallDevice = true; }
-    else { this.smallDevice = false; }
-  }
 
   /**
    * Inicializa servicios
@@ -67,7 +61,6 @@ export class VaciosComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.onResize(0);
     this.obtenerCilindros();
   }
 
@@ -151,6 +144,13 @@ export class VaciosComponent implements OnInit {
         positionClass: 'toast-bottom-right'
       });
     }
+  }
+
+  /**
+   * Función de redirección al componente de escaner
+   */
+  escaner(): void {
+    this.estadoPeticion.recargar(['activo', 'escaner']);
   }
 
 }

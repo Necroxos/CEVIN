@@ -1,4 +1,4 @@
-<div class="animated fadeIn fast" *ngIf="!mostrar">
+<div class="animated fadeIn fast" *ngIf="!mostrar && escaner">
     <div class="dev-container animated fadeIn" id="target">
         <app-escaner-qr (mostrarCodigo)="mostrarCodigo($event)"></app-escaner-qr>
     </div>
@@ -17,21 +17,9 @@
             <p class="card-text"><b>Tipo de Gas:</b> {{ cilindro.tipo_gas }}</p>
             <p class="card-text"><b>Última mantención:</b> {{ cilindro.fecha_mantencion }}</p>
             <p class="card-text"><b>Propietario:</b> {{ cilindro.propietario }}</p>
-            <p class="card-text center-icons"><b>Stock:</b>&nbsp;
-                <mat-icon [ngClass]="{ 'activo': cilindro.stock, 'inactivo': !cilindro.stock, 'center-icons': true }">
-                    {{ cilindro.stock | boolean }}
-                </mat-icon>
-            </p>
-            <p class="card-text center-icons"><b>Con carga:</b>&nbsp;
-                <mat-icon [ngClass]="{ 'activo': cilindro.cargado, 'inactivo': !cilindro.cargado, 'center-icons': true }">
-                    {{ cilindro.cargado | boolean }}
-                </mat-icon>
-            </p>
-            <p class="card-text center-icons"><b>Estado:</b>&nbsp;
-                <mat-icon [ngClass]="{ 'activo': cilindro.activo, 'inactivo': !cilindro.activo, 'center-icons': true }">
-                    {{ cilindro.activo | boolean }}
-                </mat-icon>
-            </p>
+            <p class="card-text"><b>Estado:</b> {{ estado }}</p>
+            <p class="card-text" *ngIf="cliente"><b>Cliente:</b> {{ cliente.rut }}</p>
+            <p class="card-text" *ngIf="cliente"><b>Venta:</b> {{ cliente.codigo }}</p>
         </div>
         <!-- Botones para redireccionar -->
         <div class="card-body">

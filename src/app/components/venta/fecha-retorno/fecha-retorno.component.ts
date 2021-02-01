@@ -61,7 +61,7 @@ export class FechaRetornoComponent implements OnInit {
   ngOnInit(): void {
     this.cargarVenta();
     this.cargarDias();
-    this.cargarTiposAtrasos();
+    // this.cargarTiposAtrasos();
   }
 
   /**
@@ -91,14 +91,14 @@ export class FechaRetornoComponent implements OnInit {
   /**
    * Hace la petición a la base de datos para obtener los tipos de atrasos
    */
-  cargarTiposAtrasos(): void {
-    this.servicio.obtenerDemoras().subscribe((res: any) => {
-      this.demoras = [...res.response];
-    }, (err: any) => {
-      console.log(err);
-      this.estadoPeticion.error(err);
-    });
-  }
+  // cargarTiposAtrasos(): void {
+  //   this.servicio.obtenerDemoras().subscribe((res: any) => {
+  //     this.demoras = [...res.response];
+  //   }, (err: any) => {
+  //     console.log(err);
+  //     this.estadoPeticion.error(err);
+  //   });
+  // }
 
   /**********************************************************************************************************************************
    *                                                  FUNCIONES DEL COMPONENTE                                                      *
@@ -141,6 +141,17 @@ export class FechaRetornoComponent implements OnInit {
   }
 
   /**
+   * Poner un tipo de atraso para la devolución
+   */
+  calcularAtraso(): void {
+    if (this.dias <= 15) { this.venta.demora_id = 2; }
+    else if (this.dias <= 30 && this.dias > 15) { this.venta.demora_id = 3; }
+    else if (this.dias <= 30 && this.dias > 15) { this.venta.demora_id = 4; }
+    else if (this.dias <= 60 && this.dias > 30) { this.venta.demora_id = 5; }
+    else if (this.dias > 60) { this.venta.demora_id = 6; }
+  }
+
+  /**
    * Se encarga de cancelar el proceso de devolución de activo
    */
   onNoClick(): void {
@@ -154,8 +165,9 @@ export class FechaRetornoComponent implements OnInit {
    * Posee una doble validación para la fecha entregada
    */
   registrar(): void {
-    this.verificarDemora();
     const fechaOk = this.transformarFecha();
+    this.calcularAtraso();
+    this.verificarDemora();
 
     if (fechaOk && this.demoraOK) {
       this.estadoPeticion.loading();
@@ -168,6 +180,8 @@ export class FechaRetornoComponent implements OnInit {
         console.log(err);
         this.estadoPeticion.error(err);
       });
+    } else {
+      alert('nope');
     }
   }
 
