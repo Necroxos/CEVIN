@@ -58,6 +58,10 @@ export class VentaEditarComponent implements OnInit {
     });
   }
 
+  /**
+   * Función que se encarga de recibir los cilindros involucrados en una venta
+   * @param venta Recibe una venta para editar
+   */
   cilindrosParaVenta(venta: VentaModel): void {
     this.ventaServ.obtenerCilindrosDeVenta(venta).subscribe((res: any) => {
       this.cilindros = [...res.response];
@@ -67,7 +71,11 @@ export class VentaEditarComponent implements OnInit {
     });
   }
 
-  editar(evento: any): void {
+  /**
+   * Función que envía la información al Back End
+   * @param evento Recibe una Venta
+   */
+  editar(evento: VentaModel): void {
     this.estadoPeticion.loading();
 
     this.ventaServ.actualizar(evento).subscribe(() => {

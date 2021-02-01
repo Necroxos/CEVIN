@@ -177,6 +177,10 @@ export class FormularioClienteComponent implements OnInit {
     this.estadoPeticion.recargar(['cliente', 'detalle']);
   }
 
+  /**
+   * Función que trae los valores guardados como lat y lon
+   * @param coors Toma la información del componente que ejecuta el mapa
+   */
   registrarCoordenadas(coors: any): void {
     const latitude = String(coors.lat).split('.');
     const longitude = String(coors.lon).split('.');

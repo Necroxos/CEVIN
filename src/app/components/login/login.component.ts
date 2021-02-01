@@ -64,6 +64,9 @@ export class LoginComponent implements OnInit {
       });
   }
 
+  /**
+   * Abre un 'modal' para preguntar el correo donde se enviará la contraseña restablecida por el Back End
+   */
   openDialog(): void {
     this.dialog.open(RecuperarPassComponent, {
       width: '40vh',

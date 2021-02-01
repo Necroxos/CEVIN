@@ -32,12 +32,18 @@ export class InfoContactoComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Redirecciona a la vista de la información detallada de un cliente
+   */
   verCliente(): void {
     localStorage.setItem('cliente', this.data.rut);
     this.dialogRef.close();
     this.router.navigate(['cliente', 'info']);
   }
 
+  /**
+   * Redirecciona a la vista de la información detallada de una venta
+   */
   verVenta(): void {
     localStorage.setItem('venta', this.data.codigo);
     this.dialogRef.close();

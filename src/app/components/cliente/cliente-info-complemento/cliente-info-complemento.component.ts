@@ -29,6 +29,10 @@ export class ClienteInfoComplementoComponent implements OnInit {
     Object.assign(this, { single: this.single });
   }
 
+  /**
+   * Pasa la información del Back End a una variable del componente
+   * Información para el gráfico
+   */
   ngOnInit(): void {
     this.servicio.obtenerCilindrosComprados(this.cliente).subscribe((res: any) => {
       this.single = [ ...res.response ];

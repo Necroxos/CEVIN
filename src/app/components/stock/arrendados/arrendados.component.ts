@@ -113,6 +113,10 @@ export class ArrendadosComponent implements OnInit {
     return false;
   }
 
+  /**
+   * Función que muestra los datos del cliente y la venta
+   * @param evento Recibe la información de la fila
+   */
   verInfo(evento: any): void {
     this.dialog.open(InfoContactoComponent, {
       width: '40vh',

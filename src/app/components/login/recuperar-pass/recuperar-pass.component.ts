@@ -39,6 +39,10 @@ export class RecuperarPassComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  /**
+   * Envía al Back End la solicitud de restablecer la contraseña
+   * y se recibirá un correo con la nueva contraseña
+   */
   registrar(): void {
     this.estadoPeticion.loading();
 

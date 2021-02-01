@@ -145,6 +145,10 @@ export class VentaDetalleComponent implements OnInit {
     });
   }
 
+  /**
+   * Función que redirige a la vista con información detallada
+   * @param evento Recibe la fila seleccionada, de tipo venta
+   */
   info(evento: VentaModel): void {
     this.ventaServ.guardarVenta(evento);
     this.estadoPeticion.recargar(['venta', 'info']);

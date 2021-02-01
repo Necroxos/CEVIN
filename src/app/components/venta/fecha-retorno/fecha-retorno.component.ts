@@ -88,18 +88,6 @@ export class FechaRetornoComponent implements OnInit {
     this.costo = this.dias * 200;
   }
 
-  /**
-   * Hace la petición a la base de datos para obtener los tipos de atrasos
-   */
-  // cargarTiposAtrasos(): void {
-  //   this.servicio.obtenerDemoras().subscribe((res: any) => {
-  //     this.demoras = [...res.response];
-  //   }, (err: any) => {
-  //     console.log(err);
-  //     this.estadoPeticion.error(err);
-  //   });
-  // }
-
   /**********************************************************************************************************************************
    *                                                  FUNCIONES DEL COMPONENTE                                                      *
    **********************************************************************************************************************************/

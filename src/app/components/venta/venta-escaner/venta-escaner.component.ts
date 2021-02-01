@@ -15,6 +15,10 @@ export class VentaEscanerComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /**
+   * Envía el código al componente padre
+   * @param codigo Código QR escaneado
+   */
   mostrarCodigo(codigo: string): void {
     this.onScann.emit(codigo);
     this.dialogRef.close();

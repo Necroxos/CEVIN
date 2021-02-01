@@ -41,6 +41,11 @@ export class VentaEliminarComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  /**
+   * Función del modal que elimina la venta tras solicitar confirmación de acción
+   * Si cumple los requisitos realiza la petición con éxito
+   * Requisitos: que no tenga cilindros devueltos.
+   */
   eliminar(): void {
     this.estadoPeticion.loading();
     this.data.activo = !this.data.activo;
@@ -56,6 +61,9 @@ export class VentaEliminarComponent implements OnInit {
     });
   }
 
+  /**
+   * Mensaje que se despliega si no se cumplieron los requisitos en el procedimiento almacenado
+   */
   sinCambio(): void {
     Swal.close();
     Swal.fire({
