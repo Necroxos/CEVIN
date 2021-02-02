@@ -36,4 +36,14 @@ export class CostoService {
     const headers = this.auth.headers();
     return this.http.put(`${this.url}/costo`, costo, { headers });
   }
+
+  /**
+   * Manda la data a la API para registrar el costo unitario de un gas
+   * @param costo Recibe un modelo Costo
+   */
+  registrarTotal(costo: CostoModel[]): any {
+    const headers = this.auth.headers();
+    return this.http.post(`${this.url}/costo/total`, costo, { headers });
+  }
+
 }

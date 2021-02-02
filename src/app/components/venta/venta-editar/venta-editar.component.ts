@@ -5,12 +5,14 @@
 import { Component, OnInit } from '@angular/core';
 // Servicios
 import { VentaService } from '../../../services/venta.service';
+import { CostoService } from '../../../services/costo.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
 // Modelos
 import { VentaModel } from '../../../models/venta.model';
+import { CostoModel } from '../../../models/costo.model';
 import { CilindroModel } from 'src/app/models/cilindro.model';
 
 @Component({
@@ -23,13 +25,17 @@ export class VentaEditarComponent implements OnInit {
 
   accionBtn = 'Editar';
   mostrar = false;
+  costos = new Array<CostoModel>();
 
   venta = new VentaModel();
   cilindros = new Array<CilindroModel>();
 
   ventaLocal = this.ventaServ.leerVenta();
 
-  constructor(private ventaServ: VentaService, private estadoPeticion: PeticionesService) { }
+  constructor(
+    private ventaServ: VentaService,
+    private CostoServ: CostoService,
+    private estadoPeticion: PeticionesService) { }
 
   ngOnInit(): void {
     if (this.ventaLocal) {
@@ -77,7 +83,14 @@ export class VentaEditarComponent implements OnInit {
   editar(evento: VentaModel): void {
     this.estadoPeticion.loading();
 
-    this.ventaServ.actualizar(evento).subscribe(() => {
+    this.ventaServ.actualizar(evento).subscribe((res) => {
+      this.costos = res.list;
+      this.CostoServ.registrarTotal(this.costos).subscribe((result) => {
+        console.log(result);
+      },
+        (error) => {
+          console.log(error);
+        });
       Swal.close();
       this.estadoPeticion.success('Venta actualizada con éxito!', ['venta', 'detalle'], 1000);
     }, (err: any) => {

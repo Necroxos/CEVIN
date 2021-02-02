@@ -194,7 +194,7 @@ export class FormularioVentaComponent implements OnInit {
   private _filter(text: string): Client[] {
     const filterValue = text.toLowerCase();
 
-    return this.clientes.filter(option => option.text.toLowerCase().indexOf(filterValue) === 0);
+    return this.clientes.filter(option => option.text.toLowerCase().includes(filterValue));
   }
 
   /**********************************************************************************************************************************
@@ -379,6 +379,14 @@ export class FormularioVentaComponent implements OnInit {
    */
   recargar(): void {
     this.estadoPeticion.recargar(['venta', 'detalle']);
+  }
+
+  /**
+   * Función que redirige al formulario para un cliente nuevo
+   * en caso de que no exista en la lista
+   */
+  agregarCliente(): void {
+    this.estadoPeticion.recargar(['cliente', 'nuevo']);
   }
 
 }
