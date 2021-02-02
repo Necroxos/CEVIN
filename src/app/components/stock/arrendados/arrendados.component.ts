@@ -119,7 +119,7 @@ export class ArrendadosComponent implements OnInit {
    */
   verInfo(evento: any): void {
     this.dialog.open(InfoContactoComponent, {
-      width: '40vh',
+      width: '60vh',
       data: {
         fecha_entrega: evento.fecha_entrega,
         telefono: evento.telefono,

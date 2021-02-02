@@ -164,7 +164,7 @@ export class VentaInfoComponent implements OnInit {
   devolver(cilindro: CilindroModel): void {
 
     this.dialog.open(FechaRetornoComponent, {
-      width: '40vh',
+      width: '60vh',
       data: {
         estado: true,
         codigo: this.venta.codigo,

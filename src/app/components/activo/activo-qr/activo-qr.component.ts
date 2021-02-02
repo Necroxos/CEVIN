@@ -144,4 +144,11 @@ export class ActivoQrComponent implements OnInit {
     this.router.navigate(['activo', 'editar']);
   }
 
+  /**
+   * Función para volver a detalle
+   */
+  regresar(): void {
+    this.estadoPeticion.recargar(['activo', 'detalle']);
+  }
+
 }

@@ -11,12 +11,16 @@
             </div>
             <!-- Input cliente -->
             <div class="form-group">
-                <label for="cliente_id"><b>Seleccione al cliente</b></label>
-                <select class="form-control" [(ngModel)]="venta.cliente_id" name="cliente_id" (change)="clienteVenta($event.target)" required>
-                    <option value="undefined" disabled>Seleccione un cliente</option>
-                    <option *ngFor="let cliente of clientes" value="{{cliente.cliente_id}}"> {{ cliente.nombre_completo }} ({{ cliente.rut }}) </option>
-                </select>
-                <span *ngIf="f.submitted && f.controls['cliente_id'].errors" class="text-danger animated fadeIn">Campo obligatorio</span>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Cliente</mat-label>
+                    <input type="text" placeholder="Seleccione al cliente" matInput [formControl]="myControl" [(ngModel)]="cliente" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                            {{option.text}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+                <span *ngIf="!clienteOk" class="text-danger animated fadeIn">Campo obligatorio</span>
             </div>
             <!-- Input entrega -->
             <label><b>Ingrese la fecha de entrega</b></label>
@@ -107,8 +111,9 @@
 
             <div>
                 <p *ngIf="f.submitted && f.controls['codigo'].errors" class="text-danger animated fadeIn">Falta el campo de código de venta/factura</p>
-                <p *ngIf="f.submitted && f.controls['cliente_id'].errors" class="text-danger animated fadeIn">Falta seleccionar un cliente</p>
                 <p *ngIf="!fechaOk" class="text-danger animated fadeIn">Falta una fecha de entrega</p>
+                <p *ngIf="!montoOk" class="text-danger animated fadeIn">Monto total de la venta inválido</p>
+                <p *ngIf="!clienteOk" class="text-danger animated fadeIn">Falta seleccionar un cliente</p>
                 <p *ngIf="!cilindrosOk" class="text-danger animated fadeIn">Falta a lo menos un cilindro para la venta</p>
             </div>
 

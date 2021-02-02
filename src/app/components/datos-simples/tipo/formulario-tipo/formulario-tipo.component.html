@@ -6,6 +6,12 @@
             <input matInput [(ngModel)]="tipo.descripcion">
         </mat-form-field>
     </div>
+    <div class="row">
+        <mat-form-field class="col-md-12">
+            <mat-label>Costo Unitario</mat-label>
+            <input matInput [(ngModel)]="costo.costo">
+        </mat-form-field>
+    </div>
 </div>
 <div mat-dialog-actions align="center">
     <button mat-raised-button color="warn" (click)="onNoClick()">Cancelar</button>

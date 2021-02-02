@@ -3,23 +3,29 @@
  ************************************************************************************************************************************/
 // Angular
 import { Component, EventEmitter, Input, Output, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormControl, NgControl } from '@angular/forms';
 // Servicios
 import { VentaService } from 'src/app/services/venta.service';
-import { ClienteService } from '../../../services/cliente.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 // Modelos
 import { VentaModel } from '../../../models/venta.model';
-import { ClienteModel } from '../../../models/cliente.model';
 import { CilindroModel } from 'src/app/models/cilindro.model';
 import { MatTableDataSource } from '@angular/material/table';
 // Material
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
+// Componente
 import { VentaEscanerComponent } from '../venta-escaner/venta-escaner.component';
+
+export interface Client {
+  text: string;
+  id: number;
+}
 
 @Component({
   selector: 'app-formulario-venta',
@@ -33,12 +39,19 @@ export class FormularioVentaComponent implements OnInit {
 
   maxDate = new Date();
   venta = new VentaModel();
-  clientes: ClienteModel[];
+  cliente: Client;
+  clientes: Client[];
   cilindros: CilindroModel[];
   cilindrosCard = new Array<CilindroModel>();
 
+  //
+  myControl = new FormControl();
+  filteredOptions: Observable<Client[]>;
+
   escanear = false;
   fechaOk = true;
+  montoOk = true;
+  clienteOk = true;
   preciosOk = false;
   cilindrosOk = true;
   confirmarPrecios = true;
@@ -58,7 +71,6 @@ export class FormularioVentaComponent implements OnInit {
   dataSource: MatTableDataSource<CilindroModel>;
   // Variable para el stepper
   isLinear = false;
-
   /**********************************************************************************************************************************
    *                                                    EJECUCIÓN AL INICIAR                                                        *
    **********************************************************************************************************************************/
@@ -70,10 +82,9 @@ export class FormularioVentaComponent implements OnInit {
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
   constructor(
-    private clienteServ: ClienteService,
-    private estadoPeticion: PeticionesService,
+    public dialog: MatDialog,
     private ventaServ: VentaService,
-    public dialog: MatDialog) {
+    private estadoPeticion: PeticionesService) {
     this.registrarVenta = new EventEmitter();
   }
 
@@ -95,10 +106,23 @@ export class FormularioVentaComponent implements OnInit {
    * Cargamos la información de los posibles clientes
    */
   obtenerClientes(): void {
-    this.clienteServ.obtenerTodos().subscribe((res: any) => {
+    this.ventaServ.obtenerClientes().subscribe((res: any) => {
       this.clientes = res.response;
+      this.filter();
+      this.escogerCliente();
     }, (err: any) => {
       this.estadoPeticion.error(err);
+    });
+  }
+
+  /**
+   * Pre selecionar cliente para edición
+   */
+  escogerCliente(): void {
+    this.clientes.forEach(cliente => {
+      if (cliente.id === this.venta.cliente_id) {
+        this.myControl.setValue( cliente );
+      }
     });
   }
 
@@ -121,15 +145,6 @@ export class FormularioVentaComponent implements OnInit {
   }
 
   /**
-   * Función que busca un elemento (cilindro) en la tabla
-   * @param event Recibe el input del filtro
-   */
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  /**
    * Función que agrega a la tabla los cilindros que están involucrados en la venta
    */
   cilindrosParaEditar(cilindros: CilindroModel[]): void {
@@ -143,27 +158,48 @@ export class FormularioVentaComponent implements OnInit {
     this.checkCilindros();
   }
 
+  /**
+   * Función que busca un elemento (cilindro) en la tabla
+   * @param event Recibe el input del filtro
+   */
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  /**
+   * Inicializa el filtro de clientes
+   */
+  filter(): void {
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.text),
+        map(text => text ? this._filter(text) : this.clientes.slice())
+      );
+  }
+
+  /**
+   * Función que retorna los clientes
+   * @param cliente Muestra la información del cliente
+   */
+  displayFn(cliente: Client): string {
+    return cliente && cliente.text ? cliente.text : '';
+  }
+
+  /**
+   * Filtro para el select de clientes
+   * @param text Recibe el texto del input
+   */
+  private _filter(text: string): Client[] {
+    const filterValue = text.toLowerCase();
+
+    return this.clientes.filter(option => option.text.toLowerCase().indexOf(filterValue) === 0);
+  }
+
   /**********************************************************************************************************************************
    *                                                  FUNCIONES DEL COMPONENTE                                                      *
    **********************************************************************************************************************************/
-
-  /**
-   * Angular From tiene la facultad de actualizar la información automáticamente
-   * En este caso, la función se encarga de enviar la información que se guarda en el modelo de Venta
-   * @param form Escucha al formulario de Angular
-   */
-  registrar(form: NgForm): void {
-
-    this.transformarDatos();
-    this.checkCilindros();
-
-    if (form.invalid) { return; }
-
-    if (this.fechaOk && this.cilindrosOk) {
-      this.registrarVenta.emit(this.venta);
-    }
-
-  }
 
   /**
    * Función que se encarga de transforma la Fecha en un String con formato 'dd/mm/yyyy'
@@ -187,28 +223,6 @@ export class FormularioVentaComponent implements OnInit {
   }
 
   /**
-   * Función que extrae el Texto del elemnto HTML
-   * @param cliente Obtiene el elemento HTML <option> del cliente
-   */
-  clienteVenta(cliente: any): void {
-    const idx = cliente.options.selectedIndex;
-    const selectElementText = cliente.options[idx].text;
-    let text = selectElementText.split('(');
-    text = text[1].replace(')', '');
-    this.venta.rut_cliente = text;
-  }
-
-  /**
-   * Función que se encarga de marcar como "Cilindro escogido" para la venta
-   * @param cilindo Obtiene el objeto cilindro de la tabla
-   * @param evento Obtiene el check o uncheck (boolean)
-   */
-  cilindroVenta(cilindro: CilindroModel, evento: boolean): void {
-    cilindro.escogido = evento;
-    this.cilindrosEscogidos(cilindro);
-  }
-
-  /**
    * Abre un 'modal' con el escaner de QR activo
    * el cual emite el código leído
    */
@@ -218,7 +232,6 @@ export class FormularioVentaComponent implements OnInit {
     });
 
     dialogRef.componentInstance.onScann.subscribe((codigo: string) => {
-      console.log(codigo);
       let existe = false;
       this.cilindros.forEach(cilindro => {
         if (cilindro.codigo_activo === codigo) {
@@ -230,6 +243,29 @@ export class FormularioVentaComponent implements OnInit {
         alert('El cilindro escaneado no está en el listado');
       }
     });
+  }
+
+  /**
+   * Función que limpia los cilindros marcados de la tabla
+   */
+  limpiarLista(): void {
+    this.cilindros.forEach(cilindro => {
+      cilindro.escogido = false;
+      this.cilindrosEscogidos(cilindro);
+    });
+    this.venta.cobros = new Array<CilindroModel>();
+    this.venta.monto = 0;
+    this.confirmarPrecios = true;
+  }
+
+  /**
+   * Función que se encarga de marcar como "Cilindro escogido" para la venta
+   * @param cilindo Obtiene el objeto cilindro de la tabla
+   * @param evento Obtiene el check o uncheck (boolean)
+   */
+  cilindroVenta(cilindro: CilindroModel, evento: boolean): void {
+    cilindro.escogido = evento;
+    this.cilindrosEscogidos(cilindro);
   }
 
   /**
@@ -261,28 +297,11 @@ export class FormularioVentaComponent implements OnInit {
   }
 
   /**
-   * Función que limpia los cilindros marcados de la tabla
+   * Revisa que se haya seleccionado un cliente
    */
-  limpiarLista(): void {
-    this.cilindros.forEach(cilindro => {
-      cilindro.escogido = false;
-      this.cilindrosEscogidos(cilindro);
-    });
-    this.venta.cobros = new Array<CilindroModel>();
-    this.venta.monto = 0;
-    this.confirmarPrecios = true;
-  }
-
-  /**
-   * Función que limpia todo el formulario
-   */
-  limpiarTodo(): void {
-    this.limpiarLista();
-    this.venta.codigo = '';
-    this.venta.cliente_id = null;
-    this.venta.entrega = moment();
-    this.transformarDatos();
-    this.preciosOk = false;
+  checkCliente(): boolean {
+    if (this.cliente) { return true; }
+    return false;
   }
 
   /**
@@ -292,10 +311,18 @@ export class FormularioVentaComponent implements OnInit {
    */
   calcularMonto(evento: any): void {
     if (!evento.checkPrecios()) {
-      alert('Los precios por cilindro no son correctos');
+      this.montoOk = false;
       return;
     }
+    this.montoOk = true;
 
+    if (!this.checkCliente()) {
+      this.clienteOk = false;
+      return;
+    }
+    this.clienteOk = true;
+
+    this.venta.cliente_id = this.cliente.id;
     this.venta.monto = 0;
     this.venta.cobros = new Array<CilindroModel>();
     this.confirmarPrecios = false;
@@ -314,6 +341,37 @@ export class FormularioVentaComponent implements OnInit {
   cambiarBtn(): void {
     this.confirmarPrecios = true;
     this.preciosOk = false;
+  }
+
+  /**
+   * Función que limpia todo el formulario
+   */
+  limpiarTodo(): void {
+    this.limpiarLista();
+    this.venta.codigo = '';
+    this.venta.cliente_id = null;
+    this.cliente = null;
+    this.venta.entrega = moment();
+    this.transformarDatos();
+    this.preciosOk = false;
+  }
+
+  /**
+   * Angular From tiene la facultad de actualizar la información automáticamente
+   * En este caso, la función se encarga de enviar la información que se guarda en el modelo de Venta
+   * @param form Escucha al formulario de Angular
+   */
+  registrar(form: NgForm): void {
+
+    this.transformarDatos();
+    this.checkCilindros();
+
+    if (form.invalid) { return; }
+
+    if (this.fechaOk && this.cilindrosOk) {
+      this.registrarVenta.emit(this.venta);
+    }
+
   }
 
   /**

@@ -48,7 +48,6 @@ export class VentaEditarComponent implements OnInit {
     this.estadoPeticion.loading();
     this.ventaServ.obtenerUno(this.venta).subscribe((res: any) => {
       Swal.close();
-      this.estadoPeticion.success(res.message, [], 650);
       this.venta = { ...res.response };
       this.venta.entrega = moment();
       this.venta.cilindros = new Array();

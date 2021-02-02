@@ -114,7 +114,7 @@ export class PerfilComponent implements OnInit {
    */
   cambiarPass(): void {
     this.dialog.open(PasswordComponent, {
-      width: '40vh',
+      width: '60vh',
       data: { id: this.usuario.usuario_id }
     });
   }

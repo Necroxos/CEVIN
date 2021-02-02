@@ -23,10 +23,21 @@
         </div>
         <!-- Botones para redireccionar -->
         <div class="card-body">
-            <button class="btn btn-outline-primary btn-block" (click)="recargar()">Buscar otro</button>
-            <button class="btn btn-outline-warning btn-block" (click)="editar()">Editar</button>
-            <button class="btn btn-outline-danger btn-block" (click)="cambiarEstado()" *ngIf="esAdmin() && cilindro.activo">Eliminar</button>
-            <button class="btn btn-outline-success btn-block" (click)="cambiarEstado()" *ngIf="esAdmin() && !cilindro.activo">Activar</button>
+            <button class="btn btn-outline-primary btn-block" (click)="recargar()">
+                <mat-icon class="center-icons">search</mat-icon> Buscar otro
+            </button>
+            <button class="btn btn-outline-warning btn-block" (click)="editar()">
+                <mat-icon class="center-icons">edit</mat-icon> Editar
+            </button>
+            <button class="btn btn-outline-danger btn-block" (click)="cambiarEstado()" *ngIf="esAdmin() && cilindro.activo && cilindro.stock">
+                <mat-icon class="center-icons">remove</mat-icon> Desactivar
+            </button>
+            <button class="btn btn-outline-success btn-block" (click)="cambiarEstado()" *ngIf="esAdmin() && !cilindro.activo">
+                <mat-icon class="center-icons">add</mat-icon> Activar
+            </button>
+            <button class="btn btn-outline-dark btn-block" (click)="regresar()">
+                <mat-icon class="center-icons">navigate_before</mat-icon> Regresar
+            </button>
         </div>
     </div>
 </div>

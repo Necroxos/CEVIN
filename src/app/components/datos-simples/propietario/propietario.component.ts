@@ -124,7 +124,7 @@ export class PropietarioComponent implements OnInit {
    */
   editar(evento: EstandarModel): void {
     this.dialog.open(FormularioPropietarioComponent, {
-      width: '40vh',
+      width: '60vh',
       data: {titulo: 'Editar al propietario', descripcion: evento.descripcion, id: evento.id}
     });
   }
@@ -146,7 +146,7 @@ export class PropietarioComponent implements OnInit {
 
   openDialog(): void {
     this.dialog.open(FormularioPropietarioComponent, {
-      width: '40vh',
+      width: '60vh',
       data: {titulo: 'Ingresar un nuevo propietario'}
     });
   }

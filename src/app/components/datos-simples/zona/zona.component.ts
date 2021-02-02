@@ -124,7 +124,7 @@ export class ZonaComponent implements OnInit {
    */
   editar(evento: any): void {
     this.dialog.open(FormularioZonaComponent, {
-      width: '40vh',
+      width: '60vh',
       data: {
         titulo: 'Editar la zona',
         descripcion: evento.descripcion,
@@ -154,7 +154,7 @@ export class ZonaComponent implements OnInit {
    */
   openDialog(): void {
     this.dialog.open(FormularioZonaComponent, {
-      width: '40vh',
+      width: '60vh',
       data: {titulo: 'Ingresar una nueva zona'}
     });
   }

@@ -124,7 +124,7 @@ export class ComunaComponent implements OnInit {
    */
   editar(evento: EstandarModel): void {
     this.dialog.open(FormularioComunaComponent, {
-      width: '40vh',
+      width: '60vh',
       data: {titulo: 'Editar la comuna', descripcion: evento.descripcion, id: evento.id}
     });
   }
@@ -146,7 +146,7 @@ export class ComunaComponent implements OnInit {
 
   openDialog(): void {
     this.dialog.open(FormularioComunaComponent, {
-      width: '40vh',
+      width: '60vh',
       data: {titulo: 'Ingresar una nueva comuna'}
     });
   }

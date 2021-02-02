@@ -1,7 +1,7 @@
 // Angular
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Peticiones
 import { HttpClientModule } from '@angular/common/http';
@@ -151,6 +151,7 @@ import { InfoContactoComponent } from './components/stock/info-contacto/info-con
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     QRCodeModule,
     NgQrScannerModule,
     MaterialModule,

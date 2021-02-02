@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
         if (this.recordarme) { localStorage.setItem('email', this.authUser.email); }
         else { localStorage.removeItem('email'); }
 
-        this.estadoPeticion.success('Ingreso éxitoso!', ['stock', 'llenos'], 800);
+        this.estadoPeticion.success('Ingreso exitoso!', ['stock', 'llenos'], 800);
 
       }, (err: any) => {
         this.estadoPeticion.error(err);
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
    */
   openDialog(): void {
     this.dialog.open(RecuperarPassComponent, {
-      width: '40vh',
+      width: '60vh',
       data: { email: this.authUser.email }
     });
   }

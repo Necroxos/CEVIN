@@ -140,7 +140,7 @@ export class VentaDetalleComponent implements OnInit {
    */
   confirmarAccion(evento: VentaModel): void {
     this.dialog.open(VentaEliminarComponent, {
-      width: '40vh',
+      width: '60vh',
       data: evento
     });
   }

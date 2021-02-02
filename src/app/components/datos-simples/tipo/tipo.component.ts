@@ -29,7 +29,7 @@ export class TipoComponent implements OnInit {
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
 
-  displayedColumns: string[] = ['correlativo', 'tipo', 'activo', 'opciones'];
+  displayedColumns: string[] = ['correlativo', 'tipo', 'costo', 'activo', 'opciones'];
 
   cilindrosDevueltos = 0;
   cilindrosRestantes = 0;
@@ -63,8 +63,11 @@ export class TipoComponent implements OnInit {
    * @param servicio Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-  constructor(private servicio: TipoGasService, private estadoPeticion: PeticionesService,
-              private auth: AuthService, public dialog: MatDialog) { }
+  constructor(
+    public dialog: MatDialog,
+    private auth: AuthService,
+    private servicio: TipoGasService,
+    private estadoPeticion: PeticionesService) { }
 
   /**
    * Escucha el tamaño de escala de la ventana
@@ -122,10 +125,15 @@ export class TipoComponent implements OnInit {
    * Función que se encarga de redirigir a la vista de Editar
    * @param evento Recibe el objeto Estandar de la fila
    */
-  editar(evento: EstandarModel): void {
+  editar(evento: any): void {
     this.dialog.open(FormularioTipoComponent, {
-      width: '40vh',
-      data: {titulo: 'Editar un tipo de gas', descripcion: evento.descripcion, id: evento.id}
+      width: '60vh',
+      data: {
+        id: evento.id,
+        costo: evento.costo,
+        titulo: 'Editar un tipo de gas',
+        descripcion: evento.descripcion
+      }
     });
   }
 
@@ -146,7 +154,7 @@ export class TipoComponent implements OnInit {
 
   openDialog(): void {
     this.dialog.open(FormularioTipoComponent, {
-      width: '40vh',
+      width: '60vh',
       data: {titulo: 'Ingresar un nuevo tipo de gas'}
     });
   }
