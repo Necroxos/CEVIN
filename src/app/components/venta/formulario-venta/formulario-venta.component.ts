@@ -215,6 +215,14 @@ export class FormularioVentaComponent implements OnInit {
   }
 
   /**
+   * Función que toma el rut y lo agrega a la venta para mostrar en la información final
+   * @param cliente Opción del selector 'mat-autocomplete'
+   */
+  obtenerCliente(cliente: any): void {
+    this.venta.rut_cliente = cliente.rut;
+  }
+
+  /**
    * Función que se encarga de limpiar la fecha de mantención
    */
   limpiarFecha(): void {

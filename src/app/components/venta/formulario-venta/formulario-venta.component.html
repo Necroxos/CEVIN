@@ -15,7 +15,7 @@
                     <mat-form-field class="example-full-width">
                         <mat-label>Cliente</mat-label>
                         <input type="text" placeholder="Seleccione al cliente" matInput [formControl]="myControl" [(ngModel)]="cliente" [matAutocomplete]="auto">
-                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)='obtenerCliente ($event.option.value)'>
                             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                                 {{option.text}}
                             </mat-option>
@@ -33,7 +33,7 @@
             <!-- Input entrega -->
             <label><b>Ingrese la fecha de entrega</b></label>
             <div class="form-group">
-                <input class="form-control datepicker" [(ngModel)]="venta.entrega" name="entrega" [max]="maxDate" [matDatepicker]="entrega" placeholder="Entrega" disabled required>
+                <input class="form-control datepicker" [(ngModel)]="venta.entrega" (dateInput)="transformarDatos()" name="entrega" [max]="maxDate" [matDatepicker]="entrega" placeholder="Entrega" disabled required>
                 <mat-datepicker-toggle matSuffix [for]="entrega" matTooltip="Escoger fecha"></mat-datepicker-toggle>
                 <mat-datepicker #entrega disabled="false"></mat-datepicker>
                 <mat-datepicker-toggle matSuffix (click)="limpiarFecha()">
