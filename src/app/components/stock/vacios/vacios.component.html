@@ -1,6 +1,11 @@
 <h1 class="mt-5">Stock de cilindros vacíos</h1>
 <hr><br>
 
+<div class="input-group mb-2">
+    <span class="input-group-text" id="basic-addon1"><mat-icon>search</mat-icon></span>
+    <input type="text" class="form-control" (keyup)="applyFilter($event)" placeholder="filtro" #input>
+</div>
+
 <div class="row mb-3">
     <div class="col">
         <button mat-raised-button color="warn" (click)="rotarCilindros()" class="btn-danger btn-block">
@@ -15,7 +20,7 @@
     </div>
 </div>
 
-<div class="example-container mat-elevation-z8 animated fadeIn fast" [ngClass]="{'text-center': smallDevice}">
+<div class="example-container mat-elevation-z8 animated fadeIn fast">
     <div class="loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
         <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
         <div class="rate-limit-reached" *ngIf="isRateLimitReached">
@@ -63,7 +68,7 @@
 
             <!-- Se muestra si no se encuantra información con el valor filtrado. -->
             <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell text-danger" colspan="4">Sin resultados para "{{input.value}}"</td>
+                <td class="mat-cell text-danger" colspan="5">Sin resultados para "{{input.value}}"</td>
             </tr>
         </table>
 

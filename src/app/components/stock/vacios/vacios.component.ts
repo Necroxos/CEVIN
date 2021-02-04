@@ -31,8 +31,6 @@ export class VaciosComponent implements OnInit {
   cilindros: CilindroModel[];
   cilindrosMarcados: CilindroModel[];
 
-  smallDevice = false;
-
   // Variables para la tabla de cilindros
   displayedColumns: string[] = ['sel', 'codigo', 'propietario', 'tipo_gas', 'metros_cubicos'];
   dataSource: MatTableDataSource<CilindroModel>;
