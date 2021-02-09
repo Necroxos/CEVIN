@@ -28,7 +28,7 @@ export class VentaDetalleComponent implements OnInit {
    *                                                       VARIABLES                                                                *
    **********************************************************************************************************************************/
 
-  displayedColumns: string[] = ['codigo', 'rut_cliente', 'codigo_activo', 'finalizado', 'activo', 'opciones'];
+  displayedColumns: string[] = ['codigo', 'rut_cliente', 'codigo_activo', 'fecha', 'finalizado', 'activo', 'opciones'];
 
   cilindrosDevueltos = 0;
   cilindrosRestantes = 0;
