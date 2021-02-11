@@ -2,12 +2,12 @@
     <!-- Selección de dispositivo de video -->
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01">Escoga una cámara</label>
+            <label class="input-group-text" for="inputGroupSelect01">Cambiar cámara</label>
         </div>
         <!-- Opciones de dispositivos -->
         <select class="custom-select" (change)="cambiarCam($event.target.value)">
           <option>Seleccione un dispositivo de video...</option>
-          <option *ngFor="let device of videoDevices; let i = index">CAM ({{i}}) {{ device.label }}</option>
+          <option *ngFor="let device of videoDevices; let i = index">CAM ({{ i + 1 }}) {{ device.label }}</option>
         </select>
     </div>
 
@@ -16,5 +16,4 @@
         <qr-scanner [ngClass]="{ 'hideElem': esconder }" [debug]="false" [canvasWidth]="ancho" [canvasHeight]="alto" [updateTime]="tiempoActualizacion" [stopAfterScan]="detenerEscaner">
         </qr-scanner>
     </div>
-
 </div>

@@ -36,10 +36,7 @@ export class EscanerQrComponent {
   /**
    * Inicializa el Emitter para enviar la información al componente padre
    */
-  constructor() {
-    this.mostrarCodigo = new EventEmitter();
-    this.qrScannerComponent.videoElement.setAttribute('playsinline', 'true');
-  }
+  constructor() { this.mostrarCodigo = new EventEmitter(); }
 
   /**
    * En el AfterInit inicializaremos los dispositivos de video que estén disponibles en el equipo
@@ -47,13 +44,14 @@ export class EscanerQrComponent {
    * Y se inicia el escaneo de códigos QR
    */
   ngAfterViewInit(): void {
-
     this.qrScannerComponent.getMediaDevices().then(devices => {
       const videoDevices: MediaDeviceInfo[] = [];
       for (const device of devices) {
-        if (device.kind.toString() === 'videoinput') {
-          videoDevices.push(device);
-          this.videoDevices.push(device);
+        if (device.kind.toString() === 'videoinput' || device.kind.toString() === 'audioinput') {
+          if (device.label !== '') {
+            videoDevices.push(device);
+            this.videoDevices.push(device);
+          }
         }
       }
       if (videoDevices.length > 0) {
@@ -91,7 +89,7 @@ export class EscanerQrComponent {
    */
   cambiarCam(device: string): void {
     for (const dev of this.videoDevices) {
-      if (dev.label.includes(device)) {
+      if (device.includes(dev.label)) {
         this.choosenDev = dev;
         break;
       }
