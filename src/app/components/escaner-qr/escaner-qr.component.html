@@ -7,7 +7,7 @@
         <!-- Opciones de dispositivos -->
         <select class="custom-select" (change)="cambiarCam($event.target.value)">
           <option>Seleccione un dispositivo de video...</option>
-          <option *ngFor="let device of videoDevices">{{ device.label }}</option>
+          <option *ngFor="let device of videoDevices; let i = index">CAM ({{i}}) {{ device.label }}</option>
         </select>
     </div>
 

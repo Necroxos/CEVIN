@@ -36,7 +36,10 @@ export class EscanerQrComponent {
   /**
    * Inicializa el Emitter para enviar la información al componente padre
    */
-  constructor() { this.mostrarCodigo = new EventEmitter(); }
+  constructor() {
+    this.mostrarCodigo = new EventEmitter();
+    this.qrScannerComponent.videoElement.setAttribute('playsinline', 'true');
+  }
 
   /**
    * En el AfterInit inicializaremos los dispositivos de video que estén disponibles en el equipo
@@ -55,7 +58,7 @@ export class EscanerQrComponent {
       }
       if (videoDevices.length > 0) {
         for (const dev of videoDevices) {
-          if (dev.label.includes('front')) {
+          if (dev.label.includes('back')) {
             this.choosenDev = dev;
             break;
           }
