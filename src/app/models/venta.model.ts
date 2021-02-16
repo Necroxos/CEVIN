@@ -7,12 +7,14 @@ export class VentaModel {
     rut_cliente: string;
     venta_id: number;
     codigo: string;
+    fecha: string;
     finalizado: boolean;
     cliente_id: number;
     entrega: Moment;
     retorno: Moment;
     fecha_entrega: string;
     fecha_retorno: string;
+    nombre_completo: string;
     activo: boolean;
     cilindro_id: number;
     cilindros: number[];

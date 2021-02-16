@@ -10,11 +10,13 @@ import { MatTableDataSource } from '@angular/material/table';
 // Servicios
 import { AuthService } from '../../../services/auth.service';
 import { VentaService } from '../../../services/venta.service';
+import { PdfmakerService } from '../../../services/pdfmaker.service';
 import { PeticionesService } from '../../../services/peticiones.service';
 // Módulos
 import { MatDialog } from '@angular/material/dialog';
 // Modelos
 import { VentaModel } from '../../../models/venta.model';
+import { CilindroModel } from '../../../models/cilindro.model';
 // Componente
 import { VentaEliminarComponent } from '../venta-eliminar/venta-eliminar.component';
 
@@ -60,8 +62,12 @@ export class VentaDetalleComponent implements OnInit {
    * @param ventaServ Servicio con peticiones HTTP al Back End
    * @param estadoPeticion Servicio con funciones de Carga y Error
    */
-  constructor(private ventaServ: VentaService, private auth: AuthService,
-              private estadoPeticion: PeticionesService, public dialog: MatDialog) { }
+  constructor(
+    private auth: AuthService,
+    private ventaServ: VentaService,
+    private pdfmaker: PdfmakerService,
+    private estadoPeticion: PeticionesService,
+    public dialog: MatDialog) { }
 
   /**
    * Escucha el tamaño de escala de la ventana
@@ -152,6 +158,23 @@ export class VentaDetalleComponent implements OnInit {
   info(evento: VentaModel): void {
     this.ventaServ.guardarVenta(evento);
     this.estadoPeticion.recargar(['venta', 'info']);
+  }
+
+  /**
+   * Función que se encarga de imprimir el boucher de Venta
+   * También busca los cilindros de una venta, mediante el servicio de VentaService
+   * @param evento Recibe el objeto Venta de la fila
+   */
+  async imprimir(evento: VentaModel): Promise<any> {
+    try {
+      let cilindros: any[];
+      const response: any = await this.ventaServ.obtenerCilindrosDeVenta(evento).toPromise();
+      cilindros = [...response.response];
+      this.pdfmaker.imprimirBoucher(evento, cilindros);
+    } catch (error) {
+      console.log(error);
+      this.estadoPeticion.error(error);
+    }
   }
 
 }
