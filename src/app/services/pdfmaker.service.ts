@@ -56,11 +56,13 @@ export class PdfmakerService {
           columns: [
             [
               this.header(codigo.slice(13)),
-              { qr: this.greeting, fit: 150, alignment: 'center' }
+              { qr: this.greeting, fit: 140, alignment: 'center' },
+              this.header('CEVIN S.A.')
             ],
             [
               this.header(codigo.slice(13)),
-              { qr: this.greeting, fit: 150, alignment: 'center' }
+              { qr: this.greeting, fit: 140, alignment: 'center' },
+              this.header('CEVIN S.A.')
             ]
           ]
         }
