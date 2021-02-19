@@ -19,7 +19,7 @@ export class PdfmakerService {
   constructor() { }
 
   header(text: string): any {
-    return { text, alignment: 'center' };
+    return { text, alignment: 'center', style: { fontSize: 24, bold: true } };
   }
 
   cilindro(cilindros: Array<CilindroModel>): any {
@@ -45,22 +45,20 @@ export class PdfmakerService {
     this.greeting = codigo;
     const docDefinition = {
       pageSize: {
-        width: 300,
+        width: 500,
         height: 300
       },
       content: [
         {
           columns: [
-            { qr: this.greeting, fit: 40, alignment: 'left' },
-            { qr: this.greeting, fit: 40, alignment: 'right' }
-          ]
-        },
-        this.header(codigo.slice(13)),
-        { qr: this.greeting, fit: 150, alignment: 'center' },
-        {
-          columns: [
-            { qr: this.greeting, fit: 40, alignment: 'left' },
-            { qr: this.greeting, fit: 40, alignment: 'right' }
+            [
+              this.header(codigo.slice(13)),
+              { qr: this.greeting, fit: 150, alignment: 'center' }
+            ],
+            [
+              this.header(codigo.slice(13)),
+              { qr: this.greeting, fit: 150, alignment: 'center' }
+            ]
           ]
         }
       ]
