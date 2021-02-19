@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { Alignment, Style } from 'pdfmake/interfaces';
+import { Alignment, Style, PageSize, Margins } from 'pdfmake/interfaces';
 // Modelos
 import { VentaModel } from '../models/venta.model';
 import { CilindroModel } from '../models/cilindro.model';
@@ -45,9 +45,12 @@ export class PdfmakerService {
     this.greeting = codigo;
     const docDefinition = {
       pageSize: {
-        width: 500,
-        height: 300
-      },
+        width: 400,
+        height: 'auto'
+      } as PageSize,
+
+      pageMargins: [ 0, 5, 0, 20 ] as Margins,
+
       content: [
         {
           columns: [
