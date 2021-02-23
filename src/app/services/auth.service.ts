@@ -110,7 +110,7 @@ export class AuthService {
     if (this.userToken.length < 2) { return false; }
     const token = jwt_decode(this.userToken);
 
-    if (token['usuario']['id'] === 1) { return true; }
+    if (token['usuario']['rol_id'] === 1) { return true; }
     return false;
   }
 
