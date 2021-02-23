@@ -46,27 +46,34 @@ export class EscanerQrComponent {
   ngAfterViewInit(): void {
     this.qrScannerComponent.getMediaDevices().then(devices => {
       const videoDevices: MediaDeviceInfo[] = [];
+
       for (const device of devices) {
+        console.log(device);
         if (device.kind.toString() === 'videoinput' || device.kind.toString() === 'audioinput') {
+          videoDevices.push(device);
           if (device.label !== '') {
-            videoDevices.push(device);
             this.videoDevices.push(device);
           }
         }
       }
-      if (videoDevices.length > 0) {
-        for (const dev of videoDevices) {
-          if (dev.label.includes('back')) {
-            this.choosenDev = dev;
-            break;
-          }
-        }
-        if (!this.choosenDev) { this.choosenDev = videoDevices[0]; }
-        this.qrScannerComponent.chooseCamera.next(this.choosenDev);
-      }
+
+      this.prefCam();
+      if (!this.choosenDev) { this.choosenDev = videoDevices[0]; }
+      this.qrScannerComponent.chooseCamera.next(this.choosenDev);
     });
 
     this.lecturaQR();
+  }
+
+  prefCam(): void {
+    if (this.videoDevices.length > 0) {
+      for (const dev of this.videoDevices) {
+        if (dev.label.includes('back')) {
+          this.choosenDev = dev;
+          break;
+        }
+      }
+    }
   }
 
   /**********************************************************************************************************************************
@@ -89,7 +96,7 @@ export class EscanerQrComponent {
    */
   cambiarCam(device: string): void {
     for (const dev of this.videoDevices) {
-      if (device.includes(dev.label)) {
+      if (device === dev.groupId) {
         this.choosenDev = dev;
         break;
       }
