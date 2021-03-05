@@ -134,9 +134,8 @@ export class FechaRetornoComponent implements OnInit {
   calcularAtraso(): void {
     if (this.dias <= 15) { this.venta.demora_id = 2; }
     else if (this.dias <= 30 && this.dias > 15) { this.venta.demora_id = 3; }
-    else if (this.dias <= 30 && this.dias > 15) { this.venta.demora_id = 4; }
-    else if (this.dias <= 60 && this.dias > 30) { this.venta.demora_id = 5; }
-    else if (this.dias > 60) { this.venta.demora_id = 6; }
+    else if (this.dias <= 60 && this.dias > 30) { this.venta.demora_id = 4; }
+    else if (this.dias > 60) { this.venta.demora_id = 5; }
   }
 
   /**
