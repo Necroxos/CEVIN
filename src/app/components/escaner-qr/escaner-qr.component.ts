@@ -5,7 +5,8 @@ import { QrScannerComponent } from 'angular2-qrscanner';
 
 @Component({
   selector: 'app-escaner-qr',
-  templateUrl: './escaner-qr.component.html'
+  templateUrl: './escaner-qr.component.html',
+  styleUrls: ['./escaner-qr.component.css']
 })
 export class EscanerQrComponent {
 
@@ -20,8 +21,8 @@ export class EscanerQrComponent {
   tiempoActualizacion = 500;
   esconder = false;
   detenerEscaner = true;
-  ancho = 640;
-  alto = 480;
+  ancho = 320;
+  alto = 320;
 
   // Variables enviadas a componentes hijos
   @Output() mostrarCodigo: EventEmitter<string>;
